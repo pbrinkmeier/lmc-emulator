@@ -7,6 +7,20 @@ TL;DR: it is an as-simple-as-possible example for a von Neumann architecture usi
 
 ## Emulator details
 
+### Architecture
+
+The emulator aims to fully implement the LMC architecture.
+It features:
+
+- 100 **memory cells** numbered 0 through 99 that can each store numbers between 0 and 999 (inclusive).
+- A register called **instruction pointer** that can store numbers between 0 and 99 (inclusive).
+It is used to mark the next instruction.
+- A register called **accumulator** that can store numbers between 0 and 999 (inclusive).
+It is used for most calculations.
+- A register called **carry flag** that can store either 0 or 1.
+An 1 means that the result of the last arithmetic operation had an overflow or underflow.
+- An **input stack** and an **output stack** of numbers between 0 and 999 (inclusive).
+
 ### Supported instructions
 
 The formatting of the bullet points is **Opcode - mnemonic**.
