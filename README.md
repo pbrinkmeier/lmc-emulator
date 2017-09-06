@@ -5,6 +5,28 @@ You can read more about the LMC on the [LMC Wikipedia page](https://en.wikipedia
 
 TL;DR: it is an as-simple-as-possible example for a von Neumann architecture using decimal numbers.
 
+## Emulator details
+
+### Supported instructions
+
+The formatting of the bullet points is **Opcode - mnemonic**.
+`x` in the opcode represents a variable place and the mnemonics are the ones that the assembler accepts.
+
+- **1xx - ADD** Add the value at position `xx` to the accumulator.
+If the result is bigger than 999, it will be replaced by the original value mod 1000.
+If the result is smaller than 999, the carry flag will be set to 1, else to 0.
+- **2xx - SUB** Subtract the value at position `xx` from the accumulator.
+If the result is smaller than 0, it will be replaced by the original value mod 1000.
+If the result is smaller than 0, the carry flag will be set to 1, else to 0.
+- **3xx - STA** Store the value of the accumulator at position `xx`.
+- **5xx - LDA** Load the value at position `xx` to the accumulator.
+- **6xx - BRA** Set the instruction pointer to `xx`.
+- **7xx - BRZ** If the accumulator equals zero, set the instruction pointer to `xx`. *The carry flag is not taken into account.*
+- **8xx - BRP** If the carry flag is set to 1, set the instruction pointer to `xx`.
+- **901 - INP** Pop an input from the input stack and load it into the accumulator. Halt execution if the input stack is empty.
+- **902 - OUT** Push the value from the accumulator to the output stack.
+- **000 - COB** Halt execution.
+
 ## Assembler details
 
 ### Constraints
