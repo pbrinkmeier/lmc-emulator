@@ -5730,6 +5730,126 @@ var _elm_lang$core$Json_Decode$bool = _elm_lang$core$Native_Json.decodePrimitive
 var _elm_lang$core$Json_Decode$string = _elm_lang$core$Native_Json.decodePrimitive('string');
 var _elm_lang$core$Json_Decode$Decoder = {ctor: 'Decoder'};
 
+//import Maybe, Native.List //
+
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
+{
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
+		});
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+function replace(n, re, replacer, string)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[arguments.length - 2],
+			number: count
+		});
+	}
+	return string.replace(re, jsReplacer);
+}
+
+function split(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	var restoreLastIndex = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	re.lastIndex = restoreLastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+return {
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
+
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
+};
+
+}();
+
 var _elm_lang$core$Tuple$mapSecond = F2(
 	function (func, _p0) {
 		var _p1 = _p0;
@@ -5756,6 +5876,23 @@ var _elm_lang$core$Tuple$first = function (_p6) {
 	var _p7 = _p6;
 	return _p7._0;
 };
+
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
+	});
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
+};
+var _elm_lang$core$Regex$All = {ctor: 'All'};
 
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrap;
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrapWithFlags;
@@ -8260,6 +8397,133 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
+var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$getToken = F2(
+	function (rules, source) {
+		getToken:
+		while (true) {
+			var _p0 = rules;
+			if (_p0.ctor === '[]') {
+				return _elm_lang$core$Result$Err(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'Invalid input at: ',
+						A2(_elm_lang$core$String$left, 30, source)));
+			} else {
+				var _p3 = _p0._1;
+				var _p1 = A3(
+					_elm_lang$core$Regex$find,
+					_elm_lang$core$Regex$AtMost(1),
+					_p0._0.pattern,
+					source);
+				if (_p1.ctor === '[]') {
+					var _v2 = _p3,
+						_v3 = source;
+					rules = _v2;
+					source = _v3;
+					continue getToken;
+				} else {
+					var _p2 = _p1._0.match;
+					if (_elm_lang$core$Native_Utils.eq(_p1._0.index, 0)) {
+						return _elm_lang$core$Result$Ok(
+							{
+								ctor: '_Tuple2',
+								_0: _p0._0.tokenConstructor(_p2),
+								_1: _elm_lang$core$String$dropLeft(
+									_elm_lang$core$String$length(_p2))(source)
+							});
+					} else {
+						var _v4 = _p3,
+							_v5 = source;
+						rules = _v4;
+						source = _v5;
+						continue getToken;
+					}
+				}
+			}
+		}
+	});
+var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$tokenizeUsingRules = F3(
+	function (rules, tokens, source) {
+		tokenizeUsingRules:
+		while (true) {
+			var _p4 = source;
+			if (_p4 === '') {
+				return _elm_lang$core$Result$Ok(tokens);
+			} else {
+				var _p5 = A2(_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$getToken, rules, source);
+				if (_p5.ctor === 'Err') {
+					return _elm_lang$core$Result$Err(_p5._0);
+				} else {
+					var _v8 = rules,
+						_v9 = {ctor: '::', _0: _p5._0._0, _1: tokens},
+						_v10 = _p5._0._1;
+					rules = _v8;
+					tokens = _v9;
+					source = _v10;
+					continue tokenizeUsingRules;
+				}
+			}
+		}
+	});
+var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$ignorantToInt = function (_p6) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		0,
+		_elm_lang$core$String$toInt(_p6));
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Rule = F2(
+	function (a, b) {
+		return {pattern: a, tokenConstructor: b};
+	});
+var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Whitespace = function (a) {
+	return {ctor: 'Whitespace', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$NumberLiteral = function (a) {
+	return {ctor: 'NumberLiteral', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Label = function (a) {
+	return {ctor: 'Label', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Mnemonic = function (a) {
+	return {ctor: 'Mnemonic', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$lmcRules = {
+	ctor: '::',
+	_0: A2(
+		_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Rule,
+		_elm_lang$core$Regex$regex('[A-Z]+'),
+		_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Mnemonic),
+	_1: {
+		ctor: '::',
+		_0: A2(
+			_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Rule,
+			_elm_lang$core$Regex$regex('[a-z]+'),
+			_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Label),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Rule,
+				_elm_lang$core$Regex$regex('[0-9]+'),
+				function (_p7) {
+					return _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$NumberLiteral(
+						_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$ignorantToInt(_p7));
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Rule,
+					_elm_lang$core$Regex$regex('\\s+'),
+					_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Whitespace),
+				_1: {ctor: '[]'}
+			}
+		}
+	}
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$tokenize = A2(
+	_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$tokenizeUsingRules,
+	_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$lmcRules,
+	{ctor: '[]'});
+
 var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: '', inputs: ''};
 var _pbrinkmeier$lmc_emulator$Model$Model = F2(
 	function (a, b) {
@@ -8279,9 +8543,14 @@ var _pbrinkmeier$lmc_emulator$Update$update = F2(
 	function (msg, model) {
 		var _p1 = A2(_elm_lang$core$Debug$log, 'message', msg);
 		if (_p1.ctor === 'SetSourceCode') {
+			var _p2 = _p1._0;
+			var tokens = A2(
+				_elm_lang$core$Debug$log,
+				'tokens',
+				_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$tokenize(_p2));
 			return _elm_lang$core$Native_Utils.update(
 				model,
-				{sourceCode: _p1._0});
+				{sourceCode: _p2});
 		} else {
 			return _elm_lang$core$Native_Utils.update(
 				model,
