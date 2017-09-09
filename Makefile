@@ -1,2 +1,2 @@
 elm:
-	elm-make src/Main.elm --output target/lmc-emulator.js
+	elm-make --warn src/Main.elm --output target/lmc-emulator.js

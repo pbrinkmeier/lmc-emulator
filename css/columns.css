@@ -1,0 +1,11 @@
+.columns {
+  display: flex;
+}
+
+.columns-col {
+  padding: .5em;
+}
+
+.columns-col.-wide {
+  flex: 1;
+}

@@ -1,0 +1,15 @@
+.section {
+
+}
+
+.section + .section {
+  margin-top: 1em;
+}
+
+.section-title {
+  border-bottom: 1px solid;
+  margin: 0;
+  margin-bottom: .5em;
+  font-size: 1em;
+  font-weight: bold;
+}

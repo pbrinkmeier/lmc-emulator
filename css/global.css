@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+button {
+  box-sizing: border-box;
+  padding: .25em .75em;
+  border: 2px solid black;
+  border-radius: 1em;
+  background-color: white;
+  font-size: 1em;
+}
+
+button:active {
+  background-color: black;
+  color: white;
+}
+
+table {
+  width: 100%;
+}
