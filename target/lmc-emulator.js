@@ -8282,121 +8282,6 @@ var _elm_lang$html$Html_Attributes$classList = function (list) {
 };
 var _elm_lang$html$Html_Attributes$style = _elm_lang$virtual_dom$VirtualDom$style;
 
-var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int);
-var _elm_lang$html$Html_Events$targetChecked = A2(
-	_elm_lang$core$Json_Decode$at,
-	{
-		ctor: '::',
-		_0: 'target',
-		_1: {
-			ctor: '::',
-			_0: 'checked',
-			_1: {ctor: '[]'}
-		}
-	},
-	_elm_lang$core$Json_Decode$bool);
-var _elm_lang$html$Html_Events$targetValue = A2(
-	_elm_lang$core$Json_Decode$at,
-	{
-		ctor: '::',
-		_0: 'target',
-		_1: {
-			ctor: '::',
-			_0: 'value',
-			_1: {ctor: '[]'}
-		}
-	},
-	_elm_lang$core$Json_Decode$string);
-var _elm_lang$html$Html_Events$defaultOptions = _elm_lang$virtual_dom$VirtualDom$defaultOptions;
-var _elm_lang$html$Html_Events$onWithOptions = _elm_lang$virtual_dom$VirtualDom$onWithOptions;
-var _elm_lang$html$Html_Events$on = _elm_lang$virtual_dom$VirtualDom$on;
-var _elm_lang$html$Html_Events$onFocus = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'focus',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onBlur = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'blur',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onSubmitOptions = _elm_lang$core$Native_Utils.update(
-	_elm_lang$html$Html_Events$defaultOptions,
-	{preventDefault: true});
-var _elm_lang$html$Html_Events$onSubmit = function (msg) {
-	return A3(
-		_elm_lang$html$Html_Events$onWithOptions,
-		'submit',
-		_elm_lang$html$Html_Events$onSubmitOptions,
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onCheck = function (tagger) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'change',
-		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetChecked));
-};
-var _elm_lang$html$Html_Events$onInput = function (tagger) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'input',
-		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetValue));
-};
-var _elm_lang$html$Html_Events$onMouseOut = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseout',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseOver = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseover',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseLeave = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseleave',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseEnter = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseenter',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseUp = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseup',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseDown = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mousedown',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onDoubleClick = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'dblclick',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onClick = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'click',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$Options = F2(
-	function (a, b) {
-		return {stopPropagation: a, preventDefault: b};
-	});
-
 var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$getToken = F2(
 	function (rules, source) {
 		getToken:
@@ -8524,6 +8409,187 @@ var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$tokenize = A2(
 	_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$lmcRules,
 	{ctor: '[]'});
 
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$parseUsingRules = F3(
+	function (rules, state, tokens) {
+		parseUsingRules:
+		while (true) {
+			var _p0 = state;
+			var labels = _p0.labels;
+			var instructions = _p0.instructions;
+			var position = _p0.position;
+			var _p1 = tokens;
+			if (_p1.ctor === '[]') {
+				return _elm_lang$core$Result$Ok(state);
+			} else {
+				switch (_p1._0.ctor) {
+					case 'Label':
+						var newState = _elm_lang$core$Native_Utils.update(
+							state,
+							{
+								labels: A3(_elm_lang$core$Dict$insert, _p1._0._0, position, labels)
+							});
+						var _v1 = rules,
+							_v2 = newState,
+							_v3 = _p1._1;
+						rules = _v1;
+						state = _v2;
+						tokens = _v3;
+						continue parseUsingRules;
+					case 'Mnemonic':
+						return _elm_lang$core$Result$Err('Not implemented');
+					default:
+						return _elm_lang$core$Result$Err('Unexpected token');
+				}
+			}
+		}
+	});
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$isImportantToken = function (token) {
+	var _p2 = token;
+	switch (_p2.ctor) {
+		case 'Mnemonic':
+			return true;
+		case 'Label':
+			return true;
+		case 'NumberLiteral':
+			return true;
+		default:
+			return false;
+	}
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$ParseState = F3(
+	function (a, b, c) {
+		return {labels: a, instructions: b, position: c};
+	});
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$CoffeeBreak = {ctor: 'CoffeeBreak'};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$Output = {ctor: 'Output'};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$Input = {ctor: 'Input'};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$BranchIfPositive = function (a) {
+	return {ctor: 'BranchIfPositive', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$BranchIfZero = function (a) {
+	return {ctor: 'BranchIfZero', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$Branch = function (a) {
+	return {ctor: 'Branch', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$Load = function (a) {
+	return {ctor: 'Load', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$Store = function (a) {
+	return {ctor: 'Store', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$Subtract = function (a) {
+	return {ctor: 'Subtract', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$Add = function (a) {
+	return {ctor: 'Add', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$Immediate = function (a) {
+	return {ctor: 'Immediate', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$Labelled = function (a) {
+	return {ctor: 'Labelled', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$NoArguments = function (a) {
+	return {ctor: 'NoArguments', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$OneArgument = function (a) {
+	return {ctor: 'OneArgument', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$lmcInstructions = _elm_lang$core$Dict$fromList(
+	{
+		ctor: '::',
+		_0: {
+			ctor: '_Tuple2',
+			_0: 'ADD',
+			_1: _pbrinkmeier$lmc_emulator$Lmc_Parser$OneArgument(_pbrinkmeier$lmc_emulator$Lmc_Parser$Add)
+		},
+		_1: {
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'SUB',
+				_1: _pbrinkmeier$lmc_emulator$Lmc_Parser$OneArgument(_pbrinkmeier$lmc_emulator$Lmc_Parser$Subtract)
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'STA',
+					_1: _pbrinkmeier$lmc_emulator$Lmc_Parser$OneArgument(_pbrinkmeier$lmc_emulator$Lmc_Parser$Store)
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'LDA',
+						_1: _pbrinkmeier$lmc_emulator$Lmc_Parser$OneArgument(_pbrinkmeier$lmc_emulator$Lmc_Parser$Load)
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: 'BRA',
+							_1: _pbrinkmeier$lmc_emulator$Lmc_Parser$OneArgument(_pbrinkmeier$lmc_emulator$Lmc_Parser$Branch)
+						},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'BRZ',
+								_1: _pbrinkmeier$lmc_emulator$Lmc_Parser$OneArgument(_pbrinkmeier$lmc_emulator$Lmc_Parser$BranchIfZero)
+							},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'BRP',
+									_1: _pbrinkmeier$lmc_emulator$Lmc_Parser$OneArgument(_pbrinkmeier$lmc_emulator$Lmc_Parser$BranchIfPositive)
+								},
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '_Tuple2',
+										_0: 'INP',
+										_1: _pbrinkmeier$lmc_emulator$Lmc_Parser$NoArguments(_pbrinkmeier$lmc_emulator$Lmc_Parser$Input)
+									},
+									_1: {
+										ctor: '::',
+										_0: {
+											ctor: '_Tuple2',
+											_0: 'OUT',
+											_1: _pbrinkmeier$lmc_emulator$Lmc_Parser$NoArguments(_pbrinkmeier$lmc_emulator$Lmc_Parser$Output)
+										},
+										_1: {
+											ctor: '::',
+											_0: {
+												ctor: '_Tuple2',
+												_0: 'COB',
+												_1: _pbrinkmeier$lmc_emulator$Lmc_Parser$NoArguments(_pbrinkmeier$lmc_emulator$Lmc_Parser$CoffeeBreak)
+											},
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$parse = function (_p3) {
+	return A3(
+		_pbrinkmeier$lmc_emulator$Lmc_Parser$parseUsingRules,
+		_pbrinkmeier$lmc_emulator$Lmc_Parser$lmcInstructions,
+		A3(
+			_pbrinkmeier$lmc_emulator$Lmc_Parser$ParseState,
+			_elm_lang$core$Dict$empty,
+			{ctor: '[]'},
+			0),
+		A2(_elm_lang$core$List$filter, _pbrinkmeier$lmc_emulator$Lmc_Parser$isImportantToken, _p3));
+};
+
 var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: '', inputs: ''};
 var _pbrinkmeier$lmc_emulator$Model$Model = F2(
 	function (a, b) {
@@ -8564,83 +8630,52 @@ var _pbrinkmeier$lmc_emulator$Update$SetSourceCode = function (a) {
 	return {ctor: 'SetSourceCode', _0: a};
 };
 
-var _pbrinkmeier$lmc_emulator$Memory$view = function (readAt) {
-	return A2(
-		_elm_lang$html$Html$table,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('memory'),
-			_1: {ctor: '[]'}
-		},
-		A2(
-			_elm_lang$core$List$map,
-			function (rowNumber) {
-				var memRow = A2(
-					_elm_lang$core$List$map,
-					function (colNumber) {
-						var cellValue = readAt((rowNumber * 10) + colNumber);
-						return A2(
-							_elm_lang$html$Html$td,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('memory-row-cell'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html$text(
-									_elm_lang$core$Basics$toString(cellValue)),
-								_1: {ctor: '[]'}
-							});
-					},
-					A2(_elm_lang$core$List$range, 0, 9));
-				return A2(
-					_elm_lang$html$Html$tr,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('memory-row'),
-						_1: {ctor: '[]'}
-					},
-					A2(
-						_elm_lang$core$Basics_ops['++'],
+var _pbrinkmeier$lmc_emulator$View$lmcTopbar = F2(
+	function (title, links) {
+		var linkView = function (_p0) {
+			var _p1 = _p0;
+			return A2(
+				_elm_lang$html$Html$li,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('lmc-topbar-links-link'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$a,
 						{
 							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$th,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('memory-row-label'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text(
-										_elm_lang$core$Basics$toString(rowNumber * 10)),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
+							_0: _elm_lang$html$Html_Attributes$class('lmc-topbar-links-link-anchor'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$href(_p1._1),
+								_1: {ctor: '[]'}
+							}
 						},
-						memRow));
-			},
-			A2(_elm_lang$core$List$range, 0, 9)));
-};
-
-var _pbrinkmeier$lmc_emulator$View$section = F2(
-	function (title, children) {
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(_p1._0),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				});
+		};
 		return A2(
-			_elm_lang$html$Html$section,
+			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('section'),
+				_0: _elm_lang$html$Html_Attributes$class('lmc-topbar'),
 				_1: {ctor: '[]'}
 			},
 			{
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$h2,
+					_elm_lang$html$Html$h1,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('section-title'),
+						_0: _elm_lang$html$Html_Attributes$class('lmc-topbar-title'),
 						_1: {ctor: '[]'}
 					},
 					{
@@ -8651,104 +8686,41 @@ var _pbrinkmeier$lmc_emulator$View$section = F2(
 				_1: {
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$div,
+						_elm_lang$html$Html$ul,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('section-content'),
+							_0: _elm_lang$html$Html_Attributes$class('lmc-topbar-links'),
 							_1: {ctor: '[]'}
 						},
-						children),
+						A2(_elm_lang$core$List$map, linkView, links)),
 					_1: {ctor: '[]'}
 				}
 			});
 	});
-var _pbrinkmeier$lmc_emulator$View$mainView = function (model) {
+var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('lmc'),
+			_0: _elm_lang$html$Html_Attributes$class('lmc-main'),
 			_1: {ctor: '[]'}
 		},
 		{
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$div,
+				_pbrinkmeier$lmc_emulator$View$lmcTopbar,
+				'LMC assembler & emulator',
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('lmc-topbar'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$h1,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('lmc-topbar-title'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('LMC emulator & assembler'),
-							_1: {ctor: '[]'}
-						}),
+					_0: {ctor: '_Tuple2', _0: 'Wikipedia', _1: 'https://en.wikipedia.org/wiki/Little_man_computer'},
 					_1: {
 						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('lmc-topbar-controls vcontrols'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$button,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('vcontrols-button'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Assemble'),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$button,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('vcontrols-button'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Step'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$button,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('vcontrols-button'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Run'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
-								}
-							}),
-						_1: {ctor: '[]'}
+						_0: {ctor: '_Tuple2', _0: 'Manual', _1: 'https://github.com/pbrinkmeier/lmc-emulator/README.md'},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'Source', _1: 'https://github.com/pbrinkmeier/lmc-emulator/README.md'},
+							_1: {ctor: '[]'}
+						}
 					}
 				}),
 			_1: {
@@ -8757,278 +8729,17 @@ var _pbrinkmeier$lmc_emulator$View$mainView = function (model) {
 					_elm_lang$html$Html$div,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('lmc-content columns'),
+						_0: _elm_lang$html$Html_Attributes$class('lmc-content'),
 						_1: {ctor: '[]'}
 					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('columns-col -wide'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_pbrinkmeier$lmc_emulator$View$section,
-									'Source code',
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$textarea,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('lmc-codebox'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Events$onInput(_pbrinkmeier$lmc_emulator$Update$SetSourceCode),
-													_1: {ctor: '[]'}
-												}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text(model.sourceCode),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('columns-col -wide'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_pbrinkmeier$lmc_emulator$View$section,
-										'Input',
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$input,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('lmc-inputbox'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$type_('text'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$placeholder('Space-separated list of integers'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$value(model.inputs),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Events$onInput(_pbrinkmeier$lmc_emulator$Update$SetInputs),
-																	_1: {ctor: '[]'}
-																}
-															}
-														}
-													}
-												},
-												{ctor: '[]'}),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_pbrinkmeier$lmc_emulator$View$section,
-											'Output',
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$input,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('lmc-outputbox'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$type_('text'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$disabled(true),
-																_1: {ctor: '[]'}
-															}
-														}
-													},
-													{ctor: '[]'}),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_pbrinkmeier$lmc_emulator$View$section,
-												'Registers',
-												{
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$div,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('registers'),
-															_1: {ctor: '[]'}
-														},
-														{
-															ctor: '::',
-															_0: A2(
-																_elm_lang$html$Html$div,
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$class('registers-reg'),
-																	_1: {ctor: '[]'}
-																},
-																{
-																	ctor: '::',
-																	_0: A2(
-																		_elm_lang$html$Html$div,
-																		{
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$class('registers-reg-label'),
-																			_1: {ctor: '[]'}
-																		},
-																		{
-																			ctor: '::',
-																			_0: _elm_lang$html$Html$text('ACC'),
-																			_1: {ctor: '[]'}
-																		}),
-																	_1: {
-																		ctor: '::',
-																		_0: A2(
-																			_elm_lang$html$Html$div,
-																			{
-																				ctor: '::',
-																				_0: _elm_lang$html$Html_Attributes$class('registers-reg-value'),
-																				_1: {ctor: '[]'}
-																			},
-																			{
-																				ctor: '::',
-																				_0: _elm_lang$html$Html$text('42'),
-																				_1: {ctor: '[]'}
-																			}),
-																		_1: {ctor: '[]'}
-																	}
-																}),
-															_1: {
-																ctor: '::',
-																_0: A2(
-																	_elm_lang$html$Html$div,
-																	{
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$class('registers-reg'),
-																		_1: {ctor: '[]'}
-																	},
-																	{
-																		ctor: '::',
-																		_0: A2(
-																			_elm_lang$html$Html$div,
-																			{
-																				ctor: '::',
-																				_0: _elm_lang$html$Html_Attributes$class('registers-reg-label'),
-																				_1: {ctor: '[]'}
-																			},
-																			{
-																				ctor: '::',
-																				_0: _elm_lang$html$Html$text('IP'),
-																				_1: {ctor: '[]'}
-																			}),
-																		_1: {
-																			ctor: '::',
-																			_0: A2(
-																				_elm_lang$html$Html$div,
-																				{
-																					ctor: '::',
-																					_0: _elm_lang$html$Html_Attributes$class('registers-reg-value'),
-																					_1: {ctor: '[]'}
-																				},
-																				{
-																					ctor: '::',
-																					_0: _elm_lang$html$Html$text('42'),
-																					_1: {ctor: '[]'}
-																				}),
-																			_1: {ctor: '[]'}
-																		}
-																	}),
-																_1: {
-																	ctor: '::',
-																	_0: A2(
-																		_elm_lang$html$Html$div,
-																		{
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$class('registers-reg'),
-																			_1: {ctor: '[]'}
-																		},
-																		{
-																			ctor: '::',
-																			_0: A2(
-																				_elm_lang$html$Html$div,
-																				{
-																					ctor: '::',
-																					_0: _elm_lang$html$Html_Attributes$class('registers-reg-label'),
-																					_1: {ctor: '[]'}
-																				},
-																				{
-																					ctor: '::',
-																					_0: _elm_lang$html$Html$text('C'),
-																					_1: {ctor: '[]'}
-																				}),
-																			_1: {
-																				ctor: '::',
-																				_0: A2(
-																					_elm_lang$html$Html$div,
-																					{
-																						ctor: '::',
-																						_0: _elm_lang$html$Html_Attributes$class('registers-reg-value'),
-																						_1: {ctor: '[]'}
-																					},
-																					{
-																						ctor: '::',
-																						_0: _elm_lang$html$Html$text('0'),
-																						_1: {ctor: '[]'}
-																					}),
-																				_1: {ctor: '[]'}
-																			}
-																		}),
-																	_1: {ctor: '[]'}
-																}
-															}
-														}),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_pbrinkmeier$lmc_emulator$View$section,
-													'Memory',
-													{
-														ctor: '::',
-														_0: _pbrinkmeier$lmc_emulator$Memory$view(
-															_elm_lang$core$Basics$always(0)),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}
-										}
-									}
-								}),
-							_1: {ctor: '[]'}
-						}
-					}),
+					{ctor: '[]'}),
 				_1: {ctor: '[]'}
 			}
 		});
 };
 
 var _pbrinkmeier$lmc_emulator$Main$main = _elm_lang$html$Html$beginnerProgram(
-	{model: _pbrinkmeier$lmc_emulator$Model$initialModel, update: _pbrinkmeier$lmc_emulator$Update$update, view: _pbrinkmeier$lmc_emulator$View$mainView})();
+	{model: _pbrinkmeier$lmc_emulator$Model$initialModel, update: _pbrinkmeier$lmc_emulator$Update$update, view: _pbrinkmeier$lmc_emulator$View$view})();
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};

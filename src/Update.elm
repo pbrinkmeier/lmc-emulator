@@ -1,6 +1,7 @@
 module Update exposing (Msg(..), update)
 
-import Lmc.Tokenizer
+import Lmc.Tokenizer as Tokenizer
+import Lmc.Parser as Parser
 import Model exposing (Model, initialModel)
 
 type Msg
@@ -12,7 +13,7 @@ update msg model =
     case Debug.log "message" msg of
         SetSourceCode newCode ->
             let
-                tokens = Debug.log "tokens" (Lmc.Tokenizer.tokenize newCode)
+                tokens = Debug.log "tokens" (Tokenizer.tokenize newCode)
             in
                 { model |
                     sourceCode = newCode }

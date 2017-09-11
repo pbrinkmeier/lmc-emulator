@@ -1,13 +1,16 @@
 .registers {
-  display: flex;
 }
 
 .registers-reg {
-  flex: 1;
-  text-align: center;
+  display: flex;
 }
 
 .registers-reg-label {
-  margin-bottom: .5em;
+  flex: 1;
   font-weight: bold;
+}
+
+.registers-reg-value {
+  flex: 3;
+  text-align: right;
 }

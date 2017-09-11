@@ -1,67 +1,32 @@
-module View exposing (mainView)
+module View exposing (view)
 
-import Html exposing (Html, button, div, h1, h2, input, table, td, text, textarea, th, tr)
-import Html.Attributes exposing (class, disabled, placeholder, type_, value)
-import Html.Events exposing (onInput)
-import Memory
+import Html exposing (Html, a, div, h1, li, text, ul)
+import Html.Attributes exposing (class, href)
 import Model exposing (Model)
-import Update exposing (Msg(..))
+import Update exposing (Msg)
 
-mainView : Model -> Html Msg
-mainView model =
-    div [ class "lmc" ] [
-        div [ class "lmc-topbar" ] [
-            h1 [ class "lmc-topbar-title" ] [ text "LMC emulator & assembler" ],
-            div [ class "lmc-topbar-controls vcontrols" ] [
-                button [ class "vcontrols-button" ] [ text "Assemble" ],
-                button [ class "vcontrols-button" ] [ text "Step" ],
-                button [ class "vcontrols-button" ] [ text "Run" ]
-            ]
+view : Model -> Html Msg
+view model =
+    div [ class "lmc-main" ] [
+        lmcTopbar "LMC assembler & emulator" [
+            ("Wikipedia", "https://en.wikipedia.org/wiki/Little_man_computer"),
+            ("Manual", "https://github.com/pbrinkmeier/lmc-emulator/README.md"),
+            ("Source", "https://github.com/pbrinkmeier/lmc-emulator/README.md")
         ],
-        div [ class "lmc-content columns" ] [
-            div [ class "columns-col -wide" ] [
-                section "Source code" [
-                    textarea [ class "lmc-codebox", onInput SetSourceCode ] [ text model.sourceCode ]
-                ]
-            ],
-            div [ class "columns-col -wide" ] [
-                section "Input" [
-                    input
-                        [ class "lmc-inputbox"
-                        , type_ "text"
-                        , placeholder "Space-separated list of integers"
-                        , value model.inputs
-                        , onInput SetInputs ] []
-                ],
-                section "Output" [
-                    input [ class "lmc-outputbox", type_ "text", disabled True ] []
-                ],
-                section "Registers" [
-                    div [ class "registers" ] [
-                        div [ class "registers-reg" ] [
-                            div [ class "registers-reg-label" ] [ text "ACC" ],
-                            div [ class "registers-reg-value" ] [ text "42" ]
-                        ],
-                        div [ class "registers-reg" ] [
-                            div [ class "registers-reg-label" ] [ text "IP" ],
-                            div [ class "registers-reg-value" ] [ text "42" ]
-                        ],
-                        div [ class "registers-reg" ] [
-                            div [ class "registers-reg-label" ] [ text "C" ],
-                            div [ class "registers-reg-value" ] [ text "0" ]
-                        ]
-                    ]
-                ],
-                section "Memory" [
-                    Memory.view (always 0)
-                ]
-            ]
+        div [ class "lmc-content" ] [
         ]
     ]
 
-section : String -> List (Html a) -> Html a
-section title children =
-    Html.section [ class "section" ] [
-        h2 [ class "section-title" ] [ text title ],
-        div [ class "section-content" ] children
-    ]
+lmcTopbar : String -> List (String, String) -> Html a
+lmcTopbar title links =
+    let
+        linkView : (String, String) -> Html a
+        linkView (linkText, url) =
+            li [ class "lmc-topbar-links-link" ] [
+                a [ class "lmc-topbar-links-link-anchor", href url ] [ text linkText ]
+            ]
+    in
+        div [ class "lmc-topbar" ] [
+            h1 [ class "lmc-topbar-title" ] [ text title ],
+            ul [ class "lmc-topbar-links" ] (List.map linkView links)
+        ]

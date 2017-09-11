@@ -10,5 +10,5 @@ main =
     Html.beginnerProgram {
         model = Model.initialModel,
         update = Update.update,
-        view = View.mainView
+        view = View.view
     }
