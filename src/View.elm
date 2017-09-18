@@ -44,7 +44,7 @@ view model =
                 div [ class "lmc-columns-col -wide lmc-columns" ] [
                     div [ class "lmc-columns-col -wide" ] [
                         sectionView "Memory" [
-                            text "mem"
+                            memoryView
                         ]
                     ],
                     div [ class "lmc-columns-col -wide" ] [
@@ -80,3 +80,18 @@ sectionView title children =
         ([ h2 [ class "lmc-section-title" ] [ text title ] ]
         ++ children)
 
+memoryView : Html a
+memoryView =
+    let
+        cellView : Html a
+        cellView =
+            Html.td [ class "lmc-memory-row-cell" ] [ text "000" ]
+
+        rowView : Int -> Html a
+        rowView i =
+            Html.tr [ class "lmc-memory-row" ] (
+                (Html.th [ class "lmc-memory-row-label" ] [ toString (i * 10) |> text ])
+                :: (List.repeat 10 cellView)
+            )
+    in
+        Html.table [ class "lmc-memory" ] (List.range 0 9 |> List.map rowView)

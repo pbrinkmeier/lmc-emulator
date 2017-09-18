@@ -8630,6 +8630,57 @@ var _pbrinkmeier$lmc_emulator$Update$SetSourceCode = function (a) {
 	return {ctor: 'SetSourceCode', _0: a};
 };
 
+var _pbrinkmeier$lmc_emulator$View$memoryView = function () {
+	var cellView = A2(
+		_elm_lang$html$Html$td,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('lmc-memory-row-cell'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('000'),
+			_1: {ctor: '[]'}
+		});
+	var rowView = function (i) {
+		return A2(
+			_elm_lang$html$Html$tr,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('lmc-memory-row'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$th,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('lmc-memory-row-label'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(
+							_elm_lang$core$Basics$toString(i * 10)),
+						_1: {ctor: '[]'}
+					}),
+				_1: A2(_elm_lang$core$List$repeat, 10, cellView)
+			});
+	};
+	return A2(
+		_elm_lang$html$Html$table,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('lmc-memory'),
+			_1: {ctor: '[]'}
+		},
+		A2(
+			_elm_lang$core$List$map,
+			rowView,
+			A2(_elm_lang$core$List$range, 0, 9)));
+}();
 var _pbrinkmeier$lmc_emulator$View$sectionView = F2(
 	function (title, children) {
 		return A2(
@@ -8933,7 +8984,7 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 															'Memory',
 															{
 																ctor: '::',
-																_0: _elm_lang$html$Html$text('mem'),
+																_0: _pbrinkmeier$lmc_emulator$View$memoryView,
 																_1: {ctor: '[]'}
 															}),
 														_1: {ctor: '[]'}
