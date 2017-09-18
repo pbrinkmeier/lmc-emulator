@@ -1,0 +1,20 @@
+.lmc-registers {
+  padding-left: 0;
+}
+
+.lmc-registers-reg {
+  list-style: none;
+
+  display: flex;
+  line-height: 1.5em;
+  font-family: 'Fira Code', monospace;
+}
+
+.lmc-registers-reg-label {
+  font-weight: bold;
+}
+
+.lmc-registers-reg-value {
+  flex: 1;
+  text-align: right;
+}

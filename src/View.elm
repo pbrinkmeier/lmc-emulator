@@ -50,7 +50,7 @@ view model =
                     div [ class "lmc-columns-col -wide" ] [
                         sectionView "Input" [
                             div [ class "lmc-input" ] [
-                                input [ class "lmc-input-text -input", type_ "text" ] []
+                                input [ class "lmc-input-text", type_ "text" ] []
                             ]
                         ],
                         sectionView "Registers" [
