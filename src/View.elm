@@ -15,7 +15,7 @@ view model =
         ],
         div [ class "lmc-content" ] [
             div [ class "lmc-content-controls lmc-columns" ] [
-                div [ class "lmc-columns-col -narrow" ] [
+                div [ class "lmc-columns-col" ] [
                     div [ class "lmc-ctrl" ] [
                         button [ class "lmc-ctrl-btn" ] [
                             text "Reset & Assemble"
@@ -34,20 +34,19 @@ view model =
                 ]
             ],
             div [ class "lmc-content-main lmc-columns" ] [
-                div [ class "lmc-columns-col -narrow" ] [
+                div [ class "lmc-columns-col" ] [
                     sectionView "Code" [
                         div [ class "lmc-code" ] [
                             textarea [ class "lmc-code-codebox" ] []
                         ]
                     ]
                 ],
-                div [ class "lmc-columns-col -wide lmc-columns" ] [
-                    div [ class "lmc-columns-col -wide" ] [
+                    div [ class "lmc-columns-col" ] [
                         sectionView "Memory" [
                             memoryView
                         ]
                     ],
-                    div [ class "lmc-columns-col -wide" ] [
+                    div [ class "lmc-columns-col" ] [
                         sectionView "Input" [
                             div [ class "lmc-input" ] [
                                 input [ class "lmc-input-text", type_ "text" ] []
@@ -74,7 +73,6 @@ view model =
                             ]
                         ]
                     ]
-                ]
             ]
         ]
     ]

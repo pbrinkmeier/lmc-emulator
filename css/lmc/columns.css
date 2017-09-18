@@ -2,14 +2,14 @@
   display: flex;
 }
 
-.lmc-columns-col + .lmc-columns-col {
-  margin-left: .5em;
-}
-
-.lmc-columns-col.-narrow {
+.lmc-columns-col {
   flex: 1;
 }
 
 .lmc-columns-col.-wide {
   flex: 2;
+}
+
+.lmc-columns-col + .lmc-columns-col {
+  margin-left: .5em;
 }
