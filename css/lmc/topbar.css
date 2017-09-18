@@ -1,0 +1,25 @@
+.lmc-topbar {
+  display: flex;
+  align-items: center;
+}
+
+.lmc-topbar-title {
+  font-size: 1.5em;
+  font-weight: normal;
+}
+
+.lmc-topbar-links {
+  flex: 1;
+  padding-left: 0;
+  text-align: right;
+}
+
+.lmc-topbar-links-link {
+  display: inline-block;
+  list-style: none;
+  margin-right: 1em;
+}
+
+.lmc-topbar-links-link-anchor {
+
+}

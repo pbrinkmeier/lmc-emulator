@@ -1,7 +1,0 @@
-.vcontrols {
-
-}
-
-.vcontrols > * + * {
-  margin-left: .5em;
-}
