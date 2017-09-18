@@ -1,0 +1,14 @@
+.lmc-code {
+  border: 1px solid #aaa;
+}
+
+.lmc-code-codebox {
+  resize: none;
+
+  box-sizing: border-box;
+  width: 100%;
+  height: 25em;
+  border: none;
+  font-family: 'Fira Code', monospace;
+  font-size: 1em;
+}

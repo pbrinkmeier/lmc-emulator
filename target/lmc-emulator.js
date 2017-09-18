@@ -8886,13 +8886,24 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 												{
 													ctor: '::',
 													_0: A2(
-														_elm_lang$html$Html$textarea,
+														_elm_lang$html$Html$div,
 														{
 															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('lmc-code-codebox'),
+															_0: _elm_lang$html$Html_Attributes$class('lmc-code'),
 															_1: {ctor: '[]'}
 														},
-														{ctor: '[]'}),
+														{
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$textarea,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$class('lmc-code-codebox'),
+																	_1: {ctor: '[]'}
+																},
+																{ctor: '[]'}),
+															_1: {ctor: '[]'}
+														}),
 													_1: {ctor: '[]'}
 												}),
 											_1: {ctor: '[]'}
@@ -8917,7 +8928,14 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 													},
 													{
 														ctor: '::',
-														_0: _elm_lang$html$Html$text('mem'),
+														_0: A2(
+															_pbrinkmeier$lmc_emulator$View$sectionView,
+															'Memory',
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('mem'),
+																_1: {ctor: '[]'}
+															}),
 														_1: {ctor: '[]'}
 													}),
 												_1: {
@@ -8931,8 +8949,26 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 														},
 														{
 															ctor: '::',
-															_0: _elm_lang$html$Html$text('registers and i/o'),
-															_1: {ctor: '[]'}
+															_0: A2(
+																_pbrinkmeier$lmc_emulator$View$sectionView,
+																'Input/Output',
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('input and output'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_pbrinkmeier$lmc_emulator$View$sectionView,
+																	'Registers',
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text('registers'),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
 														}),
 													_1: {ctor: '[]'}
 												}

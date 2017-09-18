@@ -36,15 +36,24 @@ view model =
             div [ class "lmc-content-main lmc-columns" ] [
                 div [ class "lmc-columns-col -narrow" ] [
                     sectionView "Code" [
-                        textarea [ class "lmc-code-codebox" ] []
+                        div [ class "lmc-code" ] [
+                            textarea [ class "lmc-code-codebox" ] []
+                        ]
                     ]
                 ],
                 div [ class "lmc-columns-col -wide lmc-columns" ] [
                     div [ class "lmc-columns-col -wide" ] [
-                        text "mem"
+                        sectionView "Memory" [
+                            text "mem"
+                        ]
                     ],
                     div [ class "lmc-columns-col -wide" ] [
-                        text "registers and i/o"
+                        sectionView "Input/Output" [
+                            text "input and output"
+                        ],
+                        sectionView "Registers" [
+                            text "registers"
+                        ]
                     ]
                 ]
             ]
