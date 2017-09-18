@@ -1,7 +1,7 @@
 module View exposing (view)
 
-import Html exposing (Html, a, button, div, h1, h2, li, section, text, textarea, ul)
-import Html.Attributes exposing (class, href)
+import Html exposing (Html, a, button, div, h1, h2, input, li, section, text, textarea, ul)
+import Html.Attributes exposing (class, disabled, href, type_)
 import Model exposing (Model)
 import Update exposing (Msg)
 
@@ -18,7 +18,7 @@ view model =
                 div [ class "lmc-columns-col -narrow" ] [
                     div [ class "lmc-ctrl" ] [
                         button [ class "lmc-ctrl-btn" ] [
-                            text "Assemble"
+                            text "Reset & Assemble"
                         ]
                     ]
                 ],
@@ -48,11 +48,30 @@ view model =
                         ]
                     ],
                     div [ class "lmc-columns-col -wide" ] [
-                        sectionView "Input/Output" [
-                            text "input and output"
+                        sectionView "Input" [
+                            div [ class "lmc-input" ] [
+                                input [ class "lmc-input-text -input", type_ "text" ] []
+                            ]
                         ],
                         sectionView "Registers" [
-                            text "registers"
+                            ul [ class "lmc-registers" ] [
+                                li [ class "lmc-registers-reg" ] [
+                                    div [ class "lmc-registers-reg-label" ] [ text "acc" ],
+                                    div [ class "lmc-registers-reg-value" ] [ text "42" ]
+                                ],
+                                li [ class "lmc-registers-reg" ] [
+                                    div [ class "lmc-registers-reg-label" ] [ text "pc" ],
+                                    div [ class "lmc-registers-reg-value" ] [ text "42" ]
+                                ],
+                                li [ class "lmc-registers-reg" ] [
+                                    div [ class "lmc-registers-reg-label" ] [ text "inbox" ],
+                                    div [ class "lmc-registers-reg-value" ] [ text "3, 4, 5" ]
+                                ],
+                                li [ class "lmc-registers-reg" ] [
+                                    div [ class "lmc-registers-reg-label" ] [ text "outbox" ],
+                                    div [ class "lmc-registers-reg-value" ] [ text "2, 4" ]
+                                ]
+                            ]
                         ]
                     ]
                 ]

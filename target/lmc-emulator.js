@@ -8850,7 +8850,7 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 													},
 													{
 														ctor: '::',
-														_0: _elm_lang$html$Html$text('Assemble'),
+														_0: _elm_lang$html$Html$text('Reset & Assemble'),
 														_1: {ctor: '[]'}
 													}),
 												_1: {ctor: '[]'}
@@ -9002,10 +9002,32 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 															ctor: '::',
 															_0: A2(
 																_pbrinkmeier$lmc_emulator$View$sectionView,
-																'Input/Output',
+																'Input',
 																{
 																	ctor: '::',
-																	_0: _elm_lang$html$Html$text('input and output'),
+																	_0: A2(
+																		_elm_lang$html$Html$div,
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$class('lmc-input'),
+																			_1: {ctor: '[]'}
+																		},
+																		{
+																			ctor: '::',
+																			_0: A2(
+																				_elm_lang$html$Html$input,
+																				{
+																					ctor: '::',
+																					_0: _elm_lang$html$Html_Attributes$class('lmc-input-text -input'),
+																					_1: {
+																						ctor: '::',
+																						_0: _elm_lang$html$Html_Attributes$type_('text'),
+																						_1: {ctor: '[]'}
+																					}
+																				},
+																				{ctor: '[]'}),
+																			_1: {ctor: '[]'}
+																		}),
 																	_1: {ctor: '[]'}
 																}),
 															_1: {
@@ -9015,7 +9037,178 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 																	'Registers',
 																	{
 																		ctor: '::',
-																		_0: _elm_lang$html$Html$text('registers'),
+																		_0: A2(
+																			_elm_lang$html$Html$ul,
+																			{
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$class('lmc-registers'),
+																				_1: {ctor: '[]'}
+																			},
+																			{
+																				ctor: '::',
+																				_0: A2(
+																					_elm_lang$html$Html$li,
+																					{
+																						ctor: '::',
+																						_0: _elm_lang$html$Html_Attributes$class('lmc-registers-reg'),
+																						_1: {ctor: '[]'}
+																					},
+																					{
+																						ctor: '::',
+																						_0: A2(
+																							_elm_lang$html$Html$div,
+																							{
+																								ctor: '::',
+																								_0: _elm_lang$html$Html_Attributes$class('lmc-registers-reg-label'),
+																								_1: {ctor: '[]'}
+																							},
+																							{
+																								ctor: '::',
+																								_0: _elm_lang$html$Html$text('acc'),
+																								_1: {ctor: '[]'}
+																							}),
+																						_1: {
+																							ctor: '::',
+																							_0: A2(
+																								_elm_lang$html$Html$div,
+																								{
+																									ctor: '::',
+																									_0: _elm_lang$html$Html_Attributes$class('lmc-registers-reg-value'),
+																									_1: {ctor: '[]'}
+																								},
+																								{
+																									ctor: '::',
+																									_0: _elm_lang$html$Html$text('42'),
+																									_1: {ctor: '[]'}
+																								}),
+																							_1: {ctor: '[]'}
+																						}
+																					}),
+																				_1: {
+																					ctor: '::',
+																					_0: A2(
+																						_elm_lang$html$Html$li,
+																						{
+																							ctor: '::',
+																							_0: _elm_lang$html$Html_Attributes$class('lmc-registers-reg'),
+																							_1: {ctor: '[]'}
+																						},
+																						{
+																							ctor: '::',
+																							_0: A2(
+																								_elm_lang$html$Html$div,
+																								{
+																									ctor: '::',
+																									_0: _elm_lang$html$Html_Attributes$class('lmc-registers-reg-label'),
+																									_1: {ctor: '[]'}
+																								},
+																								{
+																									ctor: '::',
+																									_0: _elm_lang$html$Html$text('pc'),
+																									_1: {ctor: '[]'}
+																								}),
+																							_1: {
+																								ctor: '::',
+																								_0: A2(
+																									_elm_lang$html$Html$div,
+																									{
+																										ctor: '::',
+																										_0: _elm_lang$html$Html_Attributes$class('lmc-registers-reg-value'),
+																										_1: {ctor: '[]'}
+																									},
+																									{
+																										ctor: '::',
+																										_0: _elm_lang$html$Html$text('42'),
+																										_1: {ctor: '[]'}
+																									}),
+																								_1: {ctor: '[]'}
+																							}
+																						}),
+																					_1: {
+																						ctor: '::',
+																						_0: A2(
+																							_elm_lang$html$Html$li,
+																							{
+																								ctor: '::',
+																								_0: _elm_lang$html$Html_Attributes$class('lmc-registers-reg'),
+																								_1: {ctor: '[]'}
+																							},
+																							{
+																								ctor: '::',
+																								_0: A2(
+																									_elm_lang$html$Html$div,
+																									{
+																										ctor: '::',
+																										_0: _elm_lang$html$Html_Attributes$class('lmc-registers-reg-label'),
+																										_1: {ctor: '[]'}
+																									},
+																									{
+																										ctor: '::',
+																										_0: _elm_lang$html$Html$text('inbox'),
+																										_1: {ctor: '[]'}
+																									}),
+																								_1: {
+																									ctor: '::',
+																									_0: A2(
+																										_elm_lang$html$Html$div,
+																										{
+																											ctor: '::',
+																											_0: _elm_lang$html$Html_Attributes$class('lmc-registers-reg-value'),
+																											_1: {ctor: '[]'}
+																										},
+																										{
+																											ctor: '::',
+																											_0: _elm_lang$html$Html$text('3, 4, 5'),
+																											_1: {ctor: '[]'}
+																										}),
+																									_1: {ctor: '[]'}
+																								}
+																							}),
+																						_1: {
+																							ctor: '::',
+																							_0: A2(
+																								_elm_lang$html$Html$li,
+																								{
+																									ctor: '::',
+																									_0: _elm_lang$html$Html_Attributes$class('lmc-registers-reg'),
+																									_1: {ctor: '[]'}
+																								},
+																								{
+																									ctor: '::',
+																									_0: A2(
+																										_elm_lang$html$Html$div,
+																										{
+																											ctor: '::',
+																											_0: _elm_lang$html$Html_Attributes$class('lmc-registers-reg-label'),
+																											_1: {ctor: '[]'}
+																										},
+																										{
+																											ctor: '::',
+																											_0: _elm_lang$html$Html$text('outbox'),
+																											_1: {ctor: '[]'}
+																										}),
+																									_1: {
+																										ctor: '::',
+																										_0: A2(
+																											_elm_lang$html$Html$div,
+																											{
+																												ctor: '::',
+																												_0: _elm_lang$html$Html_Attributes$class('lmc-registers-reg-value'),
+																												_1: {ctor: '[]'}
+																											},
+																											{
+																												ctor: '::',
+																												_0: _elm_lang$html$Html$text('2, 4'),
+																												_1: {ctor: '[]'}
+																											}),
+																										_1: {ctor: '[]'}
+																									}
+																								}),
+																							_1: {ctor: '[]'}
+																						}
+																					}
+																				}
+																			}),
 																		_1: {ctor: '[]'}
 																	}),
 																_1: {ctor: '[]'}
