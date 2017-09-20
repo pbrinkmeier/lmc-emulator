@@ -28,12 +28,12 @@ view model =
                     ]
                 ]
             , div [ class "lmc-columns-col -wide" ]
-                [ {- div [ class "lmc-ctrl" ]
+                [ div [ class "lmc-ctrl" ]
                     [ button [ class "lmc-ctrl-btn -primary" ] [ text "Run" ]
                     , button [ class "lmc-ctrl-btn" ] [ text "Step" ]
-                    ] -}
+                    ]
 
-                div [ class "lmc-error"] [ text "Something went super wrong. Try again." ]
+                -- div [ class "lmc-error"] [ text "Something went super wrong. Try again." ]
                 , div [ class "lmc-columns" ]
                     [ div [ class "lmc-columns-col" ]
                         [ sectionView "Memory" [ memoryView ]
