@@ -8881,7 +8881,7 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 														_elm_lang$html$Html$button,
 														{
 															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('lmc-ctrl-btn'),
+															_0: _elm_lang$html$Html_Attributes$class('lmc-ctrl-btn -primary'),
 															_1: {ctor: '[]'}
 														},
 														{

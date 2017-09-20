@@ -1,0 +1,51 @@
+.lmc-ctrl {
+
+}
+
+.lmc-ctrl-btn {
+  position: relative;
+  padding: .5em 1em;
+  border-radius: 0;
+  border: 1px solid;
+  outline: none;
+  color: #888;
+  background-color: white;
+  font: inherit;
+  transition: .1s;
+}
+
+.lmc-ctrl-btn::-moz-focus-inner {
+  border: none;
+}
+
+.lmc-ctrl-btn.-primary {
+  color: #0074d9;
+}
+
+.lmc-ctrl-btn:before {
+  display: block;
+  position: absolute;
+  content: ' ';
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border: 0 solid;
+}
+
+.lmc-ctrl-btn:hover:before {
+  border-width: 1px;
+}
+
+.lmc-ctrl-btn:active {
+  color: white;
+  background-color: #888;
+}
+
+.lmc-ctrl-btn.-primary:active {
+  background-color: #0074d9;
+}
+
+.lmc-ctrl-btn + .lmc-ctrl-btn {
+  margin-left: .5em;
+}

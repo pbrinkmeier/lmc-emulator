@@ -25,7 +25,7 @@ view model =
                     ]
                 , div [ class "lmc-columns-col -wide" ]
                     [ div [ class "lmc-ctrl" ]
-                        [ button [ class "lmc-ctrl-btn" ]
+                        [ button [ class "lmc-ctrl-btn -primary" ]
                             [ text "Run"
                             ]
                         , button [ class "lmc-ctrl-btn" ]
