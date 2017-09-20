@@ -1,6 +1,6 @@
 module View exposing (view)
 
-import Html exposing (Html, a, button, div, h1, h2, input, li, section, text, textarea, ul)
+import Html exposing (Html, a, button, div, h1, h2, input, li, p, section, text, textarea, ul)
 import Html.Attributes exposing (class, disabled, href, type_)
 import Model exposing (Model)
 import Update exposing (Msg)
@@ -14,62 +14,41 @@ view model =
             , ( "Manual", "https://github.com/pbrinkmeier/lmc-emulator/README.md" )
             , ( "Source", "https://github.com/pbrinkmeier/lmc-emulator/README.md" )
             ]
-        , div [ class "lmc-content" ]
-            [ div [ class "lmc-content-controls lmc-columns" ]
-                [ div [ class "lmc-columns-col" ]
-                    [ div [ class "lmc-ctrl" ]
-                        [ button [ class "lmc-ctrl-btn" ]
-                            [ text "Reset & Assemble"
-                            ]
+        , div [ class "lmc-content lmc-columns" ]
+            [ div [ class "lmc-columns-col" ]
+                [ div [ class "lmc-ctrl" ]
+                    [ button [ class "lmc-ctrl-btn" ]
+                        [ text "Reset & Assemble"
                         ]
                     ]
-                , div [ class "lmc-columns-col -wide" ]
-                    [ div [ class "lmc-ctrl" ]
-                        [ button [ class "lmc-ctrl-btn -primary" ]
-                            [ text "Run"
-                            ]
-                        , button [ class "lmc-ctrl-btn" ]
-                            [ text "Step"
-                            ]
+                , sectionView "Code"
+                    [ div [ class "lmc-code" ]
+                        [ textarea [ class "lmc-code-codebox" ] []
                         ]
                     ]
                 ]
-            , div [ class "lmc-content-main lmc-columns" ]
-                [ div [ class "lmc-columns-col" ]
-                    [ sectionView "Code"
-                        [ div [ class "lmc-code" ]
-                            [ textarea [ class "lmc-code-codebox" ] []
-                            ]
-                        ]
+            , div [ class "lmc-columns-col -wide" ]
+                [ div [ class "lmc-ctrl" ]
+                    [ button [ class "lmc-ctrl-btn -primary" ] [ text "Run" ]
+                    , button [ class "lmc-ctrl-btn" ] [ text "Step" ]
                     ]
-                , div [ class "lmc-columns-col" ]
-                    [ sectionView "Memory"
-                        [ memoryView
+                , div [ class "lmc-columns" ]
+                    [ div [ class "lmc-columns-col" ]
+                        [ sectionView "Memory" [ memoryView ]
                         ]
-                    ]
-                , div [ class "lmc-columns-col" ]
-                    [ sectionView "Input"
-                        [ div [ class "lmc-input" ]
-                            [ input [ class "lmc-input-text", type_ "text" ] []
+                    , div [ class "lmc-columns-col" ]
+                        [ sectionView "Input"
+                            [ div [ class "lmc-input" ]
+                                [ input [ class "lmc-input-text", type_ "text" ] []
+                                ]
                             ]
-                        ]
-                    , sectionView "Registers"
-                        [ ul [ class "lmc-registers" ]
-                            [ li [ class "lmc-registers-reg" ]
-                                [ div [ class "lmc-registers-reg-label" ] [ text "acc" ]
-                                , div [ class "lmc-registers-reg-value" ] [ text "42" ]
-                                ]
-                            , li [ class "lmc-registers-reg" ]
-                                [ div [ class "lmc-registers-reg-label" ] [ text "pc" ]
-                                , div [ class "lmc-registers-reg-value" ] [ text "42" ]
-                                ]
-                            , li [ class "lmc-registers-reg" ]
-                                [ div [ class "lmc-registers-reg-label" ] [ text "inbox" ]
-                                , div [ class "lmc-registers-reg-value" ] [ text "3, 4, 5" ]
-                                ]
-                            , li [ class "lmc-registers-reg" ]
-                                [ div [ class "lmc-registers-reg-label" ] [ text "outbox" ]
-                                , div [ class "lmc-registers-reg-value" ] [ text "2, 4" ]
+                        , sectionView "Registers"
+                            [ registerView
+                                [ ( "acc", Numerical 42 )
+                                , ( "pc", Numerical 42 )
+                                , ( "carry", Flag True )
+                                , ( "inbox", Stack [ 3, 4, 5 ] )
+                                , ( "outbox", Stack [ 1, 4 ] )
                                 ]
                             ]
                         ]
@@ -77,6 +56,41 @@ view model =
                 ]
             ]
         ]
+
+
+type RegisterVal
+    = Numerical Int
+    | Stack (List Int)
+    | Flag Bool
+
+
+registerView : List ( String, RegisterVal ) -> Html a
+registerView =
+    let
+        registerView : ( String, RegisterVal ) -> Html a
+        registerView ( registerName, registerValue ) =
+            let
+                registerText : String
+                registerText =
+                    case registerValue of
+                        Numerical x ->
+                            toString x
+
+                        Stack xs ->
+                            List.map toString xs |> String.join ", "
+
+                        Flag f ->
+                            if f then
+                                "1"
+                            else
+                                "0"
+            in
+                li [ class "lmc-registers-reg" ]
+                    [ div [ class "lmc-registers-reg-label" ] [ text registerName ]
+                    , div [ class "lmc-registers-reg-value" ] [ text registerText ]
+                    ]
+    in
+        List.map registerView >> ul [ class "lmc-registers" ]
 
 
 lmcTopbar : String -> List ( String, String ) -> Html a
