@@ -21,5 +21,15 @@
 }
 
 .lmc-topbar-links-link-anchor {
+  color: #0074d9;
+  text-decoration: none;
+}
 
+.lmc-topbar-links-link-anchor:hover,
+.lmc-topbar-links-link-anchor:focus {
+  text-decoration: underline;
+}
+
+.lmc-topbar-links-link-anchor:visited {
+  color: #001f3f;
 }
