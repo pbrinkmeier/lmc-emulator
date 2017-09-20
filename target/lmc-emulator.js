@@ -8282,6 +8282,124 @@ var _elm_lang$html$Html_Attributes$classList = function (list) {
 };
 var _elm_lang$html$Html_Attributes$style = _elm_lang$virtual_dom$VirtualDom$style;
 
+var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int);
+var _elm_lang$html$Html_Events$targetChecked = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'target',
+		_1: {
+			ctor: '::',
+			_0: 'checked',
+			_1: {ctor: '[]'}
+		}
+	},
+	_elm_lang$core$Json_Decode$bool);
+var _elm_lang$html$Html_Events$targetValue = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'target',
+		_1: {
+			ctor: '::',
+			_0: 'value',
+			_1: {ctor: '[]'}
+		}
+	},
+	_elm_lang$core$Json_Decode$string);
+var _elm_lang$html$Html_Events$defaultOptions = _elm_lang$virtual_dom$VirtualDom$defaultOptions;
+var _elm_lang$html$Html_Events$onWithOptions = _elm_lang$virtual_dom$VirtualDom$onWithOptions;
+var _elm_lang$html$Html_Events$on = _elm_lang$virtual_dom$VirtualDom$on;
+var _elm_lang$html$Html_Events$onFocus = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'focus',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onBlur = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'blur',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onSubmitOptions = _elm_lang$core$Native_Utils.update(
+	_elm_lang$html$Html_Events$defaultOptions,
+	{preventDefault: true});
+var _elm_lang$html$Html_Events$onSubmit = function (msg) {
+	return A3(
+		_elm_lang$html$Html_Events$onWithOptions,
+		'submit',
+		_elm_lang$html$Html_Events$onSubmitOptions,
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onCheck = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'change',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetChecked));
+};
+var _elm_lang$html$Html_Events$onInput = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'input',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetValue));
+};
+var _elm_lang$html$Html_Events$onMouseOut = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseout',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseOver = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseover',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseLeave = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseleave',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseEnter = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseenter',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseUp = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseup',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseDown = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mousedown',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onDoubleClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'dblclick',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'click',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$Options = F2(
+	function (a, b) {
+		return {stopPropagation: a, preventDefault: b};
+	});
+
+var _pbrinkmeier$lmc_emulator$Memory$empty = _elm_lang$core$Dict$empty;
+var _pbrinkmeier$lmc_emulator$Memory$insert = _elm_lang$core$Dict$insert;
+
 var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$getToken = F2(
 	function (rules, source) {
 		getToken:
@@ -8333,7 +8451,8 @@ var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$tokenizeUsingRules = F3(
 		while (true) {
 			var _p4 = source;
 			if (_p4 === '') {
-				return _elm_lang$core$Result$Ok(tokens);
+				return _elm_lang$core$Result$Ok(
+					_elm_lang$core$List$reverse(tokens));
 			} else {
 				var _p5 = A2(_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$getToken, rules, source);
 				if (_p5.ctor === 'Err') {
@@ -8355,6 +8474,31 @@ var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$ignorantToInt = function (_p6) {
 		_elm_lang$core$Result$withDefault,
 		0,
 		_elm_lang$core$String$toInt(_p6));
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$toString = function (t) {
+	var _p7 = t;
+	switch (_p7.ctor) {
+		case 'Mnemonic':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'mnemonic(',
+				A2(_elm_lang$core$Basics_ops['++'], _p7._0, ')'));
+		case 'Label':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'label(',
+				A2(_elm_lang$core$Basics_ops['++'], _p7._0, ')'));
+		case 'NumberLiteral':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'number(',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(_p7._0),
+					')'));
+		default:
+			return 'whitespace';
+	}
 };
 var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Rule = F2(
 	function (a, b) {
@@ -8389,9 +8533,9 @@ var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$lmcRules = {
 			_0: A2(
 				_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Rule,
 				_elm_lang$core$Regex$regex('[0-9]+'),
-				function (_p7) {
+				function (_p8) {
 					return _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$NumberLiteral(
-						_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$ignorantToInt(_p7));
+						_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$ignorantToInt(_p8));
 				}),
 			_1: {
 				ctor: '::',
@@ -8409,43 +8553,9 @@ var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$tokenize = A2(
 	_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$lmcRules,
 	{ctor: '[]'});
 
-var _pbrinkmeier$lmc_emulator$Lmc_Parser$parseUsingRules = F3(
-	function (rules, state, tokens) {
-		parseUsingRules:
-		while (true) {
-			var _p0 = state;
-			var labels = _p0.labels;
-			var instructions = _p0.instructions;
-			var position = _p0.position;
-			var _p1 = tokens;
-			if (_p1.ctor === '[]') {
-				return _elm_lang$core$Result$Ok(state);
-			} else {
-				switch (_p1._0.ctor) {
-					case 'Label':
-						var newState = _elm_lang$core$Native_Utils.update(
-							state,
-							{
-								labels: A3(_elm_lang$core$Dict$insert, _p1._0._0, position, labels)
-							});
-						var _v1 = rules,
-							_v2 = newState,
-							_v3 = _p1._1;
-						rules = _v1;
-						state = _v2;
-						tokens = _v3;
-						continue parseUsingRules;
-					case 'Mnemonic':
-						return _elm_lang$core$Result$Err('Not implemented');
-					default:
-						return _elm_lang$core$Result$Err('Unexpected token');
-				}
-			}
-		}
-	});
 var _pbrinkmeier$lmc_emulator$Lmc_Parser$isImportantToken = function (token) {
-	var _p2 = token;
-	switch (_p2.ctor) {
+	var _p0 = token;
+	switch (_p0.ctor) {
 		case 'Mnemonic':
 			return true;
 		case 'Label':
@@ -8460,6 +8570,9 @@ var _pbrinkmeier$lmc_emulator$Lmc_Parser$ParseState = F3(
 	function (a, b, c) {
 		return {labels: a, instructions: b, position: c};
 	});
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$Data = function (a) {
+	return {ctor: 'Data', _0: a};
+};
 var _pbrinkmeier$lmc_emulator$Lmc_Parser$CoffeeBreak = {ctor: 'CoffeeBreak'};
 var _pbrinkmeier$lmc_emulator$Lmc_Parser$Output = {ctor: 'Output'};
 var _pbrinkmeier$lmc_emulator$Lmc_Parser$Input = {ctor: 'Input'};
@@ -8490,6 +8603,112 @@ var _pbrinkmeier$lmc_emulator$Lmc_Parser$Immediate = function (a) {
 var _pbrinkmeier$lmc_emulator$Lmc_Parser$Labelled = function (a) {
 	return {ctor: 'Labelled', _0: a};
 };
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$apply = F2(
+	function (instType, tokens) {
+		var _p1 = instType;
+		if (_p1.ctor === 'NoArguments') {
+			return _elm_lang$core$Result$Ok(
+				{ctor: '_Tuple2', _0: _p1._0, _1: tokens});
+		} else {
+			var _p3 = _p1._0;
+			var _p2 = tokens;
+			_v2_2:
+			do {
+				if (_p2.ctor === '::') {
+					switch (_p2._0.ctor) {
+						case 'Label':
+							return _elm_lang$core$Result$Ok(
+								{
+									ctor: '_Tuple2',
+									_0: _p3(
+										_pbrinkmeier$lmc_emulator$Lmc_Parser$Labelled(_p2._0._0)),
+									_1: _p2._1
+								});
+						case 'NumberLiteral':
+							return _elm_lang$core$Result$Ok(
+								{
+									ctor: '_Tuple2',
+									_0: _p3(
+										_pbrinkmeier$lmc_emulator$Lmc_Parser$Immediate(_p2._0._0)),
+									_1: _p2._1
+								});
+						default:
+							break _v2_2;
+					}
+				} else {
+					break _v2_2;
+				}
+			} while(false);
+			return _elm_lang$core$Result$Err('Argument needed');
+		}
+	});
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$parseUsingRules = F3(
+	function (rules, state, tokens) {
+		parseUsingRules:
+		while (true) {
+			var _p4 = state;
+			var labels = _p4.labels;
+			var instructions = _p4.instructions;
+			var position = _p4.position;
+			var _p5 = tokens;
+			if (_p5.ctor === '[]') {
+				return _elm_lang$core$Result$Ok(
+					A3(
+						_pbrinkmeier$lmc_emulator$Lmc_Parser$ParseState,
+						labels,
+						_elm_lang$core$List$reverse(instructions),
+						position));
+			} else {
+				switch (_p5._0.ctor) {
+					case 'Label':
+						var newState = _elm_lang$core$Native_Utils.update(
+							state,
+							{
+								labels: A3(_elm_lang$core$Dict$insert, _p5._0._0, position, labels)
+							});
+						var _v4 = rules,
+							_v5 = newState,
+							_v6 = _p5._1;
+						rules = _v4;
+						state = _v5;
+						tokens = _v6;
+						continue parseUsingRules;
+					case 'Mnemonic':
+						var _p8 = _p5._0._0;
+						var _p6 = A2(_elm_lang$core$Dict$get, _p8, rules);
+						if (_p6.ctor === 'Nothing') {
+							return _elm_lang$core$Result$Err(
+								A2(_elm_lang$core$Basics_ops['++'], 'Unknown instruction ', _p8));
+						} else {
+							var _p7 = A2(_pbrinkmeier$lmc_emulator$Lmc_Parser$apply, _p6._0, _p5._1);
+							if (_p7.ctor === 'Err') {
+								return _elm_lang$core$Result$Err(_p7._0);
+							} else {
+								var newState = _elm_lang$core$Native_Utils.update(
+									state,
+									{
+										instructions: {ctor: '::', _0: _p7._0._0, _1: instructions},
+										position: position + 1
+									});
+								var _v9 = rules,
+									_v10 = newState,
+									_v11 = _p7._0._1;
+								rules = _v9;
+								state = _v10;
+								tokens = _v11;
+								continue parseUsingRules;
+							}
+						}
+					default:
+						return _elm_lang$core$Result$Err(
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								'Unexpected token ',
+								_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$toString(_p5._0)));
+				}
+			}
+		}
+	});
 var _pbrinkmeier$lmc_emulator$Lmc_Parser$NoArguments = function (a) {
 	return {ctor: 'NoArguments', _0: a};
 };
@@ -8567,7 +8786,15 @@ var _pbrinkmeier$lmc_emulator$Lmc_Parser$lmcInstructions = _elm_lang$core$Dict$f
 												_0: 'COB',
 												_1: _pbrinkmeier$lmc_emulator$Lmc_Parser$NoArguments(_pbrinkmeier$lmc_emulator$Lmc_Parser$CoffeeBreak)
 											},
-											_1: {ctor: '[]'}
+											_1: {
+												ctor: '::',
+												_0: {
+													ctor: '_Tuple2',
+													_0: 'DAT',
+													_1: _pbrinkmeier$lmc_emulator$Lmc_Parser$OneArgument(_pbrinkmeier$lmc_emulator$Lmc_Parser$Data)
+												},
+												_1: {ctor: '[]'}
+											}
 										}
 									}
 								}
@@ -8578,7 +8805,7 @@ var _pbrinkmeier$lmc_emulator$Lmc_Parser$lmcInstructions = _elm_lang$core$Dict$f
 			}
 		}
 	});
-var _pbrinkmeier$lmc_emulator$Lmc_Parser$parse = function (_p3) {
+var _pbrinkmeier$lmc_emulator$Lmc_Parser$parse = function (_p9) {
 	return A3(
 		_pbrinkmeier$lmc_emulator$Lmc_Parser$parseUsingRules,
 		_pbrinkmeier$lmc_emulator$Lmc_Parser$lmcInstructions,
@@ -8587,45 +8814,190 @@ var _pbrinkmeier$lmc_emulator$Lmc_Parser$parse = function (_p3) {
 			_elm_lang$core$Dict$empty,
 			{ctor: '[]'},
 			0),
-		A2(_elm_lang$core$List$filter, _pbrinkmeier$lmc_emulator$Lmc_Parser$isImportantToken, _p3));
+		A2(_elm_lang$core$List$filter, _pbrinkmeier$lmc_emulator$Lmc_Parser$isImportantToken, _p9));
 };
 
-var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: '', inputs: ''};
-var _pbrinkmeier$lmc_emulator$Model$Model = F2(
-	function (a, b) {
-		return {sourceCode: a, inputs: b};
+var _pbrinkmeier$lmc_emulator$Lmc_Compiler$getBytecode = F2(
+	function (labels, inst) {
+		var _p0 = function () {
+			var _p1 = inst;
+			switch (_p1.ctor) {
+				case 'Add':
+					return {
+						ctor: '_Tuple2',
+						_0: 100,
+						_1: _elm_lang$core$Maybe$Just(_p1._0)
+					};
+				case 'Subtract':
+					return {
+						ctor: '_Tuple2',
+						_0: 200,
+						_1: _elm_lang$core$Maybe$Just(_p1._0)
+					};
+				case 'Store':
+					return {
+						ctor: '_Tuple2',
+						_0: 300,
+						_1: _elm_lang$core$Maybe$Just(_p1._0)
+					};
+				case 'Load':
+					return {
+						ctor: '_Tuple2',
+						_0: 500,
+						_1: _elm_lang$core$Maybe$Just(_p1._0)
+					};
+				case 'Branch':
+					return {
+						ctor: '_Tuple2',
+						_0: 600,
+						_1: _elm_lang$core$Maybe$Just(_p1._0)
+					};
+				case 'BranchIfZero':
+					return {
+						ctor: '_Tuple2',
+						_0: 700,
+						_1: _elm_lang$core$Maybe$Just(_p1._0)
+					};
+				case 'BranchIfPositive':
+					return {
+						ctor: '_Tuple2',
+						_0: 800,
+						_1: _elm_lang$core$Maybe$Just(_p1._0)
+					};
+				case 'Input':
+					return {ctor: '_Tuple2', _0: 901, _1: _elm_lang$core$Maybe$Nothing};
+				case 'Output':
+					return {ctor: '_Tuple2', _0: 902, _1: _elm_lang$core$Maybe$Nothing};
+				case 'CoffeeBreak':
+					return {ctor: '_Tuple2', _0: 0, _1: _elm_lang$core$Maybe$Nothing};
+				default:
+					return {
+						ctor: '_Tuple2',
+						_0: 0,
+						_1: _elm_lang$core$Maybe$Just(_p1._0)
+					};
+			}
+		}();
+		var base = _p0._0;
+		var arg = _p0._1;
+		var _p2 = arg;
+		if (_p2.ctor === 'Nothing') {
+			return _elm_lang$core$Result$Ok(base);
+		} else {
+			if (_p2._0.ctor === 'Immediate') {
+				return _elm_lang$core$Result$Ok(base + _p2._0._0);
+			} else {
+				var _p4 = _p2._0._0;
+				var _p3 = A2(_elm_lang$core$Dict$get, _p4, labels);
+				if (_p3.ctor === 'Nothing') {
+					return _elm_lang$core$Result$Err(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'label ',
+							A2(_elm_lang$core$Basics_ops['++'], _p4, ' does not exist')));
+				} else {
+					return _elm_lang$core$Result$Ok(base + _p3._0);
+				}
+			}
+		}
+	});
+var _pbrinkmeier$lmc_emulator$Lmc_Compiler$generateMemory = function () {
+	var recurse = F3(
+		function (pos, mem, codes) {
+			recurse:
+			while (true) {
+				var _p5 = codes;
+				if (_p5.ctor === '[]') {
+					return _elm_lang$core$Result$Ok(mem);
+				} else {
+					var _v4 = pos + 1,
+						_v5 = A3(_pbrinkmeier$lmc_emulator$Memory$insert, pos, _p5._0, mem),
+						_v6 = _p5._1;
+					pos = _v4;
+					mem = _v5;
+					codes = _v6;
+					continue recurse;
+				}
+			}
+		});
+	return A2(recurse, 0, _pbrinkmeier$lmc_emulator$Memory$empty);
+}();
+var _pbrinkmeier$lmc_emulator$Lmc_Compiler$mapToBytecode = function () {
+	var recurse = F2(
+		function (results, state) {
+			recurse:
+			while (true) {
+				var _p6 = state.instructions;
+				if (_p6.ctor === '[]') {
+					return _elm_lang$core$Result$Ok(
+						_elm_lang$core$List$reverse(results));
+				} else {
+					var _p7 = A2(_pbrinkmeier$lmc_emulator$Lmc_Compiler$getBytecode, state.labels, _p6._0);
+					if (_p7.ctor === 'Err') {
+						return _elm_lang$core$Result$Err(_p7._0);
+					} else {
+						var _v9 = {ctor: '::', _0: _p7._0, _1: results},
+							_v10 = _elm_lang$core$Native_Utils.update(
+							state,
+							{instructions: _p6._1});
+						results = _v9;
+						state = _v10;
+						continue recurse;
+					}
+				}
+			}
+		});
+	return recurse(
+		{ctor: '[]'});
+}();
+var _pbrinkmeier$lmc_emulator$Lmc_Compiler$compile = function (_p8) {
+	return A2(
+		_elm_lang$core$Result$andThen,
+		_pbrinkmeier$lmc_emulator$Lmc_Compiler$generateMemory,
+		_pbrinkmeier$lmc_emulator$Lmc_Compiler$mapToBytecode(_p8));
+};
+
+var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: '', err: _elm_lang$core$Maybe$Nothing, memory: _pbrinkmeier$lmc_emulator$Memory$empty};
+var _pbrinkmeier$lmc_emulator$Model$Model = F3(
+	function (a, b, c) {
+		return {sourceCode: a, err: b, memory: c};
 	});
 
-var _pbrinkmeier$lmc_emulator$Update$parseInputString = function (_p0) {
+var _pbrinkmeier$lmc_emulator$Update$parse = function (_p0) {
 	return A2(
-		_elm_lang$core$List$filterMap,
-		_elm_lang$core$Result$toMaybe,
+		_elm_lang$core$Debug$log,
+		'parse',
 		A2(
-			_elm_lang$core$List$map,
-			_elm_lang$core$String$toInt,
-			A2(_elm_lang$core$String$split, ' ', _p0)));
+			_elm_lang$core$Result$andThen,
+			_pbrinkmeier$lmc_emulator$Lmc_Compiler$compile,
+			A2(
+				_elm_lang$core$Result$andThen,
+				_pbrinkmeier$lmc_emulator$Lmc_Parser$parse,
+				_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$tokenize(_p0))));
 };
 var _pbrinkmeier$lmc_emulator$Update$update = F2(
 	function (msg, model) {
 		var _p1 = A2(_elm_lang$core$Debug$log, 'message', msg);
 		if (_p1.ctor === 'SetSourceCode') {
-			var _p2 = _p1._0;
-			var tokens = A2(
-				_elm_lang$core$Debug$log,
-				'tokens',
-				_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$tokenize(_p2));
 			return _elm_lang$core$Native_Utils.update(
 				model,
-				{sourceCode: _p2});
+				{sourceCode: _p1._0});
 		} else {
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{inputs: _p1._0});
+			var _p2 = _pbrinkmeier$lmc_emulator$Update$parse(model.sourceCode);
+			if (_p2.ctor === 'Err') {
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						err: _elm_lang$core$Maybe$Just(_p2._0)
+					});
+			} else {
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{err: _elm_lang$core$Maybe$Nothing, memory: _p2._0});
+			}
 		}
 	});
-var _pbrinkmeier$lmc_emulator$Update$SetInputs = function (a) {
-	return {ctor: 'SetInputs', _0: a};
-};
+var _pbrinkmeier$lmc_emulator$Update$Assemble = {ctor: 'Assemble'};
 var _pbrinkmeier$lmc_emulator$Update$SetSourceCode = function (a) {
 	return {ctor: 'SetSourceCode', _0: a};
 };
@@ -8854,6 +9226,62 @@ var _pbrinkmeier$lmc_emulator$View$Numerical = function (a) {
 	return {ctor: 'Numerical', _0: a};
 };
 var _pbrinkmeier$lmc_emulator$View$view = function (model) {
+	var runControlView = function () {
+		var _p6 = model.err;
+		if (_p6.ctor === 'Just') {
+			return A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('lmc-error'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(_p6._0),
+					_1: {ctor: '[]'}
+				});
+		} else {
+			return A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('lmc-ctrl'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$button,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('lmc-ctrl-btn -primary'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Run'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$button,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('lmc-ctrl-btn'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Step'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				});
+		}
+	}();
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -8913,7 +9341,11 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 											{
 												ctor: '::',
 												_0: _elm_lang$html$Html_Attributes$class('lmc-ctrl-btn'),
-												_1: {ctor: '[]'}
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Events$onClick(_pbrinkmeier$lmc_emulator$Update$Assemble),
+													_1: {ctor: '[]'}
+												}
 											},
 											{
 												ctor: '::',
@@ -8943,9 +9375,17 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 														{
 															ctor: '::',
 															_0: _elm_lang$html$Html_Attributes$class('lmc-code-codebox'),
-															_1: {ctor: '[]'}
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Events$onInput(_pbrinkmeier$lmc_emulator$Update$SetSourceCode),
+																_1: {ctor: '[]'}
+															}
 														},
-														{ctor: '[]'}),
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text(model.sourceCode),
+															_1: {ctor: '[]'}
+														}),
 													_1: {ctor: '[]'}
 												}),
 											_1: {ctor: '[]'}
@@ -8964,44 +9404,7 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 								},
 								{
 									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('lmc-ctrl'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$button,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('lmc-ctrl-btn -primary'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Run'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$button,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('lmc-ctrl-btn'),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text('Step'),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}
-										}),
+									_0: runControlView,
 									_1: {
 										ctor: '::',
 										_0: A2(

@@ -2,62 +2,70 @@ module View exposing (view)
 
 import Html exposing (Html, a, button, div, h1, h2, input, li, p, section, text, textarea, ul)
 import Html.Attributes exposing (class, disabled, href, type_)
+import Html.Events exposing (onClick, onInput)
 import Model exposing (Model)
-import Update exposing (Msg)
+import Update exposing (Msg(Assemble, SetSourceCode))
 
 
 view : Model -> Html Msg
 view model =
-    div [ class "lmc-main" ]
-        [ lmcTopbar "LMC assembler & emulator"
-            [ ( "Wikipedia", "https://en.wikipedia.org/wiki/Little_man_computer" )
-            , ( "Manual", "https://github.com/pbrinkmeier/lmc-emulator/README.md" )
-            , ( "Source", "https://github.com/pbrinkmeier/lmc-emulator/README.md" )
-            ]
-        , div [ class "lmc-content lmc-columns" ]
-            [ div [ class "lmc-columns-col" ]
-                [ div [ class "lmc-ctrl" ]
-                    [ button [ class "lmc-ctrl-btn" ]
-                        [ text "Reset & Assemble"
-                        ]
-                    ]
-                , sectionView "Code"
-                    [ div [ class "lmc-code" ]
-                        [ textarea [ class "lmc-code-codebox" ] []
-                        ]
-                    ]
-                ]
-            , div [ class "lmc-columns-col -wide" ]
-                [ div [ class "lmc-ctrl" ]
-                    [ button [ class "lmc-ctrl-btn -primary" ] [ text "Run" ]
-                    , button [ class "lmc-ctrl-btn" ] [ text "Step" ]
-                    ]
+    let
+        runControlView =
+            case model.err of
+                Just err ->
+                    div [ class "lmc-error" ] [ text err ]
 
-                -- div [ class "lmc-error"] [ text "Something went super wrong. Try again." ]
-                , div [ class "lmc-columns" ]
-                    [ div [ class "lmc-columns-col" ]
-                        [ sectionView "Memory" [ memoryView ]
+                Nothing ->
+                    div [ class "lmc-ctrl" ]
+                        [ button [ class "lmc-ctrl-btn -primary" ] [ text "Run" ]
+                        , button [ class "lmc-ctrl-btn" ] [ text "Step" ]
                         ]
-                    , div [ class "lmc-columns-col" ]
-                        [ sectionView "Input"
-                            [ div [ class "lmc-input" ]
-                                [ input [ class "lmc-input-text", type_ "text" ] []
-                                ]
+    in
+        div [ class "lmc-main" ]
+            [ lmcTopbar "LMC assembler & emulator"
+                [ ( "Wikipedia", "https://en.wikipedia.org/wiki/Little_man_computer" )
+                , ( "Manual", "https://github.com/pbrinkmeier/lmc-emulator/README.md" )
+                , ( "Source", "https://github.com/pbrinkmeier/lmc-emulator/README.md" )
+                ]
+            , div [ class "lmc-content lmc-columns" ]
+                [ div [ class "lmc-columns-col" ]
+                    [ div [ class "lmc-ctrl" ]
+                        [ button [ class "lmc-ctrl-btn", onClick Assemble ]
+                            [ text "Reset & Assemble"
                             ]
-                        , sectionView "Registers"
-                            [ registerView
-                                [ ( "acc", Numerical 42 )
-                                , ( "pc", Numerical 42 )
-                                , ( "carry", Flag True )
-                                , ( "inbox", Stack [ 3, 4, 5 ] )
-                                , ( "outbox", Stack [ 1, 4 ] )
+                        ]
+                    , sectionView "Code"
+                        [ div [ class "lmc-code" ]
+                            [ textarea [ class "lmc-code-codebox", onInput SetSourceCode ] [ text model.sourceCode ]
+                            ]
+                        ]
+                    ]
+                , div [ class "lmc-columns-col -wide" ]
+                    [ runControlView
+                    , div [ class "lmc-columns" ]
+                        [ div [ class "lmc-columns-col" ]
+                            [ sectionView "Memory" [ memoryView ]
+                            ]
+                        , div [ class "lmc-columns-col" ]
+                            [ sectionView "Input"
+                                [ div [ class "lmc-input" ]
+                                    [ input [ class "lmc-input-text", type_ "text" ] []
+                                    ]
+                                ]
+                            , sectionView "Registers"
+                                [ registerView
+                                    [ ( "acc", Numerical 42 )
+                                    , ( "pc", Numerical 42 )
+                                    , ( "carry", Flag True )
+                                    , ( "inbox", Stack [ 3, 4, 5 ] )
+                                    , ( "outbox", Stack [ 1, 4 ] )
+                                    ]
                                 ]
                             ]
                         ]
                     ]
                 ]
             ]
-        ]
 
 
 type RegisterVal

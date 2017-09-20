@@ -1,39 +1,15 @@
-module Memory exposing (view)
+module Memory exposing (Memory, empty, insert)
 
-import Html exposing (Html, table, td, text, th, tr)
-import Html.Attributes exposing (class)
-
-
-type alias Address =
-    Int
+import Dict exposing (Dict)
 
 
-type alias Value =
-    Int
+type alias Memory =
+    Dict Int Int
 
+insert : Int -> Int -> Memory -> Memory
+insert =
+    Dict.insert
 
-view : (Address -> Value) -> Html a
-view readAt =
-    table [ class "memory" ]
-        (List.range 0 9
-            |> List.map
-                (\rowNumber ->
-                    let
-                        memRow =
-                            List.range 0 9
-                                |> List.map
-                                    (\colNumber ->
-                                        let
-                                            cellValue =
-                                                readAt (rowNumber * 10 + colNumber)
-                                        in
-                                            td [ class "memory-row-cell" ] [ toString cellValue |> text ]
-                                    )
-                    in
-                        tr [ class "memory-row" ]
-                            ([ th [ class "memory-row-label" ] [ toString (rowNumber * 10) |> text ]
-                             ]
-                                ++ memRow
-                            )
-                )
-        )
+empty : Memory
+empty =
+    Dict.empty

@@ -1,33 +1,42 @@
 module Update exposing (Msg(..), update)
 
+import Lmc.Compiler as Compiler
 import Lmc.Tokenizer as Tokenizer
 import Lmc.Parser as Parser
+import Memory exposing (Memory)
 import Model exposing (Model, initialModel)
 
 
 type Msg
     = SetSourceCode String
-    | SetInputs String
+    | Assemble
 
 
 update : Msg -> Model -> Model
 update msg model =
     case Debug.log "message" msg of
         SetSourceCode newCode ->
-            let
-                tokens =
-                    Debug.log "tokens" (Tokenizer.tokenize newCode)
-            in
-                { model
-                    | sourceCode = newCode
-                }
-
-        SetInputs inputString ->
             { model
-                | inputs = inputString
+                | sourceCode = newCode
             }
 
+        Assemble ->
+            case parse model.sourceCode of
+                Err msg ->
+                    { model
+                        | err = Just msg
+                    }
 
-parseInputString : String -> List Int
-parseInputString =
-    String.split " " >> List.map String.toInt >> List.filterMap Result.toMaybe
+                Ok parseResult ->
+                    { model
+                        | err = Nothing
+                        , memory = parseResult
+                    }
+
+
+parse : String -> Result String Memory
+parse =
+    Tokenizer.tokenize
+        >> Result.andThen Parser.parse
+        >> Result.andThen Compiler.compile
+        >> Debug.log "parse"

@@ -1,4 +1,4 @@
-module Lmc.Parser exposing (Instruction, Address, parse)
+module Lmc.Parser exposing (Instruction(..), Address(..), ParseState, parse)
 
 import Dict exposing (Dict)
 import Lmc.Tokenizer exposing (Token(Mnemonic, Label, NumberLiteral))
@@ -15,6 +15,7 @@ type Instruction
     | Input
     | Output
     | CoffeeBreak
+    | Data Address
 
 
 type Address
@@ -68,6 +69,7 @@ lmcInstructions =
         , ( "INP", NoArguments Input )
         , ( "OUT", NoArguments Output )
         , ( "COB", NoArguments CoffeeBreak )
+        , ( "DAT", OneArgument Data )
         ]
 
 
@@ -79,7 +81,7 @@ parseUsingRules rules state tokens =
     in
         case tokens of
             [] ->
-                Ok state
+                Ok (ParseState labels (List.reverse instructions) position)
 
             (Label labelText) :: rest ->
                 let
@@ -89,7 +91,43 @@ parseUsingRules rules state tokens =
                     parseUsingRules rules newState rest
 
             (Mnemonic instText) :: rest ->
-                Err "Not implemented"
+                case Dict.get instText rules of
+                    Nothing ->
+                        Err ("Unknown instruction " ++ instText)
 
-            _ ->
-                Err "Unexpected token"
+                    Just instType ->
+                        case apply instType rest of
+                            Err msg ->
+                                Err msg
+
+                            Ok ( inst, rest_ ) ->
+                                let
+                                    newState =
+                                        { state
+                                            | instructions =
+                                                inst :: instructions
+                                            , position = position + 1
+                                        }
+                                in
+                                    parseUsingRules rules newState rest_
+
+            t :: _ ->
+                Err ("Unexpected token " ++ Lmc.Tokenizer.toString t)
+
+
+apply : InstructionType a -> List Token -> Result String ( a, List Token )
+apply instType tokens =
+    case instType of
+        NoArguments inst ->
+            Ok ( inst, tokens )
+
+        OneArgument makeInst ->
+            case tokens of
+                (Label txt) :: rest ->
+                    Ok ( makeInst (Labelled txt), rest )
+
+                (NumberLiteral i) :: rest ->
+                    Ok ( makeInst (Immediate i), rest )
+
+                _ ->
+                    Err "Argument needed"

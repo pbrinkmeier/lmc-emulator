@@ -1,4 +1,4 @@
-module Lmc.Tokenizer exposing (Token(..), tokenize)
+module Lmc.Tokenizer exposing (Token(..), tokenize, toString)
 
 import Regex exposing (Regex, regex)
 
@@ -21,6 +21,22 @@ tokenize =
     tokenizeUsingRules lmcRules []
 
 
+toString : Token -> String
+toString t =
+    case t of
+        Mnemonic text ->
+            "mnemonic(" ++ text ++ ")"
+
+        Label text ->
+            "label(" ++ text ++ ")"
+
+        NumberLiteral i ->
+            "number(" ++ (Basics.toString i) ++ ")"
+
+        Whitespace _ ->
+            "whitespace"
+
+
 lmcRules : List (Rule Token)
 lmcRules =
     [ Rule (regex "[A-Z]+") Mnemonic
@@ -39,7 +55,7 @@ tokenizeUsingRules : List (Rule a) -> List a -> String -> Result String (List a)
 tokenizeUsingRules rules tokens source =
     case source of
         "" ->
-            Ok tokens
+            Ok (List.reverse tokens)
 
         _ ->
             case getToken rules source of

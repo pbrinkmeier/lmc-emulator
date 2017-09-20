@@ -1,14 +1,18 @@
 module Model exposing (Model, initialModel)
 
+import Memory exposing (Memory)
+
 
 type alias Model =
     { sourceCode : String
-    , inputs : String
+    , err : Maybe String
+    , memory : Memory
     }
 
 
 initialModel : Model
 initialModel =
     { sourceCode = ""
-    , inputs = ""
+    , err = Nothing
+    , memory = Memory.empty
     }
