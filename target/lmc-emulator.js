@@ -8399,6 +8399,15 @@ var _elm_lang$html$Html_Events$Options = F2(
 
 var _pbrinkmeier$lmc_emulator$Memory$empty = _elm_lang$core$Dict$empty;
 var _pbrinkmeier$lmc_emulator$Memory$insert = _elm_lang$core$Dict$insert;
+var _pbrinkmeier$lmc_emulator$Memory$get = F2(
+	function (addr, mem) {
+		var _p0 = A2(_elm_lang$core$Dict$get, addr, mem);
+		if (_p0.ctor === 'Nothing') {
+			return 0;
+		} else {
+			return _p0._0;
+		}
+	});
 
 var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$getToken = F2(
 	function (rules, source) {
@@ -9002,19 +9011,27 @@ var _pbrinkmeier$lmc_emulator$Update$SetSourceCode = function (a) {
 	return {ctor: 'SetSourceCode', _0: a};
 };
 
-var _pbrinkmeier$lmc_emulator$View$memoryView = function () {
-	var cellView = A2(
-		_elm_lang$html$Html$td,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('lmc-memory-row-cell'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text('000'),
-			_1: {ctor: '[]'}
-		});
+var _pbrinkmeier$lmc_emulator$View$memoryView = function (memory) {
+	var cellView = function (addr) {
+		var cellText = A3(
+			_elm_lang$core$String$padLeft,
+			3,
+			_elm_lang$core$Native_Utils.chr('0'),
+			_elm_lang$core$Basics$toString(
+				A2(_pbrinkmeier$lmc_emulator$Memory$get, addr, memory)));
+		return A2(
+			_elm_lang$html$Html$td,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('lmc-memory-row-cell'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(cellText),
+				_1: {ctor: '[]'}
+			});
+	};
 	var rowView = function (i) {
 		return A2(
 			_elm_lang$html$Html$tr,
@@ -9038,7 +9055,19 @@ var _pbrinkmeier$lmc_emulator$View$memoryView = function () {
 							_elm_lang$core$Basics$toString(i * 10)),
 						_1: {ctor: '[]'}
 					}),
-				_1: A2(_elm_lang$core$List$repeat, 10, cellView)
+				_1: A2(
+					_elm_lang$core$List$map,
+					function (_p0) {
+						return cellView(
+							A2(
+								F2(
+									function (x, y) {
+										return x + y;
+									}),
+								i * 10,
+								_p0));
+					},
+					A2(_elm_lang$core$List$range, 0, 9))
 			});
 	};
 	return A2(
@@ -9052,7 +9081,7 @@ var _pbrinkmeier$lmc_emulator$View$memoryView = function () {
 			_elm_lang$core$List$map,
 			rowView,
 			A2(_elm_lang$core$List$range, 0, 9)));
-}();
+};
 var _pbrinkmeier$lmc_emulator$View$sectionView = F2(
 	function (title, children) {
 		return A2(
@@ -9084,8 +9113,8 @@ var _pbrinkmeier$lmc_emulator$View$sectionView = F2(
 	});
 var _pbrinkmeier$lmc_emulator$View$lmcTopbar = F2(
 	function (title, links) {
-		var linkView = function (_p0) {
-			var _p1 = _p0;
+		var linkView = function (_p1) {
+			var _p2 = _p1;
 			return A2(
 				_elm_lang$html$Html$li,
 				{
@@ -9102,13 +9131,13 @@ var _pbrinkmeier$lmc_emulator$View$lmcTopbar = F2(
 							_0: _elm_lang$html$Html_Attributes$class('lmc-topbar-links-link-anchor'),
 							_1: {
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$href(_p1._1),
+								_0: _elm_lang$html$Html_Attributes$href(_p2._1),
 								_1: {ctor: '[]'}
 							}
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p1._0),
+							_0: _elm_lang$html$Html$text(_p2._0),
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
@@ -9150,20 +9179,20 @@ var _pbrinkmeier$lmc_emulator$View$lmcTopbar = F2(
 			});
 	});
 var _pbrinkmeier$lmc_emulator$View$registerView = function () {
-	var registerView = function (_p2) {
-		var _p3 = _p2;
+	var registerView = function (_p3) {
+		var _p4 = _p3;
 		var registerText = function () {
-			var _p4 = _p3._1;
-			switch (_p4.ctor) {
+			var _p5 = _p4._1;
+			switch (_p5.ctor) {
 				case 'Numerical':
-					return _elm_lang$core$Basics$toString(_p4._0);
+					return _elm_lang$core$Basics$toString(_p5._0);
 				case 'Stack':
 					return A2(
 						_elm_lang$core$String$join,
 						', ',
-						A2(_elm_lang$core$List$map, _elm_lang$core$Basics$toString, _p4._0));
+						A2(_elm_lang$core$List$map, _elm_lang$core$Basics$toString, _p5._0));
 				default:
-					return _p4._0 ? '1' : '0';
+					return _p5._0 ? '1' : '0';
 			}
 		}();
 		return A2(
@@ -9184,7 +9213,7 @@ var _pbrinkmeier$lmc_emulator$View$registerView = function () {
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p3._0),
+						_0: _elm_lang$html$Html$text(_p4._0),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -9205,7 +9234,7 @@ var _pbrinkmeier$lmc_emulator$View$registerView = function () {
 				}
 			});
 	};
-	return function (_p5) {
+	return function (_p6) {
 		return A2(
 			_elm_lang$html$Html$ul,
 			{
@@ -9213,7 +9242,7 @@ var _pbrinkmeier$lmc_emulator$View$registerView = function () {
 				_0: _elm_lang$html$Html_Attributes$class('lmc-registers'),
 				_1: {ctor: '[]'}
 			},
-			A2(_elm_lang$core$List$map, registerView, _p5));
+			A2(_elm_lang$core$List$map, registerView, _p6));
 	};
 }();
 var _pbrinkmeier$lmc_emulator$View$Flag = function (a) {
@@ -9227,8 +9256,8 @@ var _pbrinkmeier$lmc_emulator$View$Numerical = function (a) {
 };
 var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 	var runControlView = function () {
-		var _p6 = model.err;
-		if (_p6.ctor === 'Just') {
+		var _p7 = model.err;
+		if (_p7.ctor === 'Just') {
 			return A2(
 				_elm_lang$html$Html$div,
 				{
@@ -9238,7 +9267,7 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 				},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text(_p6._0),
+					_0: _elm_lang$html$Html$text(_p7._0),
 					_1: {ctor: '[]'}
 				});
 		} else {
@@ -9430,7 +9459,7 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 															'Memory',
 															{
 																ctor: '::',
-																_0: _pbrinkmeier$lmc_emulator$View$memoryView,
+																_0: _pbrinkmeier$lmc_emulator$View$memoryView(model.memory),
 																_1: {ctor: '[]'}
 															}),
 														_1: {ctor: '[]'}

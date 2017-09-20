@@ -4,10 +4,12 @@ import Dict exposing (Dict)
 import Memory exposing (Memory)
 import Lmc.Parser exposing (ParseState, Instruction(..), Address(..))
 
+
 compile : ParseState -> Result String Memory
 compile =
     mapToBytecode
-    >> Result.andThen generateMemory
+        >> Result.andThen generateMemory
+
 
 mapToBytecode : ParseState -> Result String (List Int)
 mapToBytecode =
@@ -17,14 +19,17 @@ mapToBytecode =
             case state.instructions of
                 [] ->
                     Ok (List.reverse results)
+
                 fst :: rest ->
                     case getBytecode state.labels fst of
                         Err msg ->
                             Err msg
+
                         Ok code ->
                             recurse (code :: results) { state | instructions = rest }
     in
         recurse []
+
 
 generateMemory : List Int -> Result String Memory
 generateMemory =
@@ -34,47 +39,62 @@ generateMemory =
             case codes of
                 [] ->
                     Ok mem
+
                 fst :: rest ->
                     recurse (pos + 1) (Memory.insert pos fst mem) rest
     in
         recurse 0 Memory.empty
 
+
 getBytecode : Dict String Int -> Instruction -> Result String Int
 getBytecode labels inst =
     let
-        (base, arg) =
+        ( base, arg ) =
             case inst of
                 Add arg ->
-                    (100, Just arg)
+                    ( 100, Just arg )
+
                 Subtract arg ->
-                    (200, Just arg)
+                    ( 200, Just arg )
+
                 Store arg ->
-                    (300, Just arg)
+                    ( 300, Just arg )
+
                 Load arg ->
-                    (500, Just arg)
+                    ( 500, Just arg )
+
                 Branch arg ->
-                    (600, Just arg)
+                    ( 600, Just arg )
+
                 BranchIfZero arg ->
-                    (700, Just arg)
+                    ( 700, Just arg )
+
                 BranchIfPositive arg ->
-                    (800, Just arg)
+                    ( 800, Just arg )
+
                 Input ->
-                    (901, Nothing)
+                    ( 901, Nothing )
+
                 Output ->
-                    (902, Nothing)
+                    ( 902, Nothing )
+
                 CoffeeBreak ->
-                    (0, Nothing)
+                    ( 0, Nothing )
+
                 Data arg ->
-                    (0, Just arg)
+                    ( 0, Just arg )
     in
         case arg of
             Nothing ->
                 Ok base
+
             Just (Immediate i) ->
                 Ok (base + i)
+
             Just (Labelled txt) ->
                 case Dict.get txt labels of
                     Nothing ->
                         Err ("label " ++ txt ++ " does not exist")
+
                     Just i ->
                         Ok (base + i)

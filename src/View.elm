@@ -3,6 +3,7 @@ module View exposing (view)
 import Html exposing (Html, a, button, div, h1, h2, input, li, p, section, text, textarea, ul)
 import Html.Attributes exposing (class, disabled, href, type_)
 import Html.Events exposing (onClick, onInput)
+import Memory exposing (Memory)
 import Model exposing (Model)
 import Update exposing (Msg(Assemble, SetSourceCode))
 
@@ -44,7 +45,7 @@ view model =
                     [ runControlView
                     , div [ class "lmc-columns" ]
                         [ div [ class "lmc-columns-col" ]
-                            [ sectionView "Memory" [ memoryView ]
+                            [ sectionView "Memory" [ memoryView model.memory ]
                             ]
                         , div [ class "lmc-columns-col" ]
                             [ sectionView "Input"
@@ -126,18 +127,24 @@ sectionView title children =
         )
 
 
-memoryView : Html a
-memoryView =
+memoryView : Memory -> Html a
+memoryView memory =
     let
-        cellView : Html a
-        cellView =
-            Html.td [ class "lmc-memory-row-cell" ] [ text "000" ]
+        cellView : Int -> Html a
+        cellView addr =
+            let
+                cellText =
+                    Memory.get addr memory
+                        |> toString
+                        |> String.padLeft 3 '0'
+            in
+                Html.td [ class "lmc-memory-row-cell" ] [ text cellText ]
 
         rowView : Int -> Html a
         rowView i =
             Html.tr [ class "lmc-memory-row" ]
                 ((Html.th [ class "lmc-memory-row-label" ] [ toString (i * 10) |> text ])
-                    :: (List.repeat 10 cellView)
+                    :: (List.range 0 9 |> List.map (((+) (i * 10)) >> cellView))
                 )
     in
         Html.table [ class "lmc-memory" ] (List.range 0 9 |> List.map rowView)
