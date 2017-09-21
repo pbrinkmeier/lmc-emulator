@@ -10,11 +10,12 @@
 }
 
 .lmc-registers-reg-label {
+  flex: 1;
   font-weight: bold;
 }
 
 .lmc-registers-reg-value {
-  flex: 1;
+  flex: 3;
   text-align: right;
   font-family: 'Fira Code', monospace;
 }
