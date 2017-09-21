@@ -1,11 +1,11 @@
 module Model exposing (Model, initialModel)
 
 import Lmc.Vm as Vm exposing (Vm)
-import Memory
 
 
 type alias Model =
     { sourceCode : String
+    , inputText : String
     , err : Maybe String
     , vm : Vm
     }
@@ -14,6 +14,7 @@ type alias Model =
 initialModel : Model
 initialModel =
     { sourceCode = ""
+    , inputText = ""
     , err = Nothing
-    , vm = Vm.init Memory.empty
+    , vm = Vm.empty
     }

@@ -3,13 +3,14 @@ module Update exposing (Msg(..), update)
 import Lmc.Compiler as Compiler
 import Lmc.Tokenizer as Tokenizer
 import Lmc.Parser as Parser
-import Lmc.Vm as Vm
+import Lmc.Vm as Vm exposing (Vm)
 import Memory exposing (Memory)
 import Model exposing (Model, initialModel)
 
 
 type Msg
     = SetSourceCode String
+    | SetInputText String
     | Assemble
 
 
@@ -21,25 +22,62 @@ update msg model =
                 | sourceCode = newCode
             }
 
+        SetInputText newInputText ->
+            { model
+                | inputText = newInputText
+            }
+
         Assemble ->
             let
-                ( compiledMemory, err ) =
-                    case parse model.sourceCode of
+                ( newVm, err ) =
+                    case createVm model.sourceCode model.inputText of
                         Err msg ->
-                            ( Memory.empty, Just msg )
+                            ( Vm.empty, Just msg )
 
-                        Ok parseResult ->
-                            ( parseResult, Nothing )
+                        Ok vm ->
+                            ( vm, Nothing )
             in
                 { model
                     | err = err
-                    , vm = Vm.init compiledMemory
+                    , vm = newVm
                 }
 
 
-parse : String -> Result String Memory
-parse =
+createVm : String -> String -> Result String Vm
+createVm sourceCode inputText =
+    case ( compile sourceCode, parseInputs inputText ) of
+        ( Ok memory, Ok inputList ) ->
+            Ok (Vm.init inputList memory)
+
+        ( Err compilationError, _ ) ->
+            Err ("Could not compile code: " ++ compilationError)
+
+        ( _, Err inputError ) ->
+            Err ("Could not parse inputs: " ++ inputError)
+
+
+compile : String -> Result String Memory
+compile =
     Tokenizer.tokenize
         >> Result.andThen Parser.parse
         >> Result.andThen Compiler.compile
-        >> Debug.log "parse"
+
+
+parseInputs : String -> Result String (List Int)
+parseInputs =
+    let
+        recurse : List Int -> List String -> Result String (List Int)
+        recurse results strings =
+            case strings of
+                [] ->
+                    Ok (List.reverse results)
+
+                first :: rest ->
+                    case String.trim first |> String.toInt of
+                        Err _ ->
+                            Err (first ++ " is not an integer")
+
+                        Ok i ->
+                            recurse (i :: results) rest
+    in
+        String.split "," >> recurse []

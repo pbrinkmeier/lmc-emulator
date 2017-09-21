@@ -8968,69 +8968,123 @@ var _pbrinkmeier$lmc_emulator$Lmc_Compiler$compile = function (_p8) {
 
 var _pbrinkmeier$lmc_emulator$Lmc_Vm$Vm = F6(
 	function (a, b, c, d, e, f) {
-		return {acc: a, pc: b, carry: c, inbox: d, outbox: e, memory: f};
+		return {acc: a, pc: b, carry: c, outbox: d, inbox: e, memory: f};
 	});
-var _pbrinkmeier$lmc_emulator$Lmc_Vm$init = A5(
+var _pbrinkmeier$lmc_emulator$Lmc_Vm$init = A4(
 	_pbrinkmeier$lmc_emulator$Lmc_Vm$Vm,
 	0,
 	0,
 	false,
-	{ctor: '[]'},
 	{ctor: '[]'});
+var _pbrinkmeier$lmc_emulator$Lmc_Vm$empty = A2(
+	_pbrinkmeier$lmc_emulator$Lmc_Vm$init,
+	{ctor: '[]'},
+	_pbrinkmeier$lmc_emulator$Memory$empty);
 
-var _pbrinkmeier$lmc_emulator$Model$initialModel = {
-	sourceCode: '',
-	err: _elm_lang$core$Maybe$Nothing,
-	vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$init(_pbrinkmeier$lmc_emulator$Memory$empty)
-};
-var _pbrinkmeier$lmc_emulator$Model$Model = F3(
-	function (a, b, c) {
-		return {sourceCode: a, err: b, vm: c};
+var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: '', inputText: '', err: _elm_lang$core$Maybe$Nothing, vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$empty};
+var _pbrinkmeier$lmc_emulator$Model$Model = F4(
+	function (a, b, c, d) {
+		return {sourceCode: a, inputText: b, err: c, vm: d};
 	});
 
-var _pbrinkmeier$lmc_emulator$Update$parse = function (_p0) {
+var _pbrinkmeier$lmc_emulator$Update$parseInputs = function () {
+	var recurse = F2(
+		function (results, strings) {
+			recurse:
+			while (true) {
+				var _p0 = strings;
+				if (_p0.ctor === '[]') {
+					return _elm_lang$core$Result$Ok(
+						_elm_lang$core$List$reverse(results));
+				} else {
+					var _p2 = _p0._0;
+					var _p1 = _elm_lang$core$String$toInt(
+						_elm_lang$core$String$trim(_p2));
+					if (_p1.ctor === 'Err') {
+						return _elm_lang$core$Result$Err(
+							A2(_elm_lang$core$Basics_ops['++'], _p2, ' is not an integer'));
+					} else {
+						var _v2 = {ctor: '::', _0: _p1._0, _1: results},
+							_v3 = _p0._1;
+						results = _v2;
+						strings = _v3;
+						continue recurse;
+					}
+				}
+			}
+		});
+	return function (_p3) {
+		return A2(
+			recurse,
+			{ctor: '[]'},
+			A2(_elm_lang$core$String$split, ',', _p3));
+	};
+}();
+var _pbrinkmeier$lmc_emulator$Update$compile = function (_p4) {
 	return A2(
-		_elm_lang$core$Debug$log,
-		'parse',
+		_elm_lang$core$Result$andThen,
+		_pbrinkmeier$lmc_emulator$Lmc_Compiler$compile,
 		A2(
 			_elm_lang$core$Result$andThen,
-			_pbrinkmeier$lmc_emulator$Lmc_Compiler$compile,
-			A2(
-				_elm_lang$core$Result$andThen,
-				_pbrinkmeier$lmc_emulator$Lmc_Parser$parse,
-				_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$tokenize(_p0))));
+			_pbrinkmeier$lmc_emulator$Lmc_Parser$parse,
+			_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$tokenize(_p4)));
 };
+var _pbrinkmeier$lmc_emulator$Update$createVm = F2(
+	function (sourceCode, inputText) {
+		var _p5 = {
+			ctor: '_Tuple2',
+			_0: _pbrinkmeier$lmc_emulator$Update$compile(sourceCode),
+			_1: _pbrinkmeier$lmc_emulator$Update$parseInputs(inputText)
+		};
+		if (_p5._0.ctor === 'Ok') {
+			if (_p5._1.ctor === 'Ok') {
+				return _elm_lang$core$Result$Ok(
+					A2(_pbrinkmeier$lmc_emulator$Lmc_Vm$init, _p5._1._0, _p5._0._0));
+			} else {
+				return _elm_lang$core$Result$Err(
+					A2(_elm_lang$core$Basics_ops['++'], 'Could not parse inputs: ', _p5._1._0));
+			}
+		} else {
+			return _elm_lang$core$Result$Err(
+				A2(_elm_lang$core$Basics_ops['++'], 'Could not compile code: ', _p5._0._0));
+		}
+	});
 var _pbrinkmeier$lmc_emulator$Update$update = F2(
 	function (msg, model) {
-		var _p1 = A2(_elm_lang$core$Debug$log, 'message', msg);
-		if (_p1.ctor === 'SetSourceCode') {
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{sourceCode: _p1._0});
-		} else {
-			var _p2 = function () {
-				var _p3 = _pbrinkmeier$lmc_emulator$Update$parse(model.sourceCode);
-				if (_p3.ctor === 'Err') {
-					return {
-						ctor: '_Tuple2',
-						_0: _pbrinkmeier$lmc_emulator$Memory$empty,
-						_1: _elm_lang$core$Maybe$Just(_p3._0)
-					};
-				} else {
-					return {ctor: '_Tuple2', _0: _p3._0, _1: _elm_lang$core$Maybe$Nothing};
-				}
-			}();
-			var compiledMemory = _p2._0;
-			var err = _p2._1;
-			return _elm_lang$core$Native_Utils.update(
-				model,
-				{
-					err: err,
-					vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$init(compiledMemory)
-				});
+		var _p6 = A2(_elm_lang$core$Debug$log, 'message', msg);
+		switch (_p6.ctor) {
+			case 'SetSourceCode':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{sourceCode: _p6._0});
+			case 'SetInputText':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{inputText: _p6._0});
+			default:
+				var _p7 = function () {
+					var _p8 = A2(_pbrinkmeier$lmc_emulator$Update$createVm, model.sourceCode, model.inputText);
+					if (_p8.ctor === 'Err') {
+						return {
+							ctor: '_Tuple2',
+							_0: _pbrinkmeier$lmc_emulator$Lmc_Vm$empty,
+							_1: _elm_lang$core$Maybe$Just(_p8._0)
+						};
+					} else {
+						return {ctor: '_Tuple2', _0: _p8._0, _1: _elm_lang$core$Maybe$Nothing};
+					}
+				}();
+				var newVm = _p7._0;
+				var err = _p7._1;
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{err: err, vm: newVm});
 		}
 	});
 var _pbrinkmeier$lmc_emulator$Update$Assemble = {ctor: 'Assemble'};
+var _pbrinkmeier$lmc_emulator$Update$SetInputText = function (a) {
+	return {ctor: 'SetInputText', _0: a};
+};
 var _pbrinkmeier$lmc_emulator$Update$SetSourceCode = function (a) {
 	return {ctor: 'SetSourceCode', _0: a};
 };
@@ -9529,7 +9583,15 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 																							_1: {
 																								ctor: '::',
 																								_0: _elm_lang$html$Html_Attributes$type_('text'),
-																								_1: {ctor: '[]'}
+																								_1: {
+																									ctor: '::',
+																									_0: _elm_lang$html$Html_Attributes$value(model.inputText),
+																									_1: {
+																										ctor: '::',
+																										_0: _elm_lang$html$Html_Events$onInput(_pbrinkmeier$lmc_emulator$Update$SetInputText),
+																										_1: {ctor: '[]'}
+																									}
+																								}
 																							}
 																						},
 																						{ctor: '[]'}),

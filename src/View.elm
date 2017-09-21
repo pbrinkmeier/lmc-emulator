@@ -1,10 +1,18 @@
 module View exposing (view)
 
-import Html exposing (Html, a, button, div, h1, h2, input, li, p, section, text, textarea, ul)
-import Html.Attributes exposing (class, disabled, href, type_)
+import Html
+    exposing
+        ( Html
+        , button
+        , div
+        , input
+        , text
+        , textarea
+        )
+import Html.Attributes exposing (class, disabled, href, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Model exposing (Model)
-import Update exposing (Msg(Assemble, SetSourceCode))
+import Update exposing (Msg(Assemble, SetInputText, SetSourceCode))
 import View.Util as Util
     exposing
         ( Register(Numerical, Stack, Flag)
@@ -57,7 +65,7 @@ view model =
                             , Normal
                                 [ Util.sectionView "Input"
                                     [ div [ class "lmc-input" ]
-                                        [ input [ class "lmc-input-text", type_ "text" ] []
+                                        [ input [ class "lmc-input-text", type_ "text", value model.inputText, onInput SetInputText ] []
                                         ]
                                     ]
                                 , Util.sectionView "Registers"
