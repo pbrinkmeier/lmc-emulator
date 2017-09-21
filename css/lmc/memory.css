@@ -4,9 +4,11 @@
 }
 
 .lmc-memory-row-cell {
+  border: 1px solid transparent;
   font-size: .75em;
+  text-align: center;
 }
 
-.lmc-memory-row-cell {
-  border: 1px solid transparent;
+.lmc-memory-row-cell.-pc {
+  border-color: #ff4136;
 }

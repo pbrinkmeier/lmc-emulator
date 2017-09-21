@@ -9092,6 +9092,7 @@ var _pbrinkmeier$lmc_emulator$Update$SetSourceCode = function (a) {
 var _pbrinkmeier$lmc_emulator$View_Util$registersView = function () {
 	var registerView = function (_p0) {
 		var _p1 = _p0;
+		var _p3 = _p1._0;
 		var registerValue = function () {
 			var _p2 = _p1._1;
 			switch (_p2.ctor) {
@@ -9110,7 +9111,8 @@ var _pbrinkmeier$lmc_emulator$View_Util$registersView = function () {
 			_elm_lang$html$Html$li,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('lmc-registers-reg'),
+				_0: _elm_lang$html$Html_Attributes$class(
+					A2(_elm_lang$core$Basics_ops['++'], 'lmc-registers-reg -', _p3)),
 				_1: {ctor: '[]'}
 			},
 			{
@@ -9124,7 +9126,7 @@ var _pbrinkmeier$lmc_emulator$View_Util$registersView = function () {
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(_p1._0),
+						_0: _elm_lang$html$Html$text(_p3),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -9145,7 +9147,7 @@ var _pbrinkmeier$lmc_emulator$View_Util$registersView = function () {
 				}
 			});
 	};
-	return function (_p3) {
+	return function (_p4) {
 		return A2(
 			_elm_lang$html$Html$ul,
 			{
@@ -9153,7 +9155,7 @@ var _pbrinkmeier$lmc_emulator$View_Util$registersView = function () {
 				_0: _elm_lang$html$Html_Attributes$class('lmc-registers'),
 				_1: {ctor: '[]'}
 			},
-			A2(_elm_lang$core$List$map, registerView, _p3));
+			A2(_elm_lang$core$List$map, registerView, _p4));
 	};
 }();
 var _pbrinkmeier$lmc_emulator$View_Util$sectionView = F2(
@@ -9181,8 +9183,8 @@ var _pbrinkmeier$lmc_emulator$View_Util$sectionView = F2(
 	});
 var _pbrinkmeier$lmc_emulator$View_Util$topbarView = F2(
 	function (title, links) {
-		var linkView = function (_p4) {
-			var _p5 = _p4;
+		var linkView = function (_p5) {
+			var _p6 = _p5;
 			return A2(
 				_elm_lang$html$Html$li,
 				{
@@ -9199,13 +9201,13 @@ var _pbrinkmeier$lmc_emulator$View_Util$topbarView = F2(
 							_0: _elm_lang$html$Html_Attributes$class('lmc-topbar-links-link-anchor'),
 							_1: {
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$href(_p5._1),
+								_0: _elm_lang$html$Html_Attributes$href(_p6._1),
 								_1: {ctor: '[]'}
 							}
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(_p5._0),
+							_0: _elm_lang$html$Html$text(_p6._0),
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
@@ -9248,8 +9250,8 @@ var _pbrinkmeier$lmc_emulator$View_Util$topbarView = F2(
 	});
 var _pbrinkmeier$lmc_emulator$View_Util$columnsView = function () {
 	var columnView = function (col) {
-		var _p6 = col;
-		if (_p6.ctor === 'Normal') {
+		var _p7 = col;
+		if (_p7.ctor === 'Normal') {
 			return A2(
 				_elm_lang$html$Html$div,
 				{
@@ -9257,7 +9259,7 @@ var _pbrinkmeier$lmc_emulator$View_Util$columnsView = function () {
 					_0: _elm_lang$html$Html_Attributes$class('lmc-columns-col'),
 					_1: {ctor: '[]'}
 				},
-				_p6._0);
+				_p7._0);
 		} else {
 			return A2(
 				_elm_lang$html$Html$div,
@@ -9266,10 +9268,10 @@ var _pbrinkmeier$lmc_emulator$View_Util$columnsView = function () {
 					_0: _elm_lang$html$Html_Attributes$class('lmc-columns-col -wide'),
 					_1: {ctor: '[]'}
 				},
-				_p6._0);
+				_p7._0);
 		}
 	};
-	return function (_p7) {
+	return function (_p8) {
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -9277,7 +9279,7 @@ var _pbrinkmeier$lmc_emulator$View_Util$columnsView = function () {
 				_0: _elm_lang$html$Html_Attributes$class('lmc-columns'),
 				_1: {ctor: '[]'}
 			},
-			A2(_elm_lang$core$List$map, columnView, _p7));
+			A2(_elm_lang$core$List$map, columnView, _p8));
 	};
 }();
 var _pbrinkmeier$lmc_emulator$View_Util$Wide = function (a) {
@@ -9296,76 +9298,78 @@ var _pbrinkmeier$lmc_emulator$View_Util$Numerical = function (a) {
 	return {ctor: 'Numerical', _0: a};
 };
 
-var _pbrinkmeier$lmc_emulator$View_Memory$view = function (memory) {
-	var cellView = function (address) {
-		var cellText = A3(
-			_elm_lang$core$String$padLeft,
-			3,
-			_elm_lang$core$Native_Utils.chr('0'),
-			_elm_lang$core$Basics$toString(
-				A2(_pbrinkmeier$lmc_emulator$Memory$get, address, memory)));
+var _pbrinkmeier$lmc_emulator$View_Memory$view = F2(
+	function (pc, memory) {
+		var cellView = function (address) {
+			var cellClass = _elm_lang$core$Native_Utils.eq(address, pc) ? 'lmc-memory-row-cell -pc' : 'lmc-memory-row-cell';
+			var cellText = A3(
+				_elm_lang$core$String$padLeft,
+				3,
+				_elm_lang$core$Native_Utils.chr('0'),
+				_elm_lang$core$Basics$toString(
+					A2(_pbrinkmeier$lmc_emulator$Memory$get, address, memory)));
+			return A2(
+				_elm_lang$html$Html$td,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class(cellClass),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(cellText),
+					_1: {ctor: '[]'}
+				});
+		};
+		var rowView = function (rowNumber) {
+			var firstCellOfRow = rowNumber * 10;
+			var label = A2(
+				_elm_lang$html$Html$th,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('lmc-memory-row-label'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(firstCellOfRow)),
+					_1: {ctor: '[]'}
+				});
+			var cells = A2(
+				_elm_lang$core$List$map,
+				function (_p0) {
+					return cellView(
+						A2(
+							F2(
+								function (x, y) {
+									return x + y;
+								}),
+							firstCellOfRow,
+							_p0));
+				},
+				A2(_elm_lang$core$List$range, 0, 9));
+			return A2(
+				_elm_lang$html$Html$tr,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('lmc-memory-row'),
+					_1: {ctor: '[]'}
+				},
+				{ctor: '::', _0: label, _1: cells});
+		};
 		return A2(
-			_elm_lang$html$Html$td,
+			_elm_lang$html$Html$table,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('lmc-memory-row-cell'),
+				_0: _elm_lang$html$Html_Attributes$class('lmc-memory'),
 				_1: {ctor: '[]'}
 			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text(cellText),
-				_1: {ctor: '[]'}
-			});
-	};
-	var rowView = function (rowNumber) {
-		var firstCellOfRow = rowNumber * 10;
-		var label = A2(
-			_elm_lang$html$Html$th,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('lmc-memory-row-label'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text(
-					_elm_lang$core$Basics$toString(firstCellOfRow)),
-				_1: {ctor: '[]'}
-			});
-		var cells = A2(
-			_elm_lang$core$List$map,
-			function (_p0) {
-				return cellView(
-					A2(
-						F2(
-							function (x, y) {
-								return x + y;
-							}),
-						firstCellOfRow,
-						_p0));
-			},
-			A2(_elm_lang$core$List$range, 0, 9));
-		return A2(
-			_elm_lang$html$Html$tr,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('lmc-memory-row'),
-				_1: {ctor: '[]'}
-			},
-			{ctor: '::', _0: label, _1: cells});
-	};
-	return A2(
-		_elm_lang$html$Html$table,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('lmc-memory'),
-			_1: {ctor: '[]'}
-		},
-		A2(
-			_elm_lang$core$List$map,
-			rowView,
-			A2(_elm_lang$core$List$range, 0, 9)));
-};
+			A2(
+				_elm_lang$core$List$map,
+				rowView,
+				A2(_elm_lang$core$List$range, 0, 9)));
+	});
 
 var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 	var runControlView = function () {
@@ -9551,7 +9555,7 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 																	'Memory',
 																	{
 																		ctor: '::',
-																		_0: _pbrinkmeier$lmc_emulator$View_Memory$view(model.vm.memory),
+																		_0: A2(_pbrinkmeier$lmc_emulator$View_Memory$view, model.vm.pc, model.vm.memory),
 																		_1: {ctor: '[]'}
 																	}),
 																_1: {ctor: '[]'}
@@ -9611,15 +9615,15 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 																						ctor: '::',
 																						_0: {
 																							ctor: '_Tuple2',
-																							_0: 'acc',
-																							_1: _pbrinkmeier$lmc_emulator$View_Util$Numerical(model.vm.acc)
+																							_0: 'pc',
+																							_1: _pbrinkmeier$lmc_emulator$View_Util$Numerical(model.vm.pc)
 																						},
 																						_1: {
 																							ctor: '::',
 																							_0: {
 																								ctor: '_Tuple2',
-																								_0: 'pc',
-																								_1: _pbrinkmeier$lmc_emulator$View_Util$Numerical(model.vm.pc)
+																								_0: 'acc',
+																								_1: _pbrinkmeier$lmc_emulator$View_Util$Numerical(model.vm.acc)
 																							},
 																							_1: {
 																								ctor: '::',

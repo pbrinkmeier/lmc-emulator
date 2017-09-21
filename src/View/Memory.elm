@@ -5,8 +5,8 @@ import Html.Attributes exposing (class)
 import Memory exposing (Memory)
 
 
-view : Memory -> Html a
-view memory =
+view : Int -> Memory -> Html a
+view pc memory =
     let
         rowView : Int -> Html a
         rowView rowNumber =
@@ -34,7 +34,13 @@ view memory =
                     Memory.get address memory
                         |> toString
                         |> String.padLeft 3 '0'
+
+                cellClass =
+                    if address == pc then
+                        "lmc-memory-row-cell -pc"
+                    else
+                        "lmc-memory-row-cell"
             in
-                td [ class "lmc-memory-row-cell" ] [ text cellText ]
+                td [ class cellClass ] [ text cellText ]
     in
         table [ class "lmc-memory" ] (List.range 0 9 |> List.map rowView)

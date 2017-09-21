@@ -88,7 +88,7 @@ registersView =
                             else
                                 "0"
             in
-                li [ class "lmc-registers-reg" ]
+                li [ class ("lmc-registers-reg -" ++ registerLabel) ]
                     [ div [ class "lmc-registers-reg-label" ]
                         [ text registerLabel
                         ]

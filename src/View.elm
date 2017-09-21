@@ -60,7 +60,7 @@ view model =
                         , Util.columnsView
                             [ Normal
                                 [ Util.sectionView "Memory"
-                                    [ Memory.view model.vm.memory ]
+                                    [ Memory.view model.vm.pc model.vm.memory ]
                                 ]
                             , Normal
                                 [ Util.sectionView "Input"
@@ -70,8 +70,8 @@ view model =
                                     ]
                                 , Util.sectionView "Registers"
                                     [ Util.registersView
-                                        [ ( "acc", Numerical model.vm.acc )
-                                        , ( "pc", Numerical model.vm.pc )
+                                        [ ( "pc", Numerical model.vm.pc )
+                                        , ( "acc", Numerical model.vm.acc )
                                         , ( "carry", Flag model.vm.carry )
                                         , ( "inbox", Stack model.vm.inbox )
                                         , ( "outbox", Stack model.vm.outbox )
