@@ -51,7 +51,8 @@ view model =
                         [ runControlView
                         , Util.columnsView
                             [ Normal
-                                [ Util.sectionView "Memory" [ Memory.view model.memory ]
+                                [ Util.sectionView "Memory"
+                                    [ Memory.view model.vm.memory ]
                                 ]
                             , Normal
                                 [ Util.sectionView "Input"
@@ -61,11 +62,11 @@ view model =
                                     ]
                                 , Util.sectionView "Registers"
                                     [ Util.registersView
-                                        [ ( "acc", Numerical 42 )
-                                        , ( "pc", Numerical 42 )
-                                        , ( "carry", Flag True )
-                                        , ( "inbox", Stack [ 3, 4, 5 ] )
-                                        , ( "outbox", Stack [ 1, 4 ] )
+                                        [ ( "acc", Numerical model.vm.acc )
+                                        , ( "pc", Numerical model.vm.pc )
+                                        , ( "carry", Flag model.vm.carry )
+                                        , ( "inbox", Stack model.vm.inbox )
+                                        , ( "outbox", Stack model.vm.outbox )
                                         ]
                                     ]
                                 ]

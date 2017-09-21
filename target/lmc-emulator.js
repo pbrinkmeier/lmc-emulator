@@ -8966,10 +8966,26 @@ var _pbrinkmeier$lmc_emulator$Lmc_Compiler$compile = function (_p8) {
 		_pbrinkmeier$lmc_emulator$Lmc_Compiler$mapToBytecode(_p8));
 };
 
-var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: '', err: _elm_lang$core$Maybe$Nothing, memory: _pbrinkmeier$lmc_emulator$Memory$empty};
+var _pbrinkmeier$lmc_emulator$Lmc_Vm$Vm = F6(
+	function (a, b, c, d, e, f) {
+		return {acc: a, pc: b, carry: c, inbox: d, outbox: e, memory: f};
+	});
+var _pbrinkmeier$lmc_emulator$Lmc_Vm$init = A5(
+	_pbrinkmeier$lmc_emulator$Lmc_Vm$Vm,
+	0,
+	0,
+	false,
+	{ctor: '[]'},
+	{ctor: '[]'});
+
+var _pbrinkmeier$lmc_emulator$Model$initialModel = {
+	sourceCode: '',
+	err: _elm_lang$core$Maybe$Nothing,
+	vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$init(_pbrinkmeier$lmc_emulator$Memory$empty)
+};
 var _pbrinkmeier$lmc_emulator$Model$Model = F3(
 	function (a, b, c) {
-		return {sourceCode: a, err: b, memory: c};
+		return {sourceCode: a, err: b, vm: c};
 	});
 
 var _pbrinkmeier$lmc_emulator$Update$parse = function (_p0) {
@@ -8992,18 +9008,26 @@ var _pbrinkmeier$lmc_emulator$Update$update = F2(
 				model,
 				{sourceCode: _p1._0});
 		} else {
-			var _p2 = _pbrinkmeier$lmc_emulator$Update$parse(model.sourceCode);
-			if (_p2.ctor === 'Err') {
-				return _elm_lang$core$Native_Utils.update(
-					model,
-					{
-						err: _elm_lang$core$Maybe$Just(_p2._0)
-					});
-			} else {
-				return _elm_lang$core$Native_Utils.update(
-					model,
-					{err: _elm_lang$core$Maybe$Nothing, memory: _p2._0});
-			}
+			var _p2 = function () {
+				var _p3 = _pbrinkmeier$lmc_emulator$Update$parse(model.sourceCode);
+				if (_p3.ctor === 'Err') {
+					return {
+						ctor: '_Tuple2',
+						_0: _pbrinkmeier$lmc_emulator$Memory$empty,
+						_1: _elm_lang$core$Maybe$Just(_p3._0)
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: _p3._0, _1: _elm_lang$core$Maybe$Nothing};
+				}
+			}();
+			var compiledMemory = _p2._0;
+			var err = _p2._1;
+			return _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					err: err,
+					vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$init(compiledMemory)
+				});
 		}
 	});
 var _pbrinkmeier$lmc_emulator$Update$Assemble = {ctor: 'Assemble'};
@@ -9473,7 +9497,7 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 																	'Memory',
 																	{
 																		ctor: '::',
-																		_0: _pbrinkmeier$lmc_emulator$View_Memory$view(model.memory),
+																		_0: _pbrinkmeier$lmc_emulator$View_Memory$view(model.vm.memory),
 																		_1: {ctor: '[]'}
 																	}),
 																_1: {ctor: '[]'}
@@ -9526,57 +9550,35 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 																						_0: {
 																							ctor: '_Tuple2',
 																							_0: 'acc',
-																							_1: _pbrinkmeier$lmc_emulator$View_Util$Numerical(42)
+																							_1: _pbrinkmeier$lmc_emulator$View_Util$Numerical(model.vm.acc)
 																						},
 																						_1: {
 																							ctor: '::',
 																							_0: {
 																								ctor: '_Tuple2',
 																								_0: 'pc',
-																								_1: _pbrinkmeier$lmc_emulator$View_Util$Numerical(42)
+																								_1: _pbrinkmeier$lmc_emulator$View_Util$Numerical(model.vm.pc)
 																							},
 																							_1: {
 																								ctor: '::',
 																								_0: {
 																									ctor: '_Tuple2',
 																									_0: 'carry',
-																									_1: _pbrinkmeier$lmc_emulator$View_Util$Flag(true)
+																									_1: _pbrinkmeier$lmc_emulator$View_Util$Flag(model.vm.carry)
 																								},
 																								_1: {
 																									ctor: '::',
 																									_0: {
 																										ctor: '_Tuple2',
 																										_0: 'inbox',
-																										_1: _pbrinkmeier$lmc_emulator$View_Util$Stack(
-																											{
-																												ctor: '::',
-																												_0: 3,
-																												_1: {
-																													ctor: '::',
-																													_0: 4,
-																													_1: {
-																														ctor: '::',
-																														_0: 5,
-																														_1: {ctor: '[]'}
-																													}
-																												}
-																											})
+																										_1: _pbrinkmeier$lmc_emulator$View_Util$Stack(model.vm.inbox)
 																									},
 																									_1: {
 																										ctor: '::',
 																										_0: {
 																											ctor: '_Tuple2',
 																											_0: 'outbox',
-																											_1: _pbrinkmeier$lmc_emulator$View_Util$Stack(
-																												{
-																													ctor: '::',
-																													_0: 1,
-																													_1: {
-																														ctor: '::',
-																														_0: 4,
-																														_1: {ctor: '[]'}
-																													}
-																												})
+																											_1: _pbrinkmeier$lmc_emulator$View_Util$Stack(model.vm.outbox)
 																										},
 																										_1: {ctor: '[]'}
 																									}
