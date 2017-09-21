@@ -70,7 +70,7 @@ compile =
 
 
 parseInputs : String -> Result String (List Int)
-parseInputs =
+parseInputs inputText =
     let
         recurse : List Int -> List String -> Result String (List Int)
         recurse results strings =
@@ -86,4 +86,7 @@ parseInputs =
                         Ok i ->
                             recurse (i :: results) rest
     in
-        String.split "," >> recurse []
+        if inputText == "" then
+            Ok []
+        else
+            String.split "," inputText |> recurse []

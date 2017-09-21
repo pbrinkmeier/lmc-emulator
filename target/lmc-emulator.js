@@ -9024,7 +9024,7 @@ var _pbrinkmeier$lmc_emulator$Model$Model = F4(
 		return {sourceCode: a, inputText: b, err: c, vm: d};
 	});
 
-var _pbrinkmeier$lmc_emulator$Update$parseInputs = function () {
+var _pbrinkmeier$lmc_emulator$Update$parseInputs = function (inputText) {
 	var recurse = F2(
 		function (results, strings) {
 			recurse:
@@ -9050,69 +9050,68 @@ var _pbrinkmeier$lmc_emulator$Update$parseInputs = function () {
 				}
 			}
 		});
-	return function (_p3) {
-		return A2(
-			recurse,
-			{ctor: '[]'},
-			A2(_elm_lang$core$String$split, ',', _p3));
-	};
-}();
-var _pbrinkmeier$lmc_emulator$Update$compile = function (_p4) {
+	return _elm_lang$core$Native_Utils.eq(inputText, '') ? _elm_lang$core$Result$Ok(
+		{ctor: '[]'}) : A2(
+		recurse,
+		{ctor: '[]'},
+		A2(_elm_lang$core$String$split, ',', inputText));
+};
+var _pbrinkmeier$lmc_emulator$Update$compile = function (_p3) {
 	return A2(
 		_elm_lang$core$Result$andThen,
 		_pbrinkmeier$lmc_emulator$Lmc_Compiler$compile,
 		A2(
 			_elm_lang$core$Result$andThen,
 			_pbrinkmeier$lmc_emulator$Lmc_Parser$parse,
-			_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$tokenize(_p4)));
+			_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$tokenize(_p3)));
 };
 var _pbrinkmeier$lmc_emulator$Update$createVm = F2(
 	function (sourceCode, inputText) {
-		var _p5 = {
+		var _p4 = {
 			ctor: '_Tuple2',
 			_0: _pbrinkmeier$lmc_emulator$Update$compile(sourceCode),
 			_1: _pbrinkmeier$lmc_emulator$Update$parseInputs(inputText)
 		};
-		if (_p5._0.ctor === 'Ok') {
-			if (_p5._1.ctor === 'Ok') {
+		if (_p4._0.ctor === 'Ok') {
+			if (_p4._1.ctor === 'Ok') {
 				return _elm_lang$core$Result$Ok(
-					A2(_pbrinkmeier$lmc_emulator$Lmc_Vm$init, _p5._1._0, _p5._0._0));
+					A2(_pbrinkmeier$lmc_emulator$Lmc_Vm$init, _p4._1._0, _p4._0._0));
 			} else {
 				return _elm_lang$core$Result$Err(
-					A2(_elm_lang$core$Basics_ops['++'], 'Could not parse inputs: ', _p5._1._0));
+					A2(_elm_lang$core$Basics_ops['++'], 'Could not parse inputs: ', _p4._1._0));
 			}
 		} else {
 			return _elm_lang$core$Result$Err(
-				A2(_elm_lang$core$Basics_ops['++'], 'Could not compile code: ', _p5._0._0));
+				A2(_elm_lang$core$Basics_ops['++'], 'Could not compile code: ', _p4._0._0));
 		}
 	});
 var _pbrinkmeier$lmc_emulator$Update$update = F2(
 	function (msg, model) {
-		var _p6 = A2(_elm_lang$core$Debug$log, 'message', msg);
-		switch (_p6.ctor) {
+		var _p5 = A2(_elm_lang$core$Debug$log, 'message', msg);
+		switch (_p5.ctor) {
 			case 'SetSourceCode':
 				return _elm_lang$core$Native_Utils.update(
 					model,
-					{sourceCode: _p6._0});
+					{sourceCode: _p5._0});
 			case 'SetInputText':
 				return _elm_lang$core$Native_Utils.update(
 					model,
-					{inputText: _p6._0});
+					{inputText: _p5._0});
 			case 'Assemble':
-				var _p7 = function () {
-					var _p8 = A2(_pbrinkmeier$lmc_emulator$Update$createVm, model.sourceCode, model.inputText);
-					if (_p8.ctor === 'Err') {
+				var _p6 = function () {
+					var _p7 = A2(_pbrinkmeier$lmc_emulator$Update$createVm, model.sourceCode, model.inputText);
+					if (_p7.ctor === 'Err') {
 						return {
 							ctor: '_Tuple2',
 							_0: _pbrinkmeier$lmc_emulator$Lmc_Vm$empty,
-							_1: _elm_lang$core$Maybe$Just(_p8._0)
+							_1: _elm_lang$core$Maybe$Just(_p7._0)
 						};
 					} else {
-						return {ctor: '_Tuple2', _0: _p8._0, _1: _elm_lang$core$Maybe$Nothing};
+						return {ctor: '_Tuple2', _0: _p7._0, _1: _elm_lang$core$Maybe$Nothing};
 					}
 				}();
-				var newVm = _p7._0;
-				var err = _p7._1;
+				var newVm = _p6._0;
+				var err = _p6._1;
 				return _elm_lang$core$Native_Utils.update(
 					model,
 					{err: err, vm: newVm});
