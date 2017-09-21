@@ -12,7 +12,7 @@ import Html
 import Html.Attributes exposing (class, disabled, href, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Model exposing (Model)
-import Update exposing (Msg(Assemble, SetInputText, SetSourceCode))
+import Update exposing (Msg(Assemble, SetInputText, SetSourceCode, Step))
 import View.Util as Util
     exposing
         ( Register(Numerical, Stack, Flag)
@@ -32,7 +32,7 @@ view model =
                 Nothing ->
                     div [ class "lmc-ctrl" ]
                         [ button [ class "lmc-ctrl-btn -primary" ] [ text "Run" ]
-                        , button [ class "lmc-ctrl-btn" ] [ text "Step" ]
+                        , button [ class "lmc-ctrl-btn", onClick Step ] [ text "Step" ]
                         ]
     in
         div [ class "lmc-main" ]

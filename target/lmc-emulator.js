@@ -8966,6 +8966,43 @@ var _pbrinkmeier$lmc_emulator$Lmc_Compiler$compile = function (_p8) {
 		_pbrinkmeier$lmc_emulator$Lmc_Compiler$mapToBytecode(_p8));
 };
 
+var _pbrinkmeier$lmc_emulator$Lmc_Vm$applyStep = F3(
+	function (opcode, argument, vm) {
+		var _p0 = vm;
+		var pc = _p0.pc;
+		var acc = _p0.acc;
+		var memory = _p0.memory;
+		var referred = A2(_pbrinkmeier$lmc_emulator$Memory$get, argument, memory);
+		var _p1 = opcode;
+		switch (_p1) {
+			case 1:
+				var result = acc + referred;
+				return _elm_lang$core$Native_Utils.update(
+					vm,
+					{
+						acc: A2(_elm_lang$core$Basics_ops['%'], result, 1000),
+						carry: (_elm_lang$core$Native_Utils.cmp(result, 999) < 1) ? false : true,
+						pc: pc + 1
+					});
+			case 2:
+				var result = acc - referred;
+				return _elm_lang$core$Native_Utils.update(
+					vm,
+					{
+						acc: A2(_elm_lang$core$Basics_ops['%'], result, 1000),
+						carry: (_elm_lang$core$Native_Utils.cmp(result, 0) > -1) ? false : true,
+						pc: pc + 1
+					});
+			default:
+				return vm;
+		}
+	});
+var _pbrinkmeier$lmc_emulator$Lmc_Vm$step = function (vm) {
+	var currentInstruction = A2(_pbrinkmeier$lmc_emulator$Memory$get, vm.pc, vm.memory);
+	var opcode = (currentInstruction / 100) | 0;
+	var argument = A2(_elm_lang$core$Basics$rem, currentInstruction, 100);
+	return A3(_pbrinkmeier$lmc_emulator$Lmc_Vm$applyStep, opcode, argument, vm);
+};
 var _pbrinkmeier$lmc_emulator$Lmc_Vm$Vm = F6(
 	function (a, b, c, d, e, f) {
 		return {acc: a, pc: b, carry: c, outbox: d, inbox: e, memory: f};
@@ -9061,7 +9098,7 @@ var _pbrinkmeier$lmc_emulator$Update$update = F2(
 				return _elm_lang$core$Native_Utils.update(
 					model,
 					{inputText: _p6._0});
-			default:
+			case 'Assemble':
 				var _p7 = function () {
 					var _p8 = A2(_pbrinkmeier$lmc_emulator$Update$createVm, model.sourceCode, model.inputText);
 					if (_p8.ctor === 'Err') {
@@ -9079,8 +9116,15 @@ var _pbrinkmeier$lmc_emulator$Update$update = F2(
 				return _elm_lang$core$Native_Utils.update(
 					model,
 					{err: err, vm: newVm});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$step(model.vm)
+					});
 		}
 	});
+var _pbrinkmeier$lmc_emulator$Update$Step = {ctor: 'Step'};
 var _pbrinkmeier$lmc_emulator$Update$Assemble = {ctor: 'Assemble'};
 var _pbrinkmeier$lmc_emulator$Update$SetInputText = function (a) {
 	return {ctor: 'SetInputText', _0: a};
@@ -9416,7 +9460,11 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 							{
 								ctor: '::',
 								_0: _elm_lang$html$Html_Attributes$class('lmc-ctrl-btn'),
-								_1: {ctor: '[]'}
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onClick(_pbrinkmeier$lmc_emulator$Update$Step),
+									_1: {ctor: '[]'}
+								}
 							},
 							{
 								ctor: '::',

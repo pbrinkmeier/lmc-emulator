@@ -28,7 +28,7 @@ The formatting of the bullet points is **Opcode - mnemonic**.
 
 - **1xx - ADD** Add the value at position `xx` to the accumulator.
 If the result is bigger than 999, it will be replaced by the original value mod 1000.
-If the result is smaller than 999, the carry flag will be set to 1, else to 0.
+If the result is bigger than 999, the carry flag will be set to 1, else to 0.
 - **2xx - SUB** Subtract the value at position `xx` from the accumulator.
 If the result is smaller than 0, it will be replaced by the original value mod 1000.
 If the result is smaller than 0, the carry flag will be set to 1, else to 0.
