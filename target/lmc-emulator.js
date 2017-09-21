@@ -8993,6 +8993,17 @@ var _pbrinkmeier$lmc_emulator$Lmc_Vm$applyStep = F3(
 						carry: (_elm_lang$core$Native_Utils.cmp(result, 0) > -1) ? false : true,
 						pc: pc + 1
 					});
+			case 3:
+				return _elm_lang$core$Native_Utils.update(
+					vm,
+					{
+						memory: A3(_pbrinkmeier$lmc_emulator$Memory$insert, argument, acc, memory),
+						pc: pc + 1
+					});
+			case 5:
+				return _elm_lang$core$Native_Utils.update(
+					vm,
+					{acc: referred, pc: pc + 1});
 			default:
 				return vm;
 		}
@@ -9639,8 +9650,12 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 																									_0: _elm_lang$html$Html_Attributes$value(model.inputText),
 																									_1: {
 																										ctor: '::',
-																										_0: _elm_lang$html$Html_Events$onInput(_pbrinkmeier$lmc_emulator$Update$SetInputText),
-																										_1: {ctor: '[]'}
+																										_0: _elm_lang$html$Html_Attributes$placeholder('Comma-separated list of integers'),
+																										_1: {
+																											ctor: '::',
+																											_0: _elm_lang$html$Html_Events$onInput(_pbrinkmeier$lmc_emulator$Update$SetInputText),
+																											_1: {ctor: '[]'}
+																										}
 																									}
 																								}
 																							}

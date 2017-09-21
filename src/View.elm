@@ -9,7 +9,7 @@ import Html
         , text
         , textarea
         )
-import Html.Attributes exposing (class, disabled, href, type_, value)
+import Html.Attributes exposing (class, disabled, href, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Model exposing (Model)
 import Update exposing (Msg(Assemble, SetInputText, SetSourceCode, Step))
@@ -65,7 +65,7 @@ view model =
                             , Normal
                                 [ Util.sectionView "Input"
                                     [ div [ class "lmc-input" ]
-                                        [ input [ class "lmc-input-text", type_ "text", value model.inputText, onInput SetInputText ] []
+                                        [ input [ class "lmc-input-text", type_ "text", value model.inputText, placeholder "Comma-separated list of integers", onInput SetInputText ] []
                                         ]
                                     ]
                                 , Util.sectionView "Registers"

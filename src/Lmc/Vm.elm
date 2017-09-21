@@ -75,5 +75,17 @@ applyStep opcode argument vm =
                         , pc = pc + 1
                     }
 
+            3 ->
+                { vm
+                    | memory = Memory.insert argument acc memory
+                    , pc = pc + 1
+                }
+
+            5 ->
+                { vm
+                    | acc = referred
+                    , pc = pc + 1
+                }
+
             _ ->
                 vm
