@@ -63,6 +63,7 @@ update msg model =
         Step ->
             ( { model
                 | vm = Vm.step model.vm
+                , vmIsRunning = False
               }
             , Cmd.none
             )

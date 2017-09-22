@@ -9627,7 +9627,8 @@ var _pbrinkmeier$lmc_emulator$Update$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$step(model.vm)
+							vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$step(model.vm),
+							vmIsRunning: false
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
