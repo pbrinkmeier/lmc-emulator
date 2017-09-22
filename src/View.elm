@@ -31,7 +31,14 @@ view model =
 
                 Nothing ->
                     div [ class "lmc-ctrl" ]
-                        [ button [ class "lmc-ctrl-btn -primary", onClick ToggleRunning ] [ text (if model.vmIsRunning then "Stop" else "Run") ]
+                        [ button [ class "lmc-ctrl-btn -primary", onClick ToggleRunning ]
+                            [ text
+                                (if model.vmIsRunning then
+                                    "Stop"
+                                 else
+                                    "Run"
+                                )
+                            ]
                         , button [ class "lmc-ctrl-btn", onClick Step ] [ text "Step" ]
                         ]
     in
@@ -74,7 +81,7 @@ view model =
                                         , ( "acc", Numerical model.vm.acc )
                                         , ( "carry", Flag model.vm.carry )
                                         , ( "inbox", Stack model.vm.inbox )
-                                        , ( "outbox", Stack model.vm.outbox )
+                                        , ( "outbox", Stack (List.reverse model.vm.outbox) )
                                         ]
                                     ]
                                 ]

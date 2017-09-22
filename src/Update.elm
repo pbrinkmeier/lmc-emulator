@@ -6,6 +6,7 @@ import Lmc.Parser as Parser
 import Lmc.Vm as Vm exposing (Vm)
 import Memory exposing (Memory)
 import Model exposing (Model, initialModel)
+import Time exposing (Time)
 
 
 type Msg
@@ -14,25 +15,32 @@ type Msg
     | ToggleRunning
     | Assemble
     | Step
+    | Tick Time
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case Debug.log "message" msg of
         SetSourceCode newCode ->
-            { model
+            ( { model
                 | sourceCode = newCode
-            }
+              }
+            , Cmd.none
+            )
 
         SetInputText newInputText ->
-            { model
+            ( { model
                 | inputText = newInputText
-            }
+              }
+            , Cmd.none
+            )
 
         ToggleRunning ->
-            { model
+            ( { model
                 | vmIsRunning = not model.vmIsRunning
-            }
+              }
+            , Cmd.none
+            )
 
         Assemble ->
             let
@@ -44,16 +52,27 @@ update msg model =
                         Ok vm ->
                             ( vm, Nothing )
             in
-                { model
+                ( { model
                     | err = err
                     , vm = newVm
                     , vmIsRunning = False
-                }
+                  }
+                , Cmd.none
+                )
 
         Step ->
-            { model
+            ( { model
                 | vm = Vm.step model.vm
-            }
+              }
+            , Cmd.none
+            )
+
+        Tick time ->
+            ( { model
+                | vm = Vm.step model.vm
+              }
+            , Cmd.none
+            )
 
 
 createVm : String -> String -> Result String Vm
