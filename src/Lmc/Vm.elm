@@ -22,6 +22,7 @@ init : List Int -> Memory -> Vm
 init =
     Vm 0 0 False []
 
+
 step : Vm -> Vm
 step vm =
     let
@@ -39,11 +40,15 @@ step vm =
     in
         applyStep opcode argument vm
 
+
 applyStep : Int -> Int -> Vm -> Vm
 applyStep opcode argument vm =
     let
-        { pc, acc, memory } = vm
-        referred = Memory.get argument memory
+        { pc, acc, memory } =
+            vm
+
+        referred =
+            Memory.get argument memory
     in
         case opcode of
             1 ->
@@ -71,7 +76,8 @@ applyStep opcode argument vm =
                         , carry =
                             if result >= 0 then
                                 False
-                            else True
+                            else
+                                True
                         , pc = pc + 1
                     }
 

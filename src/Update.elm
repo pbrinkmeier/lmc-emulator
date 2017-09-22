@@ -42,11 +42,11 @@ update msg model =
                     | err = err
                     , vm = newVm
                 }
+
         Step ->
             { model
                 | vm = Vm.step model.vm
             }
-
 
 
 createVm : String -> String -> Result String Vm

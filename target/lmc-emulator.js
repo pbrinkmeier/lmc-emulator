@@ -9029,7 +9029,8 @@ var _pbrinkmeier$lmc_emulator$Lmc_Vm$empty = A2(
 	{ctor: '[]'},
 	_pbrinkmeier$lmc_emulator$Memory$empty);
 
-var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: '', inputText: '', err: _elm_lang$core$Maybe$Nothing, vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$empty};
+var _pbrinkmeier$lmc_emulator$Model$source = '    BRA st\na   DAT 0\nb   DAT 0\none DAT 1\nst  INP\n    STA a\n    INP\n    ADD a\n    BRP ov\n    BRA ct\nov  LDA one\n    OUT\nct  INP\n    STA b\n    LDA a\n    SUB b\n    OUT\n    BRZ end\n    BRA st\nend COB\n    ';
+var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: _pbrinkmeier$lmc_emulator$Model$source, inputText: '', err: _elm_lang$core$Maybe$Nothing, vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$empty};
 var _pbrinkmeier$lmc_emulator$Model$Model = F4(
 	function (a, b, c, d) {
 		return {sourceCode: a, inputText: b, err: c, vm: d};
