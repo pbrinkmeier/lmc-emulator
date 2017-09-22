@@ -25,7 +25,7 @@ a DAT 0"""
 initialModel : Model
 initialModel =
     { sourceCode = source
-    , inputText = ""
+    , inputText = "1, 2, 3, 4, 5"
     , err = Nothing
     , vm = Vm.empty
     , vmIsRunning = False

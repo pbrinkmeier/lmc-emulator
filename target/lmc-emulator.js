@@ -9504,7 +9504,7 @@ var _pbrinkmeier$lmc_emulator$Lmc_Vm$empty = A2(
 	_pbrinkmeier$lmc_emulator$Memory$empty);
 
 var _pbrinkmeier$lmc_emulator$Model$source = 's INP\n  STA a\n  ADD a\n  OUT\n  BRA s\na DAT 0';
-var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: _pbrinkmeier$lmc_emulator$Model$source, inputText: '', err: _elm_lang$core$Maybe$Nothing, vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$empty, vmIsRunning: false};
+var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: _pbrinkmeier$lmc_emulator$Model$source, inputText: '1, 2, 3, 4, 5', err: _elm_lang$core$Maybe$Nothing, vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$empty, vmIsRunning: false};
 var _pbrinkmeier$lmc_emulator$Model$Model = F5(
 	function (a, b, c, d, e) {
 		return {sourceCode: a, inputText: b, err: c, vm: d, vmIsRunning: e};
