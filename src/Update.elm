@@ -11,6 +11,7 @@ import Model exposing (Model, initialModel)
 type Msg
     = SetSourceCode String
     | SetInputText String
+    | ToggleRunning
     | Assemble
     | Step
 
@@ -28,6 +29,11 @@ update msg model =
                 | inputText = newInputText
             }
 
+        ToggleRunning ->
+            { model
+                | vmIsRunning = not model.vmIsRunning
+            }
+
         Assemble ->
             let
                 ( newVm, err ) =
@@ -41,6 +47,7 @@ update msg model =
                 { model
                     | err = err
                     , vm = newVm
+                    , vmIsRunning = False
                 }
 
         Step ->

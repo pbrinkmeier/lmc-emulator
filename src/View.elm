@@ -12,7 +12,7 @@ import Html
 import Html.Attributes exposing (class, disabled, href, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Model exposing (Model)
-import Update exposing (Msg(Assemble, SetInputText, SetSourceCode, Step))
+import Update exposing (Msg(Assemble, SetInputText, SetSourceCode, Step, ToggleRunning))
 import View.Util as Util
     exposing
         ( Register(Numerical, Stack, Flag)
@@ -31,7 +31,7 @@ view model =
 
                 Nothing ->
                     div [ class "lmc-ctrl" ]
-                        [ button [ class "lmc-ctrl-btn -primary" ] [ text "Run" ]
+                        [ button [ class "lmc-ctrl-btn -primary", onClick ToggleRunning ] [ text (if model.vmIsRunning then "Stop" else "Run") ]
                         , button [ class "lmc-ctrl-btn", onClick Step ] [ text "Step" ]
                         ]
     in

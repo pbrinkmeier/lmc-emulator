@@ -8,6 +8,7 @@ type alias Model =
     , inputText : String
     , err : Maybe String
     , vm : Vm
+    , vmIsRunning : Bool
     }
 
 
@@ -27,4 +28,5 @@ initialModel =
     , inputText = ""
     , err = Nothing
     , vm = Vm.empty
+    , vmIsRunning = False
     }

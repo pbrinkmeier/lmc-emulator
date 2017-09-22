@@ -9092,10 +9092,10 @@ var _pbrinkmeier$lmc_emulator$Lmc_Vm$empty = A2(
 	_pbrinkmeier$lmc_emulator$Memory$empty);
 
 var _pbrinkmeier$lmc_emulator$Model$source = 's INP\n  STA a\n  ADD a\n  OUT\n  BRA s\na DAT 0';
-var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: _pbrinkmeier$lmc_emulator$Model$source, inputText: '', err: _elm_lang$core$Maybe$Nothing, vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$empty};
-var _pbrinkmeier$lmc_emulator$Model$Model = F4(
-	function (a, b, c, d) {
-		return {sourceCode: a, inputText: b, err: c, vm: d};
+var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: _pbrinkmeier$lmc_emulator$Model$source, inputText: '', err: _elm_lang$core$Maybe$Nothing, vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$empty, vmIsRunning: false};
+var _pbrinkmeier$lmc_emulator$Model$Model = F5(
+	function (a, b, c, d, e) {
+		return {sourceCode: a, inputText: b, err: c, vm: d, vmIsRunning: e};
 	});
 
 var _pbrinkmeier$lmc_emulator$Update$parseInputs = function (inputText) {
@@ -9171,6 +9171,10 @@ var _pbrinkmeier$lmc_emulator$Update$update = F2(
 				return _elm_lang$core$Native_Utils.update(
 					model,
 					{inputText: _p5._0});
+			case 'ToggleRunning':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{vmIsRunning: !model.vmIsRunning});
 			case 'Assemble':
 				var _p6 = function () {
 					var _p7 = A2(_pbrinkmeier$lmc_emulator$Update$createVm, model.sourceCode, model.inputText);
@@ -9188,7 +9192,7 @@ var _pbrinkmeier$lmc_emulator$Update$update = F2(
 				var err = _p6._1;
 				return _elm_lang$core$Native_Utils.update(
 					model,
-					{err: err, vm: newVm});
+					{err: err, vm: newVm, vmIsRunning: false});
 			default:
 				return _elm_lang$core$Native_Utils.update(
 					model,
@@ -9199,6 +9203,7 @@ var _pbrinkmeier$lmc_emulator$Update$update = F2(
 	});
 var _pbrinkmeier$lmc_emulator$Update$Step = {ctor: 'Step'};
 var _pbrinkmeier$lmc_emulator$Update$Assemble = {ctor: 'Assemble'};
+var _pbrinkmeier$lmc_emulator$Update$ToggleRunning = {ctor: 'ToggleRunning'};
 var _pbrinkmeier$lmc_emulator$Update$SetInputText = function (a) {
 	return {ctor: 'SetInputText', _0: a};
 };
@@ -9519,11 +9524,16 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 						{
 							ctor: '::',
 							_0: _elm_lang$html$Html_Attributes$class('lmc-ctrl-btn -primary'),
-							_1: {ctor: '[]'}
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onClick(_pbrinkmeier$lmc_emulator$Update$ToggleRunning),
+								_1: {ctor: '[]'}
+							}
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text('Run'),
+							_0: _elm_lang$html$Html$text(
+								model.vmIsRunning ? 'Stop' : 'Run'),
 							_1: {ctor: '[]'}
 						}),
 					_1: {
