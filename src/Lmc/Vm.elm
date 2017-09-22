@@ -38,20 +38,27 @@ step vm =
         argument =
             rem currentInstruction 100
     in
-        applyStep opcode argument vm
+        applyStep opcode argument vm |> repair
+
+
+repair : Vm -> Vm
+repair vm =
+    { vm
+        | pc = vm.pc % 100
+    }
 
 
 applyStep : Int -> Int -> Vm -> Vm
 applyStep opcode argument vm =
     let
-        { pc, acc, memory } =
+        { pc, acc, carry, outbox, inbox, memory } =
             vm
 
         referred =
             Memory.get argument memory
     in
-        case opcode of
-            1 ->
+        case ( opcode, argument ) of
+            ( 1, _ ) ->
                 let
                     result =
                         acc + referred
@@ -66,7 +73,7 @@ applyStep opcode argument vm =
                         , pc = pc + 1
                     }
 
-            2 ->
+            ( 2, _ ) ->
                 let
                     result =
                         acc - referred
@@ -81,17 +88,61 @@ applyStep opcode argument vm =
                         , pc = pc + 1
                     }
 
-            3 ->
+            ( 3, _ ) ->
                 { vm
                     | memory = Memory.insert argument acc memory
                     , pc = pc + 1
                 }
 
-            5 ->
+            ( 5, _ ) ->
                 { vm
                     | acc = referred
                     , pc = pc + 1
                 }
+
+            ( 6, _ ) ->
+                { vm
+                    | pc = argument
+                }
+
+            ( 7, _ ) ->
+                { vm
+                    | pc =
+                        if acc == 0 then
+                            argument
+                        else
+                            pc + 1
+                }
+
+            ( 8, _ ) ->
+                { vm
+                    | pc =
+                        if carry then
+                            argument
+                        else
+                            pc + 1
+                }
+
+            ( 9, 1 ) ->
+                case inbox of
+                    [] ->
+                        vm
+
+                    first :: rest ->
+                        { vm
+                            | acc = first
+                            , inbox = rest
+                            , pc = pc + 1
+                        }
+
+            ( 9, 2 ) ->
+                { vm
+                    | outbox = acc :: outbox
+                    , pc = pc + 1
+                }
+
+            ( 0, 0 ) ->
+                vm
 
             _ ->
                 vm

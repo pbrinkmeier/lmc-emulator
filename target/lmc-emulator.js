@@ -8971,48 +8971,110 @@ var _pbrinkmeier$lmc_emulator$Lmc_Vm$applyStep = F3(
 		var _p0 = vm;
 		var pc = _p0.pc;
 		var acc = _p0.acc;
+		var carry = _p0.carry;
+		var outbox = _p0.outbox;
+		var inbox = _p0.inbox;
 		var memory = _p0.memory;
 		var referred = A2(_pbrinkmeier$lmc_emulator$Memory$get, argument, memory);
-		var _p1 = opcode;
-		switch (_p1) {
-			case 1:
-				var result = acc + referred;
-				return _elm_lang$core$Native_Utils.update(
-					vm,
-					{
-						acc: A2(_elm_lang$core$Basics_ops['%'], result, 1000),
-						carry: (_elm_lang$core$Native_Utils.cmp(result, 999) < 1) ? false : true,
-						pc: pc + 1
-					});
-			case 2:
-				var result = acc - referred;
-				return _elm_lang$core$Native_Utils.update(
-					vm,
-					{
-						acc: A2(_elm_lang$core$Basics_ops['%'], result, 1000),
-						carry: (_elm_lang$core$Native_Utils.cmp(result, 0) > -1) ? false : true,
-						pc: pc + 1
-					});
-			case 3:
-				return _elm_lang$core$Native_Utils.update(
-					vm,
-					{
-						memory: A3(_pbrinkmeier$lmc_emulator$Memory$insert, argument, acc, memory),
-						pc: pc + 1
-					});
-			case 5:
-				return _elm_lang$core$Native_Utils.update(
-					vm,
-					{acc: referred, pc: pc + 1});
-			default:
-				return vm;
-		}
+		var _p1 = {ctor: '_Tuple2', _0: opcode, _1: argument};
+		_v0_10:
+		do {
+			if (_p1.ctor === '_Tuple2') {
+				switch (_p1._0) {
+					case 1:
+						var result = acc + referred;
+						return _elm_lang$core$Native_Utils.update(
+							vm,
+							{
+								acc: A2(_elm_lang$core$Basics_ops['%'], result, 1000),
+								carry: (_elm_lang$core$Native_Utils.cmp(result, 999) < 1) ? false : true,
+								pc: pc + 1
+							});
+					case 2:
+						var result = acc - referred;
+						return _elm_lang$core$Native_Utils.update(
+							vm,
+							{
+								acc: A2(_elm_lang$core$Basics_ops['%'], result, 1000),
+								carry: (_elm_lang$core$Native_Utils.cmp(result, 0) > -1) ? false : true,
+								pc: pc + 1
+							});
+					case 3:
+						return _elm_lang$core$Native_Utils.update(
+							vm,
+							{
+								memory: A3(_pbrinkmeier$lmc_emulator$Memory$insert, argument, acc, memory),
+								pc: pc + 1
+							});
+					case 5:
+						return _elm_lang$core$Native_Utils.update(
+							vm,
+							{acc: referred, pc: pc + 1});
+					case 6:
+						return _elm_lang$core$Native_Utils.update(
+							vm,
+							{pc: argument});
+					case 7:
+						return _elm_lang$core$Native_Utils.update(
+							vm,
+							{
+								pc: _elm_lang$core$Native_Utils.eq(acc, 0) ? argument : (pc + 1)
+							});
+					case 8:
+						return _elm_lang$core$Native_Utils.update(
+							vm,
+							{
+								pc: carry ? argument : (pc + 1)
+							});
+					case 9:
+						switch (_p1._1) {
+							case 1:
+								var _p2 = inbox;
+								if (_p2.ctor === '[]') {
+									return vm;
+								} else {
+									return _elm_lang$core$Native_Utils.update(
+										vm,
+										{acc: _p2._0, inbox: _p2._1, pc: pc + 1});
+								}
+							case 2:
+								return _elm_lang$core$Native_Utils.update(
+									vm,
+									{
+										outbox: {ctor: '::', _0: acc, _1: outbox},
+										pc: pc + 1
+									});
+							default:
+								break _v0_10;
+						}
+					case 0:
+						if (_p1._1 === 0) {
+							return vm;
+						} else {
+							break _v0_10;
+						}
+					default:
+						break _v0_10;
+				}
+			} else {
+				break _v0_10;
+			}
+		} while(false);
+		return vm;
 	});
+var _pbrinkmeier$lmc_emulator$Lmc_Vm$repair = function (vm) {
+	return _elm_lang$core$Native_Utils.update(
+		vm,
+		{
+			pc: A2(_elm_lang$core$Basics_ops['%'], vm.pc, 100)
+		});
+};
 var _pbrinkmeier$lmc_emulator$Lmc_Vm$step = function (vm) {
 	var currentInstruction = A2(_pbrinkmeier$lmc_emulator$Memory$get, vm.pc, vm.memory);
 	var opcode = (currentInstruction / 100) | 0;
 	var argument = A2(_elm_lang$core$Basics$rem, currentInstruction, 100);
-	return A3(_pbrinkmeier$lmc_emulator$Lmc_Vm$applyStep, opcode, argument, vm);
+	return _pbrinkmeier$lmc_emulator$Lmc_Vm$repair(
+		A3(_pbrinkmeier$lmc_emulator$Lmc_Vm$applyStep, opcode, argument, vm));
 };
 var _pbrinkmeier$lmc_emulator$Lmc_Vm$Vm = F6(
 	function (a, b, c, d, e, f) {
@@ -9029,7 +9091,7 @@ var _pbrinkmeier$lmc_emulator$Lmc_Vm$empty = A2(
 	{ctor: '[]'},
 	_pbrinkmeier$lmc_emulator$Memory$empty);
 
-var _pbrinkmeier$lmc_emulator$Model$source = '    BRA st\na   DAT 0\nb   DAT 0\none DAT 1\nst  INP\n    STA a\n    INP\n    ADD a\n    BRP ov\n    BRA ct\nov  LDA one\n    OUT\nct  INP\n    STA b\n    LDA a\n    SUB b\n    OUT\n    BRZ end\n    BRA st\nend COB\n    ';
+var _pbrinkmeier$lmc_emulator$Model$source = 's INP\n  STA a\n  ADD a\n  OUT\n  BRA s\na DAT 0';
 var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: _pbrinkmeier$lmc_emulator$Model$source, inputText: '', err: _elm_lang$core$Maybe$Nothing, vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$empty};
 var _pbrinkmeier$lmc_emulator$Model$Model = F4(
 	function (a, b, c, d) {

@@ -13,27 +13,12 @@ type alias Model =
 
 source : String
 source =
-    """    BRA st
-a   DAT 0
-b   DAT 0
-one DAT 1
-st  INP
-    STA a
-    INP
-    ADD a
-    BRP ov
-    BRA ct
-ov  LDA one
-    OUT
-ct  INP
-    STA b
-    LDA a
-    SUB b
-    OUT
-    BRZ end
-    BRA st
-end COB
-    """
+    """s INP
+  STA a
+  ADD a
+  OUT
+  BRA s
+a DAT 0"""
 
 
 initialModel : Model
