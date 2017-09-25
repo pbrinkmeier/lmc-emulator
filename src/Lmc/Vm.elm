@@ -23,7 +23,7 @@ init =
     Vm 0 0 False []
 
 
-step : Vm -> Vm
+step : Vm -> Result String Vm
 step vm =
     let
         currentInstruction : Int
@@ -38,7 +38,7 @@ step vm =
         argument =
             rem currentInstruction 100
     in
-        applyStep opcode argument vm |> repair
+        applyStep opcode argument vm |> Result.map repair
 
 
 repair : Vm -> Vm
@@ -49,7 +49,7 @@ repair vm =
     }
 
 
-applyStep : Int -> Int -> Vm -> Vm
+applyStep : Int -> Int -> Vm -> Result String Vm
 applyStep opcode argument vm =
     let
         { pc, acc, carry, outbox, inbox, memory } =
@@ -64,7 +64,7 @@ applyStep opcode argument vm =
                     result =
                         acc + referred
                 in
-                    { vm
+                    Ok { vm
                         | acc = result
                         , carry =
                             if result <= 999 then
@@ -79,7 +79,7 @@ applyStep opcode argument vm =
                     result =
                         acc - referred
                 in
-                    { vm
+                    Ok { vm
                         | acc = result
                         , carry =
                             if result >= 0 then
@@ -90,24 +90,24 @@ applyStep opcode argument vm =
                     }
 
             ( 3, _ ) ->
-                { vm
+                Ok { vm
                     | memory = Memory.insert argument acc memory
                     , pc = pc + 1
                 }
 
             ( 5, _ ) ->
-                { vm
+                Ok { vm
                     | acc = referred
                     , pc = pc + 1
                 }
 
             ( 6, _ ) ->
-                { vm
+                Ok { vm
                     | pc = argument
                 }
 
             ( 7, _ ) ->
-                { vm
+                Ok { vm
                     | pc =
                         if acc == 0 then
                             argument
@@ -116,7 +116,7 @@ applyStep opcode argument vm =
                 }
 
             ( 8, _ ) ->
-                { vm
+                Ok { vm
                     | pc =
                         if carry then
                             argument
@@ -127,23 +127,23 @@ applyStep opcode argument vm =
             ( 9, 1 ) ->
                 case inbox of
                     [] ->
-                        vm
+                        Err "Execution halted: no more inputs"
 
                     first :: rest ->
-                        { vm
+                        Ok { vm
                             | acc = first
                             , inbox = rest
                             , pc = pc + 1
                         }
 
             ( 9, 2 ) ->
-                { vm
+                Ok { vm
                     | outbox = acc :: outbox
                     , pc = pc + 1
                 }
 
             ( 0, 0 ) ->
-                vm
+                Err "Execution halted: COB"
 
             _ ->
-                vm
+                Err "Execution halted: invalid instruction encountered"
