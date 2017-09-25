@@ -7,6 +7,11 @@ import Update
 import View
 
 
+{-
+   Set up the elm architecture.
+-}
+
+
 main : Program Never Model.Model Update.Msg
 main =
     Html.program
