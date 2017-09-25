@@ -64,65 +64,72 @@ applyStep opcode argument vm =
                     result =
                         acc + referred
                 in
-                    Ok { vm
-                        | acc = result
-                        , carry =
-                            if result <= 999 then
-                                False
-                            else
-                                True
-                        , pc = pc + 1
-                    }
+                    Ok
+                        { vm
+                            | acc = result
+                            , carry =
+                                if result <= 999 then
+                                    False
+                                else
+                                    True
+                            , pc = pc + 1
+                        }
 
             ( 2, _ ) ->
                 let
                     result =
                         acc - referred
                 in
-                    Ok { vm
-                        | acc = result
-                        , carry =
-                            if result >= 0 then
-                                False
-                            else
-                                True
+                    Ok
+                        { vm
+                            | acc = result
+                            , carry =
+                                if result >= 0 then
+                                    False
+                                else
+                                    True
+                            , pc = pc + 1
+                        }
+
+            ( 3, _ ) ->
+                Ok
+                    { vm
+                        | memory = Memory.insert argument acc memory
                         , pc = pc + 1
                     }
 
-            ( 3, _ ) ->
-                Ok { vm
-                    | memory = Memory.insert argument acc memory
-                    , pc = pc + 1
-                }
-
             ( 5, _ ) ->
-                Ok { vm
-                    | acc = referred
-                    , pc = pc + 1
-                }
+                Ok
+                    { vm
+                        | acc = referred
+                        , pc = pc + 1
+                    }
 
             ( 6, _ ) ->
-                Ok { vm
-                    | pc = argument
-                }
+                Ok
+                    { vm
+                        | pc = argument
+                    }
 
             ( 7, _ ) ->
-                Ok { vm
-                    | pc =
-                        if acc == 0 then
-                            argument
-                        else
-                            pc + 1
-                }
+                Ok
+                    { vm
+                        | pc =
+                            if acc == 0 then
+                                argument
+                            else
+                                pc + 1
+                    }
 
             ( 8, _ ) ->
-                Ok { vm
-                    | pc =
-                        if carry then
-                            argument
-                        else
-                            pc + 1
-                }
+                Ok
+                    { vm
+                        | pc =
+                            if carry then
+                                argument
+                            else
+                                pc + 1
+                    }
 
             ( 9, 1 ) ->
                 case inbox of
@@ -130,17 +137,19 @@ applyStep opcode argument vm =
                         Err "Execution halted: no more inputs"
 
                     first :: rest ->
-                        Ok { vm
-                            | acc = first
-                            , inbox = rest
-                            , pc = pc + 1
-                        }
+                        Ok
+                            { vm
+                                | acc = first
+                                , inbox = rest
+                                , pc = pc + 1
+                            }
 
             ( 9, 2 ) ->
-                Ok { vm
-                    | outbox = acc :: outbox
-                    , pc = pc + 1
-                }
+                Ok
+                    { vm
+                        | outbox = acc :: outbox
+                        , pc = pc + 1
+                    }
 
             ( 0, 0 ) ->
                 Err "Execution halted: COB"

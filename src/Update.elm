@@ -61,19 +61,25 @@ update msg model =
                 )
 
         Step ->
-            ( { model
-                | vm = Vm.step model.vm
-                , vmIsRunning = False
-              }
-            , Cmd.none
-            )
+            ( executeVmStep model, Cmd.none )
 
         Tick time ->
-            ( { model
-                | vm = Vm.step model.vm
-              }
-            , Cmd.none
-            )
+            ( executeVmStep model, Cmd.none )
+
+
+executeVmStep : Model -> Model
+executeVmStep model =
+    case Vm.step model.vm of
+        Err message ->
+            { model
+                | err = Just message
+                , vmIsRunning = False
+            }
+
+        Ok newVm ->
+            { model
+                | vm = newVm
+            }
 
 
 createVm : String -> String -> Result String Vm

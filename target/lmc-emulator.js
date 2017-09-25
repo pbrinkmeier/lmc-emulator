@@ -9395,73 +9395,82 @@ var _pbrinkmeier$lmc_emulator$Lmc_Vm$applyStep = F3(
 				switch (_p1._0) {
 					case 1:
 						var result = acc + referred;
-						return _elm_lang$core$Native_Utils.update(
-							vm,
-							{
-								acc: result,
-								carry: (_elm_lang$core$Native_Utils.cmp(result, 999) < 1) ? false : true,
-								pc: pc + 1
-							});
+						return _elm_lang$core$Result$Ok(
+							_elm_lang$core$Native_Utils.update(
+								vm,
+								{
+									acc: result,
+									carry: (_elm_lang$core$Native_Utils.cmp(result, 999) < 1) ? false : true,
+									pc: pc + 1
+								}));
 					case 2:
 						var result = acc - referred;
-						return _elm_lang$core$Native_Utils.update(
-							vm,
-							{
-								acc: result,
-								carry: (_elm_lang$core$Native_Utils.cmp(result, 0) > -1) ? false : true,
-								pc: pc + 1
-							});
+						return _elm_lang$core$Result$Ok(
+							_elm_lang$core$Native_Utils.update(
+								vm,
+								{
+									acc: result,
+									carry: (_elm_lang$core$Native_Utils.cmp(result, 0) > -1) ? false : true,
+									pc: pc + 1
+								}));
 					case 3:
-						return _elm_lang$core$Native_Utils.update(
-							vm,
-							{
-								memory: A3(_pbrinkmeier$lmc_emulator$Memory$insert, argument, acc, memory),
-								pc: pc + 1
-							});
+						return _elm_lang$core$Result$Ok(
+							_elm_lang$core$Native_Utils.update(
+								vm,
+								{
+									memory: A3(_pbrinkmeier$lmc_emulator$Memory$insert, argument, acc, memory),
+									pc: pc + 1
+								}));
 					case 5:
-						return _elm_lang$core$Native_Utils.update(
-							vm,
-							{acc: referred, pc: pc + 1});
+						return _elm_lang$core$Result$Ok(
+							_elm_lang$core$Native_Utils.update(
+								vm,
+								{acc: referred, pc: pc + 1}));
 					case 6:
-						return _elm_lang$core$Native_Utils.update(
-							vm,
-							{pc: argument});
+						return _elm_lang$core$Result$Ok(
+							_elm_lang$core$Native_Utils.update(
+								vm,
+								{pc: argument}));
 					case 7:
-						return _elm_lang$core$Native_Utils.update(
-							vm,
-							{
-								pc: _elm_lang$core$Native_Utils.eq(acc, 0) ? argument : (pc + 1)
-							});
+						return _elm_lang$core$Result$Ok(
+							_elm_lang$core$Native_Utils.update(
+								vm,
+								{
+									pc: _elm_lang$core$Native_Utils.eq(acc, 0) ? argument : (pc + 1)
+								}));
 					case 8:
-						return _elm_lang$core$Native_Utils.update(
-							vm,
-							{
-								pc: carry ? argument : (pc + 1)
-							});
+						return _elm_lang$core$Result$Ok(
+							_elm_lang$core$Native_Utils.update(
+								vm,
+								{
+									pc: carry ? argument : (pc + 1)
+								}));
 					case 9:
 						switch (_p1._1) {
 							case 1:
 								var _p2 = inbox;
 								if (_p2.ctor === '[]') {
-									return vm;
+									return _elm_lang$core$Result$Err('Execution halted: no more inputs');
 								} else {
-									return _elm_lang$core$Native_Utils.update(
-										vm,
-										{acc: _p2._0, inbox: _p2._1, pc: pc + 1});
+									return _elm_lang$core$Result$Ok(
+										_elm_lang$core$Native_Utils.update(
+											vm,
+											{acc: _p2._0, inbox: _p2._1, pc: pc + 1}));
 								}
 							case 2:
-								return _elm_lang$core$Native_Utils.update(
-									vm,
-									{
-										outbox: {ctor: '::', _0: acc, _1: outbox},
-										pc: pc + 1
-									});
+								return _elm_lang$core$Result$Ok(
+									_elm_lang$core$Native_Utils.update(
+										vm,
+										{
+											outbox: {ctor: '::', _0: acc, _1: outbox},
+											pc: pc + 1
+										}));
 							default:
 								break _v0_10;
 						}
 					case 0:
 						if (_p1._1 === 0) {
-							return vm;
+							return _elm_lang$core$Result$Err('Execution halted: COB');
 						} else {
 							break _v0_10;
 						}
@@ -9472,7 +9481,7 @@ var _pbrinkmeier$lmc_emulator$Lmc_Vm$applyStep = F3(
 				break _v0_10;
 			}
 		} while(false);
-		return vm;
+		return _elm_lang$core$Result$Err('Execution halted: invalid instruction encountered');
 	});
 var _pbrinkmeier$lmc_emulator$Lmc_Vm$repair = function (vm) {
 	return _elm_lang$core$Native_Utils.update(
@@ -9486,7 +9495,9 @@ var _pbrinkmeier$lmc_emulator$Lmc_Vm$step = function (vm) {
 	var currentInstruction = A2(_pbrinkmeier$lmc_emulator$Memory$get, vm.pc, vm.memory);
 	var opcode = (currentInstruction / 100) | 0;
 	var argument = A2(_elm_lang$core$Basics$rem, currentInstruction, 100);
-	return _pbrinkmeier$lmc_emulator$Lmc_Vm$repair(
+	return A2(
+		_elm_lang$core$Result$map,
+		_pbrinkmeier$lmc_emulator$Lmc_Vm$repair,
 		A3(_pbrinkmeier$lmc_emulator$Lmc_Vm$applyStep, opcode, argument, vm));
 };
 var _pbrinkmeier$lmc_emulator$Lmc_Vm$Vm = F6(
@@ -9572,16 +9583,31 @@ var _pbrinkmeier$lmc_emulator$Update$createVm = F2(
 				A2(_elm_lang$core$Basics_ops['++'], 'Could not compile code: ', _p4._0._0));
 		}
 	});
+var _pbrinkmeier$lmc_emulator$Update$executeVmStep = function (model) {
+	var _p5 = _pbrinkmeier$lmc_emulator$Lmc_Vm$step(model.vm);
+	if (_p5.ctor === 'Err') {
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{
+				err: _elm_lang$core$Maybe$Just(_p5._0),
+				vmIsRunning: false
+			});
+	} else {
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{vm: _p5._0});
+	}
+};
 var _pbrinkmeier$lmc_emulator$Update$update = F2(
 	function (msg, model) {
-		var _p5 = A2(_elm_lang$core$Debug$log, 'message', msg);
-		switch (_p5.ctor) {
+		var _p6 = A2(_elm_lang$core$Debug$log, 'message', msg);
+		switch (_p6.ctor) {
 			case 'SetSourceCode':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{sourceCode: _p5._0}),
+						{sourceCode: _p6._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'SetInputText':
@@ -9589,7 +9615,7 @@ var _pbrinkmeier$lmc_emulator$Update$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{inputText: _p5._0}),
+						{inputText: _p6._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'ToggleRunning':
@@ -9601,20 +9627,20 @@ var _pbrinkmeier$lmc_emulator$Update$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'Assemble':
-				var _p6 = function () {
-					var _p7 = A2(_pbrinkmeier$lmc_emulator$Update$createVm, model.sourceCode, model.inputText);
-					if (_p7.ctor === 'Err') {
+				var _p7 = function () {
+					var _p8 = A2(_pbrinkmeier$lmc_emulator$Update$createVm, model.sourceCode, model.inputText);
+					if (_p8.ctor === 'Err') {
 						return {
 							ctor: '_Tuple2',
 							_0: _pbrinkmeier$lmc_emulator$Lmc_Vm$empty,
-							_1: _elm_lang$core$Maybe$Just(_p7._0)
+							_1: _elm_lang$core$Maybe$Just(_p8._0)
 						};
 					} else {
-						return {ctor: '_Tuple2', _0: _p7._0, _1: _elm_lang$core$Maybe$Nothing};
+						return {ctor: '_Tuple2', _0: _p8._0, _1: _elm_lang$core$Maybe$Nothing};
 					}
 				}();
-				var newVm = _p6._0;
-				var err = _p6._1;
+				var newVm = _p7._0;
+				var err = _p7._1;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -9625,22 +9651,13 @@ var _pbrinkmeier$lmc_emulator$Update$update = F2(
 			case 'Step':
 				return {
 					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$step(model.vm),
-							vmIsRunning: false
-						}),
+					_0: _pbrinkmeier$lmc_emulator$Update$executeVmStep(model),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
 				return {
 					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$step(model.vm)
-						}),
+					_0: _pbrinkmeier$lmc_emulator$Update$executeVmStep(model),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 		}
