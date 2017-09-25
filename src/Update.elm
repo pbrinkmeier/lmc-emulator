@@ -1,5 +1,15 @@
 module Update exposing (Msg(..), update)
 
+{-| This module is the most important of the whole codebase.
+It is responsible for reacting to any changes made to the app state.
+
+
+# Any possible change
+
+@docs Msg
+
+-}
+
 import Lmc.Compiler as Compiler
 import Lmc.Tokenizer as Tokenizer
 import Lmc.Parser as Parser
@@ -9,17 +19,30 @@ import Model exposing (Model, initialModel)
 import Time exposing (Time)
 
 
-type Msg
+{-| Messages are the only way to change the application state in Elm.
+This type defines all possible changes and what additional information they carry.
+-}
+type
+    Msg
+    -- Set the source code for the assembler.
     = SetSourceCode String
+      -- Set the input text (inputs for the VM).
     | SetInputText String
+      -- Start/Stop the VM.
     | ToggleRunning
+      -- Try assembling the source code.
     | Assemble
+      -- Let the VM do a step.
     | Step
+      -- Let the VM do a step. This member is needed because the message must carry a timestamp when sent by the Time module (idea: use (always Step) in Subs?).
     | Tick Time
 
 
+{-| Given a message and an application state, determine the new application state and wether any commands shall be executed by Elm.
+-}
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
+    -- Log the message to the browser console.
     case Debug.log "message" msg of
         SetSourceCode newCode ->
             ( { model
@@ -67,6 +90,8 @@ update msg model =
             ( executeVmStep model, Cmd.none )
 
 
+{-| A shorthand for executing a VM step.
+-}
 executeVmStep : Model -> Model
 executeVmStep model =
     case Vm.step model.vm of
@@ -82,6 +107,8 @@ executeVmStep model =
             }
 
 
+{-| Create a VM from source code and input text.
+-}
 createVm : String -> String -> Result String Vm
 createVm sourceCode inputText =
     case ( compile sourceCode, parseInputs inputText ) of
