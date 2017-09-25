@@ -9398,7 +9398,7 @@ var _pbrinkmeier$lmc_emulator$Lmc_Vm$applyStep = F3(
 						return _elm_lang$core$Native_Utils.update(
 							vm,
 							{
-								acc: A2(_elm_lang$core$Basics_ops['%'], result, 1000),
+								acc: result,
 								carry: (_elm_lang$core$Native_Utils.cmp(result, 999) < 1) ? false : true,
 								pc: pc + 1
 							});
@@ -9407,7 +9407,7 @@ var _pbrinkmeier$lmc_emulator$Lmc_Vm$applyStep = F3(
 						return _elm_lang$core$Native_Utils.update(
 							vm,
 							{
-								acc: A2(_elm_lang$core$Basics_ops['%'], result, 1000),
+								acc: result,
 								carry: (_elm_lang$core$Native_Utils.cmp(result, 0) > -1) ? false : true,
 								pc: pc + 1
 							});
@@ -9478,7 +9478,8 @@ var _pbrinkmeier$lmc_emulator$Lmc_Vm$repair = function (vm) {
 	return _elm_lang$core$Native_Utils.update(
 		vm,
 		{
-			pc: A2(_elm_lang$core$Basics_ops['%'], vm.pc, 100)
+			pc: A2(_elm_lang$core$Basics_ops['%'], vm.pc, 100),
+			acc: A2(_elm_lang$core$Basics_ops['%'], vm.acc, 1000)
 		});
 };
 var _pbrinkmeier$lmc_emulator$Lmc_Vm$step = function (vm) {

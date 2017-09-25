@@ -45,6 +45,7 @@ repair : Vm -> Vm
 repair vm =
     { vm
         | pc = vm.pc % 100
+        , acc = vm.acc % 1000
     }
 
 
@@ -64,7 +65,7 @@ applyStep opcode argument vm =
                         acc + referred
                 in
                     { vm
-                        | acc = result % 1000
+                        | acc = result
                         , carry =
                             if result <= 999 then
                                 False
@@ -79,7 +80,7 @@ applyStep opcode argument vm =
                         acc - referred
                 in
                     { vm
-                        | acc = result % 1000
+                        | acc = result
                         , carry =
                             if result >= 0 then
                                 False
