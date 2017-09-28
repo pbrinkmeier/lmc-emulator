@@ -8831,8 +8831,8 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
-var _pbrinkmeier$lmc_emulator$Hash$set = _elm_lang$core$Native_Platform.outgoingPort(
-	'set',
+var _pbrinkmeier$lmc_emulator$Hash$setHash = _elm_lang$core$Native_Platform.outgoingPort(
+	'setHash',
 	function (v) {
 		return v;
 	});
@@ -10220,7 +10220,7 @@ var _pbrinkmeier$lmc_emulator$Update$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{err: err, vm: newVm, vmIsRunning: false}),
-					_1: _pbrinkmeier$lmc_emulator$Hash$set(
+					_1: _pbrinkmeier$lmc_emulator$Hash$setHash(
 						_pbrinkmeier$lmc_emulator$Model$encode(model))
 				};
 			case 'Step':

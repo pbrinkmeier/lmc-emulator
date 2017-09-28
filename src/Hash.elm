@@ -1,3 +1,4 @@
-port module Hash exposing (set)
+port module Hash exposing (setHash)
 
-port set : String -> Cmd msg
+
+port setHash : String -> Cmd msg

@@ -81,7 +81,7 @@ update msg model =
                     , vm = newVm
                     , vmIsRunning = False
                   }
-                , Hash.set (Model.encode model)
+                , Hash.setHash (Model.encode model)
                 )
 
         Step ->
