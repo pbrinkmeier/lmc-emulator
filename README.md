@@ -9,6 +9,8 @@ TL;DR: it is an as-simple-as-possible example for a von Neumann architecture usi
 
 Everytime you hit the "Reset & Assemble" button, the URL of this page will be updated to a shareable link that will have the same source code and input text that you entered.
 
+[Example program shown below](https://pbrinkmeier.github.io/lmc-emulator/#eyJzIjoiICA7IHN0b3JlIGFuIGlucHV0XG4gIDsgYXQgcG9zaXRpb24gZmlyc3RcbiAgSU5QXG4gIFNUQSBmaXJzdFxuICA7IHN0b3JlIGFuIGlucHV0IGF0XG4gIDsgcG9zaXRpb24gc2Vjb25kXG4gIElOUFxuICBTVEEgc2Vjb25kXG4gIDsgbG9hZCB0aGUgZmlyc3QgdmFsdWVcbiAgTERBIGZpcnN0XG4gIDsgc3VidHJhY3QgdGhlXG4gIDsgc2Vjb25kXG4gIFNVQiBzZWNvbmRcbiAgOyBvdXRwdXQgdGhlIGRpZmZlcmVuY2VcbiAgOyBhbmQgaGFsdCBleGVjdXRpb25cbiAgT1VUXG4gIENPQlxuZmlyc3RcbiAgREFUIDBcbnNlY29uZFxuICBEQVQgMCIsImkiOiI4NzQsIDQxOSJ9)
+
 ## Emulator details
 
 ### Architecture
