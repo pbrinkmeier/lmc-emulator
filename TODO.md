@@ -5,5 +5,6 @@
 - [x] Write input "parser" `split ", " >> map (trim >> toInt)`
 - [x] Write vm/interpreter!
 - [ ] Write comments
-- [ ] minify CSS & JS output
+- [x] minify CSS & JS output
 - [ ] (After compiler rewrite) show line that corresponds to the current instruction
+- [x] Add "permalink" feature
