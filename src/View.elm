@@ -45,7 +45,7 @@ view model =
         div [ class "lmc-main" ]
             [ Util.topbarView "LMC assembler & emulator"
                 [ ( "Wikipedia", "https://en.wikipedia.org/wiki/Little_man_computer" )
-                , ( "Manual", "https://github.com/pbrinkmeier/lmc-emulator/README.md" )
+                , ( "Manual", "https://github.com/pbrinkmeier/lmc-emulator/blob/master/README.md" )
                 , ( "Source", "https://github.com/pbrinkmeier/lmc-emulator/" )
                 ]
             , div [ class "lmc-content" ]

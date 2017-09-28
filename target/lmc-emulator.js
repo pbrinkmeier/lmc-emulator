@@ -10676,7 +10676,7 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 					_0: {ctor: '_Tuple2', _0: 'Wikipedia', _1: 'https://en.wikipedia.org/wiki/Little_man_computer'},
 					_1: {
 						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'Manual', _1: 'https://github.com/pbrinkmeier/lmc-emulator/README.md'},
+						_0: {ctor: '_Tuple2', _0: 'Manual', _1: 'https://github.com/pbrinkmeier/lmc-emulator/blob/master/README.md'},
 						_1: {
 							ctor: '::',
 							_0: {ctor: '_Tuple2', _0: 'Source', _1: 'https://github.com/pbrinkmeier/lmc-emulator/'},
