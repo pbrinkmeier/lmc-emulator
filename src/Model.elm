@@ -1,5 +1,7 @@
-module Model exposing (Model, initialModel)
+module Model exposing (Model, encode, initialModel)
 
+import Base64
+import Json.Encode exposing (object, string)
 import Lmc.Vm as Vm exposing (Vm)
 
 
@@ -10,6 +12,30 @@ type alias Model =
     , vm : Vm
     , vmIsRunning : Bool
     }
+
+
+encode : Model -> String
+encode { sourceCode, inputText } =
+    let
+        stateToEncode : Json.Encode.Value
+        stateToEncode =
+            object
+                [ ( sourceKey, string sourceCode )
+                , ( inputKey, string inputText )
+                ]
+    in
+        Json.Encode.encode 0 stateToEncode
+            |> Base64.encode
+
+
+sourceKey : String
+sourceKey =
+    "s"
+
+
+inputKey : String
+inputKey =
+    "i"
 
 
 source : String

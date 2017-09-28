@@ -10,6 +10,7 @@ It is responsible for reacting to any changes made to the app state.
 
 -}
 
+import Hash
 import Lmc.Compiler as Compiler
 import Lmc.Tokenizer as Tokenizer
 import Lmc.Parser as Parser
@@ -80,7 +81,7 @@ update msg model =
                     , vm = newVm
                     , vmIsRunning = False
                   }
-                , Cmd.none
+                , Hash.set (Model.encode model)
                 )
 
         Step ->
