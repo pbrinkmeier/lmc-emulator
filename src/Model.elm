@@ -15,6 +15,7 @@ type alias Model =
     , vmIsRunning : Bool
     }
 
+
 decode : String -> ( Model, Cmd msg )
 decode encodedString =
     if encodedString == "" then
@@ -23,11 +24,15 @@ decode encodedString =
         case Base64.decode encodedString |> Result.andThen decodeJson |> Debug.log "decoder" of
             Err _ ->
                 ( initialModel, Hash.setHash "" )
+
             Ok { sourceCode, inputText } ->
                 ( { initialModel
                     | sourceCode = sourceCode
-                    , inputText = inputText }
-                , Cmd.none )
+                    , inputText = inputText
+                  }
+                , Cmd.none
+                )
+
 
 decodeJson : String -> Result String { sourceCode : String, inputText : String }
 decodeJson =
@@ -39,6 +44,7 @@ decodeJson =
                 (field inputKey Json.Decode.string)
     in
         Json.Decode.decodeString decoder
+
 
 encode : Model -> String
 encode { sourceCode, inputText } =
