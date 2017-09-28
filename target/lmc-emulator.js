@@ -10090,8 +10090,44 @@ var _pbrinkmeier$lmc_emulator$Model$encode = function (_p0) {
 	return _truqu$elm_base64$Base64$encode(
 		A2(_elm_lang$core$Json_Encode$encode, 0, stateToEncode));
 };
-var _pbrinkmeier$lmc_emulator$Model$decode = function (_p2) {
-	return _pbrinkmeier$lmc_emulator$Model$initialModel;
+var _pbrinkmeier$lmc_emulator$Model$decodeJson = function () {
+	var decoder = A3(
+		_elm_lang$core$Json_Decode$map2,
+		F2(
+			function (src, inp) {
+				return {sourceCode: src, inputText: inp};
+			}),
+		A2(_elm_lang$core$Json_Decode$field, _pbrinkmeier$lmc_emulator$Model$sourceKey, _elm_lang$core$Json_Decode$string),
+		A2(_elm_lang$core$Json_Decode$field, _pbrinkmeier$lmc_emulator$Model$inputKey, _elm_lang$core$Json_Decode$string));
+	return _elm_lang$core$Json_Decode$decodeString(decoder);
+}();
+var _pbrinkmeier$lmc_emulator$Model$decode = function (encodedString) {
+	if (_elm_lang$core$Native_Utils.eq(encodedString, '')) {
+		return {ctor: '_Tuple2', _0: _pbrinkmeier$lmc_emulator$Model$initialModel, _1: _elm_lang$core$Platform_Cmd$none};
+	} else {
+		var _p2 = A2(
+			_elm_lang$core$Debug$log,
+			'decoder',
+			A2(
+				_elm_lang$core$Result$andThen,
+				_pbrinkmeier$lmc_emulator$Model$decodeJson,
+				_truqu$elm_base64$Base64$decode(encodedString)));
+		if (_p2.ctor === 'Err') {
+			return {
+				ctor: '_Tuple2',
+				_0: _pbrinkmeier$lmc_emulator$Model$initialModel,
+				_1: _pbrinkmeier$lmc_emulator$Hash$setHash('')
+			};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$Native_Utils.update(
+					_pbrinkmeier$lmc_emulator$Model$initialModel,
+					{sourceCode: _p2._0.sourceCode, inputText: _p2._0.inputText}),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		}
+	}
 };
 var _pbrinkmeier$lmc_emulator$Model$Model = F5(
 	function (a, b, c, d, e) {
@@ -10857,12 +10893,10 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 var _pbrinkmeier$lmc_emulator$Main$main = _elm_lang$html$Html$programWithFlags(
 	{
 		init: function (_p0) {
-			var _p1 = _p0;
-			return {
-				ctor: '_Tuple2',
-				_0: _pbrinkmeier$lmc_emulator$Model$decode(_p1.hash),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
+			return _pbrinkmeier$lmc_emulator$Model$decode(
+				function (_) {
+					return _.hash;
+				}(_p0));
 		},
 		update: _pbrinkmeier$lmc_emulator$Update$update,
 		view: _pbrinkmeier$lmc_emulator$View$view,

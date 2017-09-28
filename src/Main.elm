@@ -15,7 +15,7 @@ import View
 main : Program { hash : String } Model.Model Update.Msg
 main =
     Html.programWithFlags
-        { init = \{ hash } -> (Model.decode hash, Cmd.none)
+        { init = (.hash >> Model.decode)
         , update = Update.update
         , view = View.view
         , subscriptions = Subs.subscriptions

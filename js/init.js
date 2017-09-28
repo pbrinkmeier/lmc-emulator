@@ -1,6 +1,6 @@
 (function () {
   var flags = {
-    hash: window.location.hash
+    hash: window.location.hash.slice(1)
   };
 
   var lmcApp = Elm.Main.fullscreen(flags);
