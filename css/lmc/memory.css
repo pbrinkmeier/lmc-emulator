@@ -1,12 +1,16 @@
 .lmc-memory {
   width: 100%;
-  font-family: 'Fira Code', monospace;
+}
+
+.lmc-memory-row-label {
+  font-weight: bold;
 }
 
 .lmc-memory-row-cell {
   border: 1px solid transparent;
   font-size: .75em;
   text-align: center;
+  font-family: 'Fira Code', monospace;
 }
 
 .lmc-memory-row-cell.-pc {
