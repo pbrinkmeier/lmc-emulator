@@ -68,16 +68,19 @@ decodeJson =
 
 encode : Model -> String
 encode { sourceCode, inputText } =
-    let
-        stateToEncode : Json.Encode.Value
-        stateToEncode =
-            object
-                [ ( sourceKey, string sourceCode )
-                , ( inputKey, string inputText )
-                ]
-    in
-        Json.Encode.encode 0 stateToEncode
-            |> Base64.encode
+    if sourceCode == initialModel.sourceCode && inputText == initialModel.inputText then
+        ""
+    else
+        let
+            stateToEncode : Json.Encode.Value
+            stateToEncode =
+                object
+                    [ ( sourceKey, string sourceCode )
+                    , ( inputKey, string inputText )
+                    ]
+        in
+            Json.Encode.encode 0 stateToEncode
+                |> Base64.encode
 
 
 sourceKey : String

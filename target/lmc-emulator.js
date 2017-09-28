@@ -10069,26 +10069,32 @@ var _pbrinkmeier$lmc_emulator$Model$inputKey = 'i';
 var _pbrinkmeier$lmc_emulator$Model$sourceKey = 's';
 var _pbrinkmeier$lmc_emulator$Model$encode = function (_p0) {
 	var _p1 = _p0;
-	var stateToEncode = _elm_lang$core$Json_Encode$object(
-		{
-			ctor: '::',
-			_0: {
-				ctor: '_Tuple2',
-				_0: _pbrinkmeier$lmc_emulator$Model$sourceKey,
-				_1: _elm_lang$core$Json_Encode$string(_p1.sourceCode)
-			},
-			_1: {
+	var _p3 = _p1.sourceCode;
+	var _p2 = _p1.inputText;
+	if (_elm_lang$core$Native_Utils.eq(_p3, _pbrinkmeier$lmc_emulator$Model$initialModel.sourceCode) && _elm_lang$core$Native_Utils.eq(_p2, _pbrinkmeier$lmc_emulator$Model$initialModel.inputText)) {
+		return '';
+	} else {
+		var stateToEncode = _elm_lang$core$Json_Encode$object(
+			{
 				ctor: '::',
 				_0: {
 					ctor: '_Tuple2',
-					_0: _pbrinkmeier$lmc_emulator$Model$inputKey,
-					_1: _elm_lang$core$Json_Encode$string(_p1.inputText)
+					_0: _pbrinkmeier$lmc_emulator$Model$sourceKey,
+					_1: _elm_lang$core$Json_Encode$string(_p3)
 				},
-				_1: {ctor: '[]'}
-			}
-		});
-	return _truqu$elm_base64$Base64$encode(
-		A2(_elm_lang$core$Json_Encode$encode, 0, stateToEncode));
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: _pbrinkmeier$lmc_emulator$Model$inputKey,
+						_1: _elm_lang$core$Json_Encode$string(_p2)
+					},
+					_1: {ctor: '[]'}
+				}
+			});
+		return _truqu$elm_base64$Base64$encode(
+			A2(_elm_lang$core$Json_Encode$encode, 0, stateToEncode));
+	}
 };
 var _pbrinkmeier$lmc_emulator$Model$Model = F5(
 	function (a, b, c, d, e) {
@@ -10110,11 +10116,11 @@ var _pbrinkmeier$lmc_emulator$Model$decode = function (encodedString) {
 	if (_elm_lang$core$Native_Utils.eq(encodedString, '')) {
 		return {ctor: '_Tuple2', _0: _pbrinkmeier$lmc_emulator$Model$initialModel, _1: _elm_lang$core$Platform_Cmd$none};
 	} else {
-		var _p2 = A2(
+		var _p4 = A2(
 			_elm_lang$core$Result$andThen,
 			_pbrinkmeier$lmc_emulator$Model$decodeJson,
 			_truqu$elm_base64$Base64$decode(encodedString));
-		if (_p2.ctor === 'Err') {
+		if (_p4.ctor === 'Err') {
 			return {
 				ctor: '_Tuple2',
 				_0: _pbrinkmeier$lmc_emulator$Model$initialModel,
@@ -10125,7 +10131,7 @@ var _pbrinkmeier$lmc_emulator$Model$decode = function (encodedString) {
 				ctor: '_Tuple2',
 				_0: _elm_lang$core$Native_Utils.update(
 					_pbrinkmeier$lmc_emulator$Model$initialModel,
-					{sourceCode: _p2._0.sourceCode, inputText: _p2._0.inputText}),
+					{sourceCode: _p4._0.sourceCode, inputText: _p4._0.inputText}),
 				_1: _elm_lang$core$Platform_Cmd$none
 			};
 		}
@@ -10658,7 +10664,7 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 						_0: {ctor: '_Tuple2', _0: 'Manual', _1: 'https://github.com/pbrinkmeier/lmc-emulator/README.md'},
 						_1: {
 							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'Source', _1: 'https://github.com/pbrinkmeier/lmc-emulator/README.md'},
+							_0: {ctor: '_Tuple2', _0: 'Source', _1: 'https://github.com/pbrinkmeier/lmc-emulator/'},
 							_1: {ctor: '[]'}
 						}
 					}
