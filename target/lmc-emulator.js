@@ -8945,8 +8945,13 @@ var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$toString = function (t) {
 					_elm_lang$core$Basics_ops['++'],
 					_elm_lang$core$Basics$toString(_p7._0),
 					')'));
-		default:
+		case 'Whitespace':
 			return 'whitespace';
+		default:
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'comment(',
+				A2(_elm_lang$core$Basics_ops['++'], _p7._0, ')'));
 	}
 };
 var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Rule = F2(
@@ -8955,6 +8960,9 @@ var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Rule = F2(
 	});
 var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Whitespace = function (a) {
 	return {ctor: 'Whitespace', _0: a};
+};
+var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Comment = function (a) {
+	return {ctor: 'Comment', _0: a};
 };
 var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$NumberLiteral = function (a) {
 	return {ctor: 'NumberLiteral', _0: a};
@@ -8990,9 +8998,16 @@ var _pbrinkmeier$lmc_emulator$Lmc_Tokenizer$lmcRules = {
 				ctor: '::',
 				_0: A2(
 					_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Rule,
-					_elm_lang$core$Regex$regex('\\s+'),
-					_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Whitespace),
-				_1: {ctor: '[]'}
+					_elm_lang$core$Regex$regex(';[^\\n]+'),
+					_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Comment),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Rule,
+						_elm_lang$core$Regex$regex('\\s+'),
+						_pbrinkmeier$lmc_emulator$Lmc_Tokenizer$Whitespace),
+					_1: {ctor: '[]'}
+				}
 			}
 		}
 	}

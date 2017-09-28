@@ -61,23 +61,27 @@ This program takes two inputs and puts their difference in the outbox.
 It is a slighty modified version of an example on the wikipedia page.
 
 ```
-  ; store an input at position first
+  ; store an input
+  ; at position first
   INP
   STA first
-  ; store an input at position second
+  ; store an input at
+  ; position second
   INP
   STA second
   ; load the first value
   LDA first
-  ; subtract the second
+  ; subtract the
+  ; second
   SUB second
-  ; output the difference and halt execution
+  ; output the difference
+  ; and halt execution
   OUT
   COB
 first
-  DAT
+  DAT 0
 second
-  DAT
+  DAT 0
 ```
 
 Labels and comments can be at any position in a line, the formatting is just personal preference.

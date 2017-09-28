@@ -7,6 +7,7 @@ type Token
     = Mnemonic String
     | Label String
     | NumberLiteral Int
+    | Comment String
     | Whitespace String
 
 
@@ -36,12 +37,16 @@ toString t =
         Whitespace _ ->
             "whitespace"
 
+        Comment text ->
+            "comment(" ++ text ++ ")"
+
 
 lmcRules : List (Rule Token)
 lmcRules =
     [ Rule (regex "[A-Z]+") Mnemonic
     , Rule (regex "[a-z]+") Label
     , Rule (regex "[0-9]+") (ignorantToInt >> NumberLiteral)
+    , Rule (regex ";[^\\n]+") Comment
     , Rule (regex "\\s+") Whitespace
     ]
 
