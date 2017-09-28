@@ -12,10 +12,10 @@ import View
 -}
 
 
-main : Program Never Model.Model Update.Msg
+main : Program { hash : String } Model.Model Update.Msg
 main =
-    Html.program
-        { init = ( Model.initialModel, Cmd.none )
+    Html.programWithFlags
+        { init = \{ hash } -> (Model.decode hash, Cmd.none)
         , update = Update.update
         , view = View.view
         , subscriptions = Subs.subscriptions

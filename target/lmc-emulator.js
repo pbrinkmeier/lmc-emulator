@@ -10064,8 +10064,7 @@ var _truqu$elm_base64$Base64_Encode$encode = function (input) {
 var _truqu$elm_base64$Base64$decode = _truqu$elm_base64$Base64_Decode$decode;
 var _truqu$elm_base64$Base64$encode = _truqu$elm_base64$Base64_Encode$encode;
 
-var _pbrinkmeier$lmc_emulator$Model$source = 's INP\n  STA a\n  ADD a\n  OUT\n  BRA s\na DAT 0';
-var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: _pbrinkmeier$lmc_emulator$Model$source, inputText: '1, 2, 3, 4, 5', err: _elm_lang$core$Maybe$Nothing, vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$empty, vmIsRunning: false};
+var _pbrinkmeier$lmc_emulator$Model$initialModel = {sourceCode: '', inputText: '', err: _elm_lang$core$Maybe$Nothing, vm: _pbrinkmeier$lmc_emulator$Lmc_Vm$empty, vmIsRunning: false};
 var _pbrinkmeier$lmc_emulator$Model$inputKey = 'i';
 var _pbrinkmeier$lmc_emulator$Model$sourceKey = 's';
 var _pbrinkmeier$lmc_emulator$Model$encode = function (_p0) {
@@ -10090,6 +10089,9 @@ var _pbrinkmeier$lmc_emulator$Model$encode = function (_p0) {
 		});
 	return _truqu$elm_base64$Base64$encode(
 		A2(_elm_lang$core$Json_Encode$encode, 0, stateToEncode));
+};
+var _pbrinkmeier$lmc_emulator$Model$decode = function (_p2) {
+	return _pbrinkmeier$lmc_emulator$Model$initialModel;
 };
 var _pbrinkmeier$lmc_emulator$Model$Model = F5(
 	function (a, b, c, d, e) {
@@ -10852,13 +10854,27 @@ var _pbrinkmeier$lmc_emulator$View$view = function (model) {
 		});
 };
 
-var _pbrinkmeier$lmc_emulator$Main$main = _elm_lang$html$Html$program(
+var _pbrinkmeier$lmc_emulator$Main$main = _elm_lang$html$Html$programWithFlags(
 	{
-		init: {ctor: '_Tuple2', _0: _pbrinkmeier$lmc_emulator$Model$initialModel, _1: _elm_lang$core$Platform_Cmd$none},
+		init: function (_p0) {
+			var _p1 = _p0;
+			return {
+				ctor: '_Tuple2',
+				_0: _pbrinkmeier$lmc_emulator$Model$decode(_p1.hash),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		},
 		update: _pbrinkmeier$lmc_emulator$Update$update,
 		view: _pbrinkmeier$lmc_emulator$View$view,
 		subscriptions: _pbrinkmeier$lmc_emulator$Subs$subscriptions
-	})();
+	})(
+	A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (hash) {
+			return _elm_lang$core$Json_Decode$succeed(
+				{hash: hash});
+		},
+		A2(_elm_lang$core$Json_Decode$field, 'hash', _elm_lang$core$Json_Decode$string)));
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};

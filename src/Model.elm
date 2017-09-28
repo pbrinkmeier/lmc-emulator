@@ -1,4 +1,4 @@
-module Model exposing (Model, encode, initialModel)
+module Model exposing (Model, decode, encode, initialModel)
 
 import Base64
 import Json.Encode exposing (object, string)
@@ -13,6 +13,8 @@ type alias Model =
     , vmIsRunning : Bool
     }
 
+decode : String -> Model
+decode _ = initialModel
 
 encode : Model -> String
 encode { sourceCode, inputText } =
@@ -38,20 +40,10 @@ inputKey =
     "i"
 
 
-source : String
-source =
-    """s INP
-  STA a
-  ADD a
-  OUT
-  BRA s
-a DAT 0"""
-
-
 initialModel : Model
 initialModel =
-    { sourceCode = source
-    , inputText = "1, 2, 3, 4, 5"
+    { sourceCode = ""
+    , inputText = ""
     , err = Nothing
     , vm = Vm.empty
     , vmIsRunning = False
