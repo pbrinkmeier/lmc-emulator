@@ -5,6 +5,10 @@ You can read more about the LMC on the [LMC Wikipedia page](https://en.wikipedia
 
 TL;DR: it is an as-simple-as-possible example for a von Neumann architecture using decimal numbers.
 
+## Links for sharing
+
+Everytime you hit the "Reset & Assemble" button, the URL of this page will be updated to a shareable link that will have the same source code and input text that you entered.
+
 ## Emulator details
 
 ### Architecture
