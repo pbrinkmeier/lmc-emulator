@@ -16,12 +16,20 @@ type alias Model =
     }
 
 
+
+{-
+   Decode a hash into the corresponding model.
+
+   The hash is a base64-encoded JSON object that contains a field for source code and another for the comma-seperated input text.
+-}
+
+
 decode : String -> ( Model, Cmd msg )
 decode encodedString =
     if encodedString == "" then
         ( initialModel, Cmd.none )
     else
-        case Base64.decode encodedString |> Result.andThen decodeJson |> Debug.log "decoder" of
+        case Base64.decode encodedString |> Result.andThen decodeJson of
             Err _ ->
                 ( initialModel, Hash.setHash "" )
 
@@ -34,16 +42,28 @@ decode encodedString =
                 )
 
 
-decodeJson : String -> Result String { sourceCode : String, inputText : String }
+type alias SaveData =
+    { sourceCode : String
+    , inputText : String
+    }
+
+
+decodeJson : String -> Result String SaveData
 decodeJson =
     let
-        decoder : Decoder { sourceCode : String, inputText : String }
+        decoder : Decoder SaveData
         decoder =
-            Json.Decode.map2 (\src inp -> { sourceCode = src, inputText = inp })
+            Json.Decode.map2 SaveData
                 (field sourceKey Json.Decode.string)
                 (field inputKey Json.Decode.string)
     in
         Json.Decode.decodeString decoder
+
+
+
+{-
+   Encode a model into the format described in the comment for decode.
+-}
 
 
 encode : Model -> String

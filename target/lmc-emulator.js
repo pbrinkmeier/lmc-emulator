@@ -10090,13 +10090,18 @@ var _pbrinkmeier$lmc_emulator$Model$encode = function (_p0) {
 	return _truqu$elm_base64$Base64$encode(
 		A2(_elm_lang$core$Json_Encode$encode, 0, stateToEncode));
 };
+var _pbrinkmeier$lmc_emulator$Model$Model = F5(
+	function (a, b, c, d, e) {
+		return {sourceCode: a, inputText: b, err: c, vm: d, vmIsRunning: e};
+	});
+var _pbrinkmeier$lmc_emulator$Model$SaveData = F2(
+	function (a, b) {
+		return {sourceCode: a, inputText: b};
+	});
 var _pbrinkmeier$lmc_emulator$Model$decodeJson = function () {
 	var decoder = A3(
 		_elm_lang$core$Json_Decode$map2,
-		F2(
-			function (src, inp) {
-				return {sourceCode: src, inputText: inp};
-			}),
+		_pbrinkmeier$lmc_emulator$Model$SaveData,
 		A2(_elm_lang$core$Json_Decode$field, _pbrinkmeier$lmc_emulator$Model$sourceKey, _elm_lang$core$Json_Decode$string),
 		A2(_elm_lang$core$Json_Decode$field, _pbrinkmeier$lmc_emulator$Model$inputKey, _elm_lang$core$Json_Decode$string));
 	return _elm_lang$core$Json_Decode$decodeString(decoder);
@@ -10106,12 +10111,9 @@ var _pbrinkmeier$lmc_emulator$Model$decode = function (encodedString) {
 		return {ctor: '_Tuple2', _0: _pbrinkmeier$lmc_emulator$Model$initialModel, _1: _elm_lang$core$Platform_Cmd$none};
 	} else {
 		var _p2 = A2(
-			_elm_lang$core$Debug$log,
-			'decoder',
-			A2(
-				_elm_lang$core$Result$andThen,
-				_pbrinkmeier$lmc_emulator$Model$decodeJson,
-				_truqu$elm_base64$Base64$decode(encodedString)));
+			_elm_lang$core$Result$andThen,
+			_pbrinkmeier$lmc_emulator$Model$decodeJson,
+			_truqu$elm_base64$Base64$decode(encodedString));
 		if (_p2.ctor === 'Err') {
 			return {
 				ctor: '_Tuple2',
@@ -10129,10 +10131,6 @@ var _pbrinkmeier$lmc_emulator$Model$decode = function (encodedString) {
 		}
 	}
 };
-var _pbrinkmeier$lmc_emulator$Model$Model = F5(
-	function (a, b, c, d, e) {
-		return {sourceCode: a, inputText: b, err: c, vm: d, vmIsRunning: e};
-	});
 
 var _pbrinkmeier$lmc_emulator$Update$parseInputs = function (inputText) {
 	var recurse = F2(
@@ -10909,6 +10907,9 @@ var _pbrinkmeier$lmc_emulator$Main$main = _elm_lang$html$Html$programWithFlags(
 				{hash: hash});
 		},
 		A2(_elm_lang$core$Json_Decode$field, 'hash', _elm_lang$core$Json_Decode$string)));
+var _pbrinkmeier$lmc_emulator$Main$Flags = function (a) {
+	return {hash: a};
+};
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
